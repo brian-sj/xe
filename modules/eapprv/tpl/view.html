@@ -1,0 +1,61 @@
+﻿<load target="/files/jplayer/jquery.jmp3.js" />
+<load target="./js/bookc_admin.js" />
+
+<script>
+
+
+</script>
+<div id="iContent" >
+
+
+
+<h1 cond="$module_info->title_img" ><img src="{$module_info->title_img}"  width ="64" height="64"/>  <span>{$module_info->browser_title}</span></h1>
+
+
+<div class="section">
+		<h1> 유저용  </h1>
+		
+		<div cond="count($list)==0"> 데이터가 없습니다. 추가 해 주세요.  </div>
+		<div loop="$list => $no,$val"  cond="$val->variables['is_notice'] !='M'">
+			<div id="title">{$val->variables['title']}</div>
+			<div id="content">{$val->variables['content']}</div>
+			<div id='files'><div class='files' loop="$val->files=>$no2,$val2">
+								<!-- <span>{$val2->uploaded_filename}</span><span>{$val2->source_filename}</span>  -->
+								    <span class="audio"  cond="strrpos($val2->uploaded_filename ,'.mp3')"  href="{$val2->uploaded_filename}" >{$val2->source_filename}</span>
+									<a cond="!strrpos($val2->uploaded_filename ,'.mp3')"  href="{$val2->uploaded_filename}" target="_blank"> {$val2->source_filename} </a>
+								
+								</div>
+				</div>
+			<div class="x_clearfix btnArea">   <a href="{getUrl('act','dispBookcAdminInsertStep2' ,  'module_srl' , $module_srl , 'user_yn' , 'Y' , 'document_srl' , $val->variables['document_srl']  )}"><button type="button" class="x_btn x_btn-primary">수정 하기</button> </a><a href="#" onclick="javascript:delDocument(  {$val->variables['document_srl'] }  )"><button type="button" class="x_btn x_btn-primary">삭제 하기</button></a></div>
+		</div>	
+        <div class="x_clearfix btnArea">
+			<a href="{getUrl('act','dispBookcAdminInsertStep2' ,  'module_srl' , $module_srl , 'user_yn' , 'Y' , 'document_srl' ,'' )}"><button type="button" class="btn btn-primary">추가입력</button></a>
+	    </div>
+</div>
+
+
+<div class="section">
+<h1> 관리자용  </h1>
+	<div cond="count($list)==0"> 데이터가 없습니다. 추가 해 주세요.  </div>
+	<div 	loop="$list => $no,$val"  cond="$val->variables['is_notice'] =='M'">
+		<div id="title">{$val->variables['title']}</div>
+		<div id="content">{$val->variables['content']}</div>
+		<div id='files'><div class='files' loop="$val->files=>$no2,$val2">
+					    <span class="audio"  cond="strrpos($val2->uploaded_filename ,'.mp3')"  href="{$val2->uploaded_filename}" >{$val2->source_filename}</span>
+						<a cond="!strrpos($val2->uploaded_filename ,'.mp3')"  href="{$val2->uploaded_filename}" target="_blank"> {$val2->source_filename} </a>
+					</div>
+			</div>
+		<div class="x_clearfix btnArea"> <a href="{getUrl('act','dispBookcAdminInsertStep2' ,  'module_srl' , $module_srl , 'user_yn' , 'N' , 'document_srl' , $val->variables['document_srl']  )}"><button type="button" class="x_btn x_btn-primary">수정 하기</button> </a><a href="#" onclick="javascript:delDocument(  {$val->variables['document_srl'] }  )"><button type="button" class="x_btn x_btn-primary">삭제 하기</button></a></div>
+	</div>	
+	    <div class="x_clearfix btnArea">		
+		<a href="{getUrl('act','dispBookcAdminInsertStep2' ,  'module_srl' , $module_srl , 'user_yn' , 'N'  , 'document_srl' ,'' )}"><button type="button" class="btn btn-primary">추가입력</button></a> 
+	    </div>					
+</div>
+</div>
+
+
+	<div class="x_clearfix btnArea">
+			<a href="{getUrl('module', 'admin' , 'act' , 'dispBookcAdminList' )}"><button type="submit" class="x_btn x_btn-primary">목록으로</button><a>
+	</div>
+	
+	

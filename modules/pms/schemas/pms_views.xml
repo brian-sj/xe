@@ -1,0 +1,28 @@
+<table name="pms_views">
+    <column name="dummy" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+</table>
+<!-- 
+ ###VIEW XE_PMS_TASK_VIEW 
+// TASK 테이블인데 사용자를 정보를 추가 했다. users란 이름으로 추가 했다.
+create VIEW XE_PMS_TASK_VIEW 
+as 
+select  t.*  , GROUP_CONCAT(u.member_srl SEPARATOR ', ') AS users
+from xe_pms_task t 
+  left join  xe_pms_users u ON( t.task_srl = u.task_srl )
+group by t.task_srl   
+-->
+
+<!--
+ALTER ALGORITHM=UNDEFINED DEFINER=`xe`@`%` SQL SECURITY DEFINER VIEW `xe_pms_report_time_view` AS (
+select `p`.`title` AS `project_name`,`t`.`title` AS `task_name`
+,`w`.`work_time` AS `work_time`,`m`.`nick_name` AS `nick_name`,`w`.`member_srl` AS `member_srl`,`w`.`work_date` AS `work_date`
+,(case when (weekday(`w`.`work_date`) = 0) then `w`.`work_time` end) AS `MON`
+,(case when (weekday(`w`.`work_date`) = 1) then `w`.`work_time` end) AS `TUE`
+,(case when (weekday(`w`.`work_date`) = 2) then `w`.`work_time` end) AS `WED`
+,(case when (weekday(`w`.`work_date`) = 3) then `w`.`work_time` end) AS `THU`
+,(case when (weekday(`w`.`work_date`) = 4) then `w`.`work_time` end) AS `FRI`
+,(case when (weekday(`w`.`work_date`) = 5) then `w`.`work_time` end) AS `SAT` 
+from (((`xe_pms_project` `p` join `xe_pms_report_work` `w`) join `xe_pms_task` `t`) 
+join `xe_member` `m`) where ((`p`.`project_srl` = `w`.`project_srl`) and (`t`.`task_srl` = `w`.`task_srl`) 
+and (`w`.`member_srl` = `m`.`member_srl`)));
+-->

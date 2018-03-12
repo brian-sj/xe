@@ -1,0 +1,17 @@
+<table name="pms_project_favorite">
+    <column name="project_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+	<column name="member_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+	<column name="category" type="varchar" size="1" notnull="notnull"    primary_key="primary_key" />
+	<column name="task_srl" type="number" size="11" />
+</table>
+ <!-- 
+ 4번 사용자가 654번 프로젝트를 A레벨 체크함. 
+ 
+ Category -> A 완전  내일 
+						B,C,D 는 비워둠. 
+                    E 모니터링 
+					
+
+stt :  A 는 권한만 
+       F 는 Favorite ? 					
+ -->

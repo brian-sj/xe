@@ -1,0 +1,22 @@
+﻿<table class="table table-hover" width="90%">
+<thead><tr>
+	<th>아이피</th>
+	<th>아이디</th>
+	<th>폴더</th>
+	<th>클럽이름/관리자</th>
+	<th>개인용도?</th>
+
+	</tr>
+</thead>
+<tbody>
+	<tr loop="$list => $no,$val">
+		<td>{$val->smb_ip}</td>
+		<td>{$val->smb_id}</td>
+		<td>{$val->folder}</td>
+		<td>{$val->club_name}/{$val->sysop}</td>
+		
+		<td>{$val->personal}</td>
+
+	</tr>
+</tbody>
+</table>

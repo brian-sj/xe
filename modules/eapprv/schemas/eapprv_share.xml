@@ -1,0 +1,11 @@
+<table name="eapprv_share">
+    <column name="eapprv_srl" type="number" size="11" primary_key="primary_key" />
+	<column name="member_srl" type="number" size="11" default="0" primary_key="primary_key" />
+	<column name="stt" type="char" size="1" />
+	<column name="regdate" type="date" /> 
+	<column name="memo" type="varchar" size="200" />
+	
+</table>
+<!--   eapprv_user  { "name":"김창운"    , "sign_img" : "images/a.jpg", "title" : "과장"  }  -->
+<!--   stt              null 아직 결정안함   Y : 동의     N : 반대,  H 보류 -->
+<!--   동의. 반대는 수정 할 수 없습니다. 다시 받자고 한다면 뺏다가 다시 입력해야함...   -->

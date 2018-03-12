@@ -1,0 +1,481 @@
+<load target="/common/css/bootstrap.latest.css" />
+<load target="/common/js/bootstrap.latest.js" />
+<load target="/common/css/jquery-ui.css" />
+<load target="/common/js/jquery-ui.min.js" />
+<load target="css/jquery.selectBoxIt.css" />
+<load target="js/jquery.selectBoxIt.min.js" />
+<include target="_header.html" />
+<style>
+button.dropdown-toggle {width : 120px;}
+.rounded-box {
+	-webkit-border-radius: 24px 20px 20px 20px;
+	-moz-border-radius: 24px 20px 20px 20px;
+	border-radius: 24px 20px 20px 20px;
+	background:rgba(164,201,198,0.9);
+	-webkit-box-shadow: #b3b3b3 1px 1px 1px;
+	-moz-box-shadow: #b3b3b3 1px 1px 1px;
+	box-shadow: #b3b3b3 1px 1px 1px;
+}
+
+.float-div { width : 400px  ; float:left ; position : absolute; z-index:1000 }
+.float-checkbox {display:inline-block ; width : 75px;}
+.w100 {width:100px;}
+select {height: 34px !important ; }
+.hidden {display:none;}
+</style>
+
+<script>
+var cspop =[];
+var	webpop =[];
+
+
+jQuery(function($) {
+	$( "#start_date,#end_date,#request_date,#release_date" ).datepicker({
+		dateFormat: 'yy-mm-dd',
+		prevText: '이전 달',
+		nextText: '다음 달',
+		monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+		monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+		dayNames: ['일','월','화','수','목','금','토'],
+		dayNamesShort: ['일','월','화','수','목','금','토'],
+		dayNamesMin: ['일','월','화','수','목','금','토'],
+		showMonthAfterYear: true,
+		yearSuffix: '년'
+	});
+
+});
+jQuery(function($) {
+	/*
+	jQuery("select").selectBoxIt({
+	showEffect: "fadeIn",
+	native: true
+});
+*/
+//$("select").btComboBox();
+});
+</script>
+
+<select id="WEB" class="hidden">
+	<option loop="$codelist=>$key,$val2" cond="$val2->code_gu2=='WEB'" selected|cond="$val2->code_int_val==$val->program_srl" value="{$val2->code_int_val}">{$val2->memo}</option>
+</select>
+
+<select id="CS" class="hidden">
+	<option loop="$codelist=>$key,$val2" cond="$val2->code_gu2=='CS'" selected|cond="$val2->code_int_val==$val->program_srl" value="{$val2->code_int_val}">{$val2->memo}</option>
+</select>
+
+
+<script>
+function selectchg(obj){ //체크박스 선택시 불려질 함수
+	jQuery("#program_srl").html("").append(   jQuery("#"+obj).html()  );
+}
+
+function checkForm(frm) {
+
+	/*
+	if (jQuery("input[name='category']").val()==""){
+		alert("구분을 선택해주세요.");
+		return false;
+	}else if (jQuery("#program_srl").val()==""){
+		alert("프로그램 또는 웹사이트를 선택해주세요.");
+		return false;
+	}else 
+	*/
+	if (jQuery("#request_dept").val()==""){
+		alert("요청부서를 선택해주세요.");
+		document.frm1.request_dept.focus();
+		return false;
+	}else if (jQuery("#start_date").val()==""){
+		alert("작업 시작일을 입력해주세요.");
+		document.frm1.start_date.focus();
+		return false;
+	}else if (jQuery("#end_date").val()==""){
+		alert("작업 완료일을 입력해주세요.");
+		document.frm1.end_date.focus();
+		return false;
+	}else if (jQuery("#worker_srl").val()==""){
+		alert("작업자를 선택해주세요.");
+		return false;
+	}else if (jQuery("#tester_srl").val()==""){
+		alert("품질인증을 선택해주세요.");
+		return false;
+	}else if (jQuery("#manager_srl").val()==""){
+		alert("작업 책임자를 선택해주세요.");
+		return false;
+	}else if (jQuery("#releaser_srl").val()==""){
+		alert("배포자를 선택해주세요.");
+		return false;
+	}else if (jQuery("#release_date").val()==""){
+		alert("희망배포일을 입력해주세요.");
+		document.frm1.release_date.focus();
+		return false;
+	}
+
+	var editor_data = CKEDITOR.instances.editor1.getData();
+	document.frm1.content.value = editor_data ;
+
+	return true;
+}
+
+
+</script>
+
+
+<body>
+
+	<div class="wrap">
+
+
+		<div class="row">
+			<div class="col-xs-12 page-title">
+				<div class="col-xs-7">
+					<h3 class="box-title pull-left">배포요청 쓰기</h3>
+				</div>
+
+				<div class="col-xs-5 text-right">
+					<a href="{getSiteUrl('','act','dispReleasenoteIndex','note_srl', '')}" ><button type="button" class="btn btn-default">목록</button></a>
+				</div>
+			</div>
+		</div>
+
+			<form name="frm1" onsubmit="return checkForm()" method="post">
+			<input type="hidden" name="act" value="procReleasenoteWrite" />
+			<input type="hidden" name="note_srl" value="{$val->note_srl}">
+			<input type="hidden" id="document_srl" name="document_srl" value="{$val->document_srl}" >
+			<input type="hidden" id="document_srl2" name="document_srl2" value="{$val->document_srl}" >
+			<input type="hidden" id="comment_status" name="comment_status" value="ALLOW" >
+			<table class="release-write-tb">
+				<tr>
+					<td>
+						<div class="panel panel-info" style="margin:5px 3px 0 5px">
+							<!-- Default panel contents -->
+							<div class="panel-heading">배포요청 쓰기</div>
+							<div class="panel-body">
+							</div>
+							<table class="table">
+							
+								<tr>
+									<th>* 구분/선택</th>
+									<td colspan="3">
+										<div class="form-inline">
+											<div class="form-group">
+												<input name="category" type="radio" value="CS" checked|cond="$val->category=='CS'" onClick="javascript:selectchg('CS');" id="CS_r" required /><label for="CS_r">프로그램(APP) &nbsp;</label>
+												<input name="category" type="radio" value="WEB" checked|cond="$val->category=='WEB'" onClick="javascript:selectchg('WEB');" id="WEB_r" /><label for="WEB_r">웹 사이트 &nbsp;</label>
+											</div>
+											<div class="form-group">
+												<select name="program_srl" id="program_srl" style="width: 190px" class="form-control" >
+
+													<option value="" cond="!$val->category">먼저 구분을 선택하세요.</option>
+													<option loop="$codelist=>$key,$val2" cond="$val2->code_gu2==$val->category" selected|cond="$val2->code_int_val==$val->program_srl" value="{$val2->code_int_val}">{$val2->memo}</option>
+
+												</select>
+											</div>
+										</div>
+									</td>
+									<th>* 언어선택</th>
+									<td>
+										<select name="lang" id="lang" style="width: 100px" class="form-control" >
+											<option  selected|cond="$val->lang=='kor'" value="kor">{$lang->lang_code['kor']}</option>
+											<option  selected|cond="$val->lang=='eng'" value="eng">{$lang->lang_code['eng']}</option>
+											<option  selected|cond="$val->lang=='esp'" value="esp">{$lang->lang_code['esp']}</option>
+											<option  selected|cond="$val->lang=='hin'" value="hin">{$lang->lang_code['hin']}</option>
+											<option  selected|cond="$val->lang=='nep'" value="nep">{$lang->lang_code['nep']}</option>
+										</select>
+									</td>
+								</tr>
+								
+								<tr>
+									<th>* 배포종류</th>
+									<td> <input type="radio" id="stt1_reg" name="stt1" value="{__RELEASENOTE_RELEASE_TYPE_REG__}" checked|cond="$val->stt1 != __RELEASENOTE_RELEASE_TYPE_EME__" ><label for="stt1_reg">정규배포</label> 
+										<input type="radio" id="stt1_eme" name="stt1" value="{__RELEASENOTE_RELEASE_TYPE_EME__}" checked|cond="$val->stt1 == __RELEASENOTE_RELEASE_TYPE_EME__"><label for="stt1_reg">긴급배포</label>
+									</td>
+									<th>* 작업일자</th>
+									<td colspan="3">
+										<div class="form-inline">
+											<div class="form-group">
+												<input type="text" name="start_date" id="start_date" class="form-control" value="{$val->start_date}"  style="width:100px" required/>
+											</div>
+											<div class="form-group">
+											~ <input type="text" name="end_date" id="end_date" class="form-control" value="{$val->end_date}" style="width:100px" required/>
+											</div>
+										</div>
+									</td>
+								</tr>
+
+								<tr>
+									<th>* 요청부서</th>
+									<td>
+										<select class="form-control" name="request_dept" id="request_dept" name="request_dept">
+											<option value="">선택</option>
+											<!--@foreach($request_dept as $key=> $val2)-->
+											<option value="{$key}" selected|cond="$key==$val->request_dept" >{$val2}</option>
+											<!--@end-->
+										</select>
+									</td>
+
+									<th>요청자</th>
+									<td colspan="3">
+										<input type="text" id="request_name" class="form-control w100" name="request_name" value="{$val->request_name}" />
+									</td>
+								</tr>
+
+								<tr>
+									<th>* 제목</th>
+									<td colspan="5">
+										<input cond="$oDocument->getTitleText()" type="text" name="title" class="form-control" title="{$lang->title}" value="{htmlspecialchars($oDocument->getTitleText())}" required />
+										<input cond="!$oDocument->getTitleText()" type="text" name="title" class="form-control" title="{$lang->title}" required />
+									</td>
+								</tr>
+
+								<tr>
+									<th>* 작업내용</th>
+									<td colspan="5">
+										<!--@if($oDocument->getContentText())-->
+										<input type="hidden" id="content" name="content" value="{$oDocument->getContentText()}">
+										<!--@else-->
+										<input type="hidden" id="content" name="content" value="<b>[작업내용]</b> <br><br><br> <b>[테스트 방법]</b> <br><br><br> <b>[체크 리스트]</b> <br><br><br>">
+										<!--@end-->
+										{$oDocument->getEditor()}
+									</td>
+								</tr>
+
+								<tr>
+									<th>* 작업자</th>
+									<td>
+										<select class="selectpicker form-control" id="worker_srl" name="worker_srl">
+											<option value="">선택</option>
+											<option loop="$userlist=>$key,$val4" value="{$val4->member_srl}" selected|cond="$val->worker_srl == $val4->member_srl" >{$val4->user_name}</option>
+										</select>
+									</td>
+
+									<th>보조작업자</th>
+									<td><div class="sub-worker">
+										<button aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" class="btn btn-success dropdown-toggle" type="button"> 작업자 선택 <span class="caret"></span></button>
+									</div> <div class="float-div" style="display:none">
+										<div class="panel panel-warning" style="margin:5px 3px 0 5px ;">
+											<div class="panel-heading">보조 작업자를 선택하세요. </div>
+											<div class="panel-body">
+												<block loop="$userlist=>$key,$val4">
+													<div class="float-checkbox"><input type="checkbox"  name="sub_worker_srl[]" checked|cond="in_array( $val4->member_srl, $sub_worker_srls)" value="{$val4->member_srl}"> {$val4->user_name} </div>
+												</block>
+											</div>
+										</div>
+									</div>
+								</td>
+								<th>개발배포</th>
+								<td>
+									<select id="t_releaser_srl" class="form-control" name="t_releaser_srl">
+										<option value="">선택</option>
+										<option loop="$releaser_list=>$key,$val4" value="{$key}" selected|cond="$val->t_releaser_srl == $key" >{$val4}</option>
+									</select>
+								</td>
+
+							</tr>
+							<tr>
+								<th>* 테스터</th>
+								<td id="testers">
+									<select id="tester_srl" class="form-control" name="main_tester_srl" style="btn btn-primary">
+										<option value="">선택</option>
+										<option loop="$userlist=>$key,$val4" value="{$val4->member_srl}" selected|cond="$val->tester_srl == $val4->member_srl" >{$val4->user_name}</option>
+									</select>
+								</td>
+								<th>보조테스터</th>
+								<td colspan="3">
+									<!--@foreach($tester_list as $no => $val5)-->
+									<select id="tester_srl" name="tester_srl[]" >
+										<option value="">선택</option>
+										<option loop="$userlist=>$key,$val4" value="{$val4->member_srl}" selected|cond="$val5->tester_srl == $val4->member_srl" >{$val4->user_name}</option>
+									</select>
+									<!--@end-->
+
+
+									<!--@for($i=1;$i<(4-sizeof($tester_list)); $i++)-->
+									<select id="tester_srl" name="tester_srl[]" >
+										<option value="">선택</option>
+										<option loop="$userlist=>$key,$val4" value="{$val4->member_srl}" >{$val4->user_name}</option>
+									</select>
+									<!--@end-->
+								</td>
+							</tr>
+
+							<tr>
+								<th>* 작업책임자</th>
+								<td>
+									<select id="manager_srl" class="form-control" name="manager_srl">
+										<option value="">선택</option>
+										<option value="385" selected|cond="$val->manager_srl ==385" >김준호</option>
+										<option value="339" selected|cond="$val->manager_srl ==339" >정종희</option>
+									</select>
+									<input type="hidden" class="form-control" name="header_srl" value="4">
+								</td>
+
+								<th>* 배포자</th>
+								<td>
+									<select id="releaser_srl" class="form-control" name="releaser_srl">
+										<option value="">선택</option>
+										<option loop="$releaser_list=>$key,$val4" value="{$key}" selected|cond="$val->releaser_srl == $key" >{$val4}</option>
+									</select>
+								</td>
+
+								<th>* 희망배포일</th>
+								<td>
+									<div class="form-inline">
+										<div class="form-group">
+											<input type="text" id="release_date" class="form-control" name="release_date" value="{$val->release_date}" style="width:80px;" required/>
+										</div>
+										<div class="form-group">까지</div>
+									</div>
+									
+								</td>
+
+							</tr>
+						</table>
+						<div style="float:right;margin:7px 0 5px 0">
+							<button class="btn btn-primary">저장</button>
+							<!--@if ($val->note_srl== '') -->
+							<a href="{getSiteUrl('','act','dispReleasenoteIndex','note_srl', '')}" ><button type="button" class="btn btn-default">취소</button></a>
+							<!--@else-->
+							<a href="{getSiteUrl('','act','dispReleasenoteContent','note_srl', $val->note_srl)}" ><button type="button" class="btn btn-default">취소</button></a>
+							<!--@end  -->
+							<a href="{getSiteUrl('','act','dispReleasenoteIndex','note_srl', '')}" ><button type="button" class="btn btn-default">목록</button></a>
+						</div>
+						
+					</td>
+					<td valign="top">
+						<!--  우측 맨티스 정보...    -->
+						<div class="panel panel-success release-write-mtc" style="margin:5px 5px 5px 3px">
+							<!-- Default panel contents -->
+							<div class="panel-heading">맨티스와 연결해주세요.</div>
+							<div class="panel-body" style="max-height:865px;overflow-y:auto;">
+								<p>(처리완료 목록만 나옵니다. 처리중, 닫기 상태는 나오지 않습니다.)</p>
+							
+							<table class='table'>
+								<tr>
+									<th>&nbsp;</th>
+									<th width="40">번호</th>
+									<th width="110">보고자(담당자)</th>
+									<th>요약</th>
+								</tr>
+								<!--  이 배포에 등록된  맨티스 정보...    -->
+								<!--@foreach($reg_bug_list as $key => $val2)-->
+								<!--@if($val->note_srl == $val2->note_srl)-->
+								<tr>
+									<td>
+										<span class="del" data-mantis_id="{$val2->mantis_id}" data-note_srl="{$val2->note_srl}" onclick="deleteMantisId(this);"><a href="#"><img src="images/bt_delete.gif" ></a></span>
+									</td>
+									<td>{$val2->id}</td>
+									<td>{$val2->reporter}({$val2->handler})</td>
+									<td>{cut_str($val2->summary, 30)}</td>
+								</tr>
+								<!--@end-->
+								<!--@end-->
+
+								<!--  이 배포에 등록되지 않은  맨티스 정보...    -->
+								<!--@foreach($bug_list as $key => $val2)-->
+								<!--@if(  (!$val->note_srl) || ($val->note_srl != $val2->note_srl) )-->
+								<tr>
+									<td>
+										<input type="checkbox" name="mantis_id[]" value="{$val2->id}" data="{$val2->note_srl}"   />
+									</td>
+									<td>{$val2->id}</td>
+									<td>{$val2->reporter}({$val2->handler})</td>
+									<td>{cut_str($val2->summary, 30)}</td>
+								</tr>
+								<!--@end-->
+								<!--@end-->
+							</table>
+							</div>
+						</div>
+
+					</td></tr></table></div>
+				</form>
+
+
+				<hr style="color:#333;"/>
+
+				<section>
+					<div class="panel panel-warning release-write-code" style="margin:5px 3px 0 5px ; width:400px;">
+						<div class="panel-heading"><h3>코드 입력</h3> (코드가 없을때 추가 하세요.)</div>
+
+						<form act="index.php" method="post" onsubmit="return checkParam(this)">
+							<input type="hidden" name="act" value="procReleasenoteSaveCode">
+							<table class='table' width="400" >
+								<tr>
+									<th width="120">코드 구분 값 </th>
+									<td> <input type="hidden" name="code_gu" id="code_gu" value="SWCODE" ><input type="text" name="" value="SWCODE" disabled  class="form-control" ></td>
+								</tr>
+								<tr>
+									<th>소 분류</th>
+									<td> <select name="code_gu2" id="code_gu2" class="form-control" required>
+										<option value="WEB">WEB</option>
+										<option value="CS">CS</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>코드 설명 </th>
+								<td><input id="memo" class="form-control" type="text" name="memo" value="" required></td>
+							</tr>
+							<tr>
+								<td> &nbsp;</td>
+								<td><button class='btn btn-primary'>저장</button></td>
+							</tr>
+						</table>
+					</form>
+
+
+				</div>
+			</section>
+
+		</div>
+	</body>
+
+	<script>
+	var module_srl ="{$module_srl}";
+	var module_id = "{$module_id}";
+	var responses = ['result'];
+	var form_object = new FormData();
+	var source_item_sort_index = 0 ;
+	var sort_order  = "asc";
+
+	function callback_function(ret_obj, responses, params, form_object) {
+		//alert('adf');
+		var error = ret_obj['error'];
+		var message = ret_obj['message'];
+		var page = ret_obj['page'];
+		var url = current_url.setQuery('act','dispReleasenoteWrite').setQuery();
+		alert("저장되었습니다. 계속 입력 하실 수 있습니다.");
+	}
+	function checkParam(){
+		params ={};
+		params.code_gu  = "SWCODE";
+		params.code_gu2 = jQuery('#code_gu2').val();
+		params.memo     = jQuery("#memo").val();
+		// code_int_val 은 자동 생성이다.
+		console.log(  params );
+		exec_json('releasenote.procReleasenoteSaveCode', params , callback_function , responses  , params , form_object);
+		return false ;
+	}
+	function callback_function_delmantis(ret_obj, responses, params, form_object) {
+		console.log( ret_obj );
+		location.reload();
+	}
+	function completeContentInsert(ret_obj){
+		//location.href = url;
+	}
+	function deleteMantisId( obj ){
+		params = {};
+		params.note_srl = jQuery(obj).data("note_srl") ;
+		params.mantis_id = jQuery(obj).data("mantis_id")  ;
+		exec_json ( 'releasenote.procReleasenoteDeleteMantisId' , params , callback_function_delmantis , responses , form_object );
+	}
+	jQuery(function($) {
+		console.log("222");
+		axml ='<response><error>0</error><message>success</message><message_type></message_type></response>';
+		xmlDoc = jQuery.parseXML( axml );
+		console.log(xmlDoc);
+	});
+
+	jQuery(document).ready(function(){
+		jQuery(".sub-worker").click(function(){jQuery(".float-div").toggle("slow"); });
+	});
+	</script>

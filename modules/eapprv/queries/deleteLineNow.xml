@@ -1,0 +1,10 @@
+<query id="deleteLineNow" action="delete">
+    <tables>
+        <table name="eapprv_line" />
+    </tables>
+    <conditions>
+        <condition operation="equal" column="eapprv_srl" var="eapprv_srl" filter="number" notnull="notnull" />
+		<condition operation="equal" column="line_stt" var="line_stt" filter="number" pipe="and" />
+		
+	</conditions>
+</query>

@@ -1,0 +1,57 @@
+<query id="getProjectSummary" action="select">
+    <tables>
+        <table name="pms_project" alias="p" />
+		<table name="member" alias="m" />
+		<table name="wmc_code" alias="c1" />
+		<table name="wmc_code" alias="c2" />
+		
+    </tables>
+    <columns>
+        <column name="p.project_srl" />
+        <column name="p.document_srl" />
+        <column name="p.category" />
+        <column name="p.gu1" />
+        <column name="p.gu2" />
+		<column name="c1.memo" alias="gu1_name"/>
+        <column name="c2.memo" alias="gu2_name"/>
+        
+		
+        <column name="p.gu3" />
+        <column name="p.gu4" />
+        <column name="p.title" />
+        <column name="p.sub_title" />
+        <column name="p.content" />
+        <column name="p.request_dept" />
+        <column name="p.request_date" />
+        <column name="p.dev_dept" />
+        <column name="p.mh" />
+        <column name="p.planed_mh" />
+        <column name="p.progress" />
+        <column name="p.project_stt" />
+        <column name="p.start_date" />
+        <column name="p.end_date" />
+        <column name="p.planed_start_date" />
+        <column name="p.planed_end_date" />
+        <column name="p.reg_date" />
+        <column name="p.request_person" />
+        <column name="p.member_srl" />
+        <column name="m.user_id " />
+        <column name="m.user_name" />
+        <column name="p.shared_members" />
+		
+		<column name="c1.code_var_val" alias="sub_code"/>
+		
+    </columns>
+	<conditions>
+		<condition operation="equal" column="p.project_srl" var="p.project_srl" notnull="notnull" />
+		
+		<condition operation="equal" column="p.gu1" default="c1.code_int_val" notnull="notnull" pipe="and" />   
+		<condition operation="equal" column="p.gu2" var="c2.code_int_val" notnull="notnull" pipe="and" />   
+		
+		
+		<condition operation="equal" column="p.member_srl" var="m.member_srl" pipe="and" />  
+		<condition operation="equal" column="p.project_srl" var="project_srl" notnull="notnull" pipe="and" />   
+		
+		
+	</conditions>	
+</query>

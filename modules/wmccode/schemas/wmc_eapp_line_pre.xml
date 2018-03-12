@@ -1,0 +1,22 @@
+<table name="wmc_eapp_line_pre">
+    <column name="line_pre_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+    <column name="member_srl" type="number" size="11" default="0" notnull="notnull" index="idx_member_srl" />
+
+	<column name="line1" type="number" size="11" default="0" />
+	<column name="line2" type="number" size="11" default="0" />
+	<column name="line3" type="number" size="11" default="0" />
+	<column name="line4" type="number" size="11" default="0" />
+	<column name="line5" type="number" size="11" default="0" />
+	
+	<column name="line_title" type="varchar" size="200" notnull="notnull" />
+	<column name="stt" type="varchar" size="2" default="NN" />
+	<column name="category" type="varchar" size="20" default="SI" />
+	
+	<column name="regdate" type="date" />    
+</table>
+<!-- 
+member_srl = 0 이면 모든 사람이 볼 수 있는 것이다. 
+stt : NN 일반 결재 
+stt : NA 접수 결재 
+stt : NE 실행 결재 
+-->

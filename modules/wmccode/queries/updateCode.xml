@@ -1,0 +1,16 @@
+<query id="updateCode" action="update">
+    <tables>
+        <table name="wmc_code" />
+    </tables>
+    <columns>
+        <column name="code_gu" var="code_gu" />
+        <column name="code_gu2" var="code_gu2" />
+		<column name="memo" var="memo" />	
+		<column name="module_srl" var="module_srl" />	
+		<column name="sort_seq" var="sort_seq" />	
+		<column name="del_yn" var="del_yn" />	
+    </columns>
+	<conditions>
+        <condition operation="equal" column="code_int_val" var="code_int_val" notnull="notnull" />
+    </conditions>
+</query>

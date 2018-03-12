@@ -1,0 +1,19 @@
+  <li class="list-group-item list-group-item-warning">	 신청결재라인 </a>  
+			<select name="app_line" id="app_line" class="wp-md-sel form-control space-30">
+					<option value="0">직접선택</option>
+					<option loop="$line_group_list=>$val" value="{$val->line_pre_srl}" selected|cond="$val->line_pre_srl==$data->app_line">{$val->line_title}</option>
+			</select>
+			<select name="line1_1" id="line1_1" class="wp-sm-sel form-control ">
+				<option value="0"> -- </option>
+				<option loop="$wmc_members=>$key,$val" selected|cond="$line_member_list['line_1'.__LINE1_CODE__]==$val->member_srl" value="{$val->member_srl}">{$val}</option>
+			</select>
+			<select name="line1_2" id="line1_2" class="wp-sm-sel form-control ">
+				<option value="0"> -- </option>
+				<option loop="$pm_members=>$key,$val" selected|cond="$line_member_list['line_1'.__LINE2_CODE__]==$val->member_srl" value="{$val->member_srl}">{$val}</option>
+			</select>
+			<!--
+			<select name="line1_3" id="line1_3" class="wp-sm-sel form-control ">
+				<option loop="$gm_members=>$key,$val" value="{$key}">{$val}</option>
+			</select>
+			-->
+  </li> 

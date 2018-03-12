@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<module version="0.2">
+    <title xml:lang="ko">Project Mgr</title>
+    <title xml:lang="en">Project Mgr</title>
+    <version>1.7</version>
+    <date>2016-11-27</date>
+    <category>content</category>
+    <author email_address="brian@todpin.com" link="http://www.www.org/">
+        <name xml:lang="ko">Brian</name>
+        <name xml:lang="en">Brian</name>
+    </author>
+</module>

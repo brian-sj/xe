@@ -1,0 +1,14 @@
+<table name="pms_users">
+	<column name="project_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+	<column name="task_srl" type="number" size="11"  primary_key="primary_key"/>
+	<column name="member_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+	
+	<column name="gu1" type="varchar" size="6" notnull="notnull"    />
+	<column name="reg_date" type="date" notnull="notnull" />
+</table>
+
+<!--
+task_srl  [ or project_srl  ]
+gu1 = ''  //나중에 사용자라도 PMS 못 보게 하려는 옵션을 위해서 둔다. 
+
+-->

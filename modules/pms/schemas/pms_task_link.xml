@@ -1,0 +1,12 @@
+<table name="pms_task_link">
+	<column name="project_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+	<column name="source_task_srl" type="number" size="11" notnull="notnull"  primary_key="primary_key"  />
+	<column name="target_task_srl" type="number" size="11" primary_key="primary_key" />
+	<column name="type" type="number" size="1"  />
+	
+</table>
+<!-- 
+0 to 100 
+N : 정상진행   R : 대기 , H : 홀딩 , C: Complete   I, 재고 , X 폐기  
+
+--> 

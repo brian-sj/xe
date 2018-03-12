@@ -1,0 +1,28 @@
+<query id="getEapprvs" action="select">
+    <tables>
+		<table name="eapprv"  alias="e"/>
+		<table name="documents"  alias="d"/>
+        <table name="eapprv_line" alias="l"/>
+		<table name="eapprv_share" alias="s"/>
+    </tables>
+    <columns>
+        <column name="e.*" />
+		<column name="l.*" />
+		<column name="s.*" />
+		<column name="d.title" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="e.eapprv_srl" default="l.eapprv_srl" filter="number"  />
+		<condition operation="equal" column="e.eapprv_srl" default="s.eapprv_srl" filter="number"  pipe="and"/>
+		<condition operation="equal" column="e.document_srl" default="d.document_srl" filter="number"  pipe="and"/>
+		<group pipe="and">
+			<condition operation="equal" column="l.member_srl" var="member_srl" filter="number" notnull="notnull" pipe="or"/>
+			<condition operation="equal" column="s.member_srl" var="member_srl" filter="number" notnull="notnull" pipe="or"/>
+		</group>
+    </conditions>
+		
+	<navigation>
+		
+    </navigation>
+
+</query>

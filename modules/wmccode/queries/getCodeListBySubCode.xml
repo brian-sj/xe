@@ -1,0 +1,13 @@
+<query id="getCodeListBySubCode" action="select">
+    <tables>
+        <table name="wmc_code" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="code_gu" default=""  var="code_gu" />
+		<condition operation="equal" column="code_gu2" var="code_gu2" pipe="and"/>
+		<condition operation="equal" column="code_var_val" var="code_var_val"  pipe="and"/>
+    </conditions>
+</query>

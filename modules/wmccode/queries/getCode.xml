@@ -1,0 +1,21 @@
+<query id="getCode" action="select">
+    <tables>
+        <table name="wmc_code" />
+		
+    </tables>
+    <columns>
+        <column name="code_gu2" />
+		<column name="code_int_val" />
+		<column name="memo" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="CODE_GU" var="code_gu" />  
+		<condition operation="equal" column="DEL_YN" var="del_yn" default="n" pipe="and" /> 
+    </conditions>
+    <navigation>
+        <index var="sort_index" default="CODE_GU" order="desc" />
+        <list_count var="list_count" default="200" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>

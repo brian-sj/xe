@@ -1,0 +1,38 @@
+<div class="cmt_editor" style="margin-top:30px">
+
+<label class="cmt_editor_tl fl"><em>✔</em><strong> 댓글쓰기</strong></label>
+
+<form action="./" method="post" onsubmit="return procFilter(this, insert_comment)" class="bd_wrt cmt_wrt clear">
+	<input type="hidden" name="mid" value="{$mid}" />
+	<input type="hidden" name="document_srl" value="{$oDocument->document_srl}" />
+	<input type="hidden" name="eapprv_srl" value="{$eapprv_srl}" />
+	<input type="hidden" name="comment_srl" value="" />
+	<input type="hidden" name="content" value="" />
+	<input type="hidden" name="module_srl" value="{$module_srl}" />
+	
+	<div class="wysiwyg">{$oDocument->getCommentEditor()}</div>
+	
+	<div class="edit_opt clear">
+        <input type="submit" value="{$lang->cmd_submit}" class="bd_btn fr" />
+	</div>
+</form>
+
+</div>
+
+<script>
+
+function completeInsertComment(ret_obj)
+{
+	var error = ret_obj.error;
+	var message = ret_obj.message;
+	var mid = ret_obj.mid;
+	var eapprv_srl = ret_obj.eapprv_srl;
+	var comment_srl = ret_obj.comment_srl;
+
+	var url = current_url.setQuery('mid',mid).setQuery('eapprv_srl',eapprv_srl).setQuery('act','dispEapprvContent');
+	//if(comment_srl) url = url.setQuery('rnd',comment_srl)+"#comment_"+comment_srl;
+	alert(message);
+
+	location.href = url;
+}
+</script>

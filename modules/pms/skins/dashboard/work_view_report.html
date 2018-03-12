@@ -1,0 +1,251 @@
+<style>
+.navbar {margin-bottom:0}
+.panel-body {padding-top:30px}
+th, .num{text-align:center}
+th, td{border-bottom: 1px solid #e0e0e0}
+tfoot tr,.sum th{background-color: #fffeef}
+tfoot th,.sum th{border-color:#b1b1b1}
+.table>thead>tr>th{border-bottom:1px solid #b1b1b1}
+.table > thead:first-child > tr:first-child > th{border-top:1px solid #9fa3a5}
+.scroll-height{overflow-y:auto; height:476px; margin-bottom:30px; border-bottom:1px solid #9fa3a5}
+.container-fluid{padding:0}
+.navbar-inverse .navbar-nav > li > a {font-size:12px}
+.date-search{float:left; color:#9d9d9d; margin:8px 0 0 0}
+.navbar-right .btn{padding:5px 10px}
+.input-group{width:150px; float:right}
+.input-group .form-control {padding:5px 12px; height:32px; padding-bottom:0}
+.input-group form { margin-bottom:0}
+.save-con {padding-top:5px; font-size:13px; line-height:18px; margin:0; color:#ff0008; margin:0 -15px}
+.w1:hover, .w2:hover, .w3:hover, .w4:hover, .w5:hover, .w6:hover, .wtotal:hover {border:1px solid #3c8dbc; background-color:#fff; margin-top:-1px; margin-bottom:-1px; border-radius: 3px}
+.width80 {width:120px}
+
+/**  이페이지에만 있는 특별한 css */
+#data-table-body tr.data td.num span{cursor:pointer; padding:6px 10px}
+.desc {padding-right:20px; padding-top:7px; display:inline-block;color:#9d9d9d} /* 색깔은 지정하지 말자*/
+
+
+
+.grid,.grid2 {position:relative; overflow:hidden; text-align:center; margin-bottom:20px}
+.list_frame .cld_thead {overflow:hidden; width:100%; height:29px; padding-left:14px; border-top:1px solid #dadada; border-bottom:1px solid #f1f1f1; background:#f8f8f8; margin-bottom:0; padding-left:0; text-align:center}
+.list_frame .cld_thead li {float:left; padding-top:3px; font-size:12px; color:#777; text-indent:12px; text-indent:0}
+.list_frame .date {width:80px}
+.list_frame .user_name {width:80px}
+.list_frame .time {width:80px}
+.list_frame .memo {padding-left:20px}
+.list_area {clear:both; padding-left:0; margin:0; display:table; width:100%; color:#222}
+.list_area li {border-bottom:1px solid #f1f1f1; border-left:1px solid #f1f1f1; line-height:20px; padding:6px 0; display:table-cell; vertical-align:middle}
+.list_area li:first-child {border-left:none}
+
+
+
+
+</style>
+<!--#include("./header.html")-->
+<load target="/common/js/plugins/dhtmlx/dhtmlx.js" />
+<load target="/common/js/plugins/dhtmlx/skins/terrace/dhtmlx.css" />
+
+<div class="wrap">
+  <div class="row">
+    <div class="col-xs-12 page-title">
+      <div class="col-xs-7 pull-left"><h3>개인/조직별 프로젝트 참가현황</h3></div>
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <div id="main_panel" class="box box-default">
+      <div class="panel-body">
+        <nav class="navbar navbar-inverse ">
+          <div class="container-fluid">
+            <div class="collapse navbar-collapse">
+              <div class="navbar-header"><a class="navbar-brand">팀 또는 개인 선택</a></div>
+              <ul class="nav navbar-nav" id="members" >
+                  <li>
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span id="team-text"> 팀 선택</span>
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu" id="drop-down-teams">
+			
+					<!--@foreach($teams as $key=>$val)-->
+						<li <!--@if($key==$team)-->class="active"<!--@end--> ><a href="{getUrl('team' , $key ,'member_srl' ,'' )}"> {$val}</a></li>
+					<!--@end-->
+                      
+                    </ul>
+                  </li>
+
+
+				  <!--@foreach($team_members as $key=>$val)-->
+				     
+						<li <!--@if($member_srl==$val->member_srl)-->class="active"<!--@end--> >
+							<a href="{getUrl('team',$team,'member_srl',$val->member_srl)}" class="member_list" id="badge-{$val->member_srl}" data-member_srl="{$val->member_srl}">{$val->user_name} </a>
+						</li>
+					
+				  <!--@end-->
+                  
+				  
+				  
+                </ul>
+
+
+				<form role="search" class="navbar-form navbar-right" action="/" method="post">
+  
+				<span class="desc">{$start_date}~{$end_date}</span>
+					<div class="form-group">
+					<input type="text"  class="form-control" style="width:100px;" name="work_date" id="report_date" value="{$work_date?$work_date:date('Y-m-d')}" placeholder="날짜검색">
+					</div>
+					<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+				</form>
+
+<!--            <div class="date-search navbar-form navbar-input-group navbar-right">
+                  <span class="desc">{$start_date}~{$end_date}</span>
+                  <div class="form-group" >
+                    <form action="/" method="post">
+                      <input type="text"  class="form-control" style="width:100px;" name="work_date" id="report_date" value="{$work_date?$work_date:date('Y-m-d')}" placeholder="날짜검색">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                      </span>
+                    </form>
+                  </div>
+                </div> -->
+                <!--ul class="nav navbar-nav navbar-right">
+                <li><a href="#"> Monthly 예정</a> </li>
+                <li><a href="#"> Weekly 예정</a> </li>
+                <li><a href="#"> Project Report 예정</a> </li>
+                </ul-->
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <div class="panel-body">
+        <div class="scroll-height">
+          <table class="table table-hover" width="100%" >
+            <thead>
+              <tr>
+                <th id="user_name" >프로젝트-업무 명</th>
+			    <th class="width80">일({date('m-d',strtotime($start_date))})</th>
+                <th class="width80">월({date('m-d',strtotime($start_date .'+1 day'))})</th>
+                <th class="width80">화({date('m-d',strtotime($start_date .'+2 day'))})</th>
+                <th class="width80">수({date('m-d',strtotime($start_date .'+3 day'))})</th>
+                <th class="width80">목({date('m-d',strtotime($start_date .'+4 day'))})</th>
+                <th class="width80">금({date('m-d',strtotime($start_date .'+5 day'))})</th>
+                <!-- <th>토({date('Y-m-d',strtotime($start_date .'+6 day'))})</th> -->
+                <th class="width80">합계</th>
+              </tr>
+			  <tr class="sum">
+                  <th class="text-center">합계</th>
+				  <th id="total_w1">0</th>
+                  <th id="total_w2">0</th>
+                  <th id="total_w3">0</th>
+                  <th id="total_w4">0</th>
+                  <th id="total_w5">0</th>
+                  <th id="total_w6">0</th>
+                  <th id="total_wtotal">0</th>
+               </tr>
+            </thead>
+            <tbody id="data-table-body">
+			<!--@foreach($list as $key=>$val)-->
+              <tr class="data" >
+                <td class="text-left"><a target="_blank" href="{getUrl('act','dispPmsCalendarView','project_srl' , $val->project_srl)}">{$val->project_name}</a>&nbsp;&nbsp; {$val->task_name}</td>
+
+				<td class="num num_detail"> <span class="w1" data-task-srl="{$val->task_srl}" data-project-srl="{$val->project_srl}" data-report-work-srl="{$val->report_work_srl}" data-reg-date="{date('Y-m-d',strtotime($start_date .'+0 day'))}" cond="$val->w1">{$val->w1}</span></td>
+                <td class="num num_detail"> <span class="w2" data-task-srl="{$val->task_srl}" data-project-srl="{$val->project_srl}" data-report-work-srl="{$val->report_work_srl}" data-reg-date="{date('Y-m-d',strtotime($start_date .'+1 day'))}" cond="$val->w2">{$val->w2}</span></td>
+                <td class="num num_detail"> <span class="w3" data-task-srl="{$val->task_srl}" data-project-srl="{$val->project_srl}" data-report-work-srl="{$val->report_work_srl}" data-reg-date="{date('Y-m-d',strtotime($start_date .'+2 day'))}" cond="$val->w3">{$val->w3}</span></td>
+                <td class="num num_detail"> <span class="w4" data-task-srl="{$val->task_srl}" data-project-srl="{$val->project_srl}" data-report-work-srl="{$val->report_work_srl}" data-reg-date="{date('Y-m-d',strtotime($start_date .'+3 day'))}" cond="$val->w4">{$val->w4}</span></td>
+                <td class="num num_detail"> <span class="w5" data-task-srl="{$val->task_srl}" data-project-srl="{$val->project_srl}" data-report-work-srl="{$val->report_work_srl}" data-reg-date="{date('Y-m-d',strtotime($start_date .'+4 day'))}" cond="$val->w5">{$val->w5}</span></td>
+                <td class="num num_detail"> <span class="w6" data-task-srl="{$val->task_srl}" data-project-srl="{$val->project_srl}" data-report-work-srl="{$val->report_work_srl}" data-reg-date="{date('Y-m-d',strtotime($start_date .'+5 day'))}" cond="$val->w6">{$val->w6}</span></td>
+                <!--// <td class="num"> <span class="w7" data-task-srl="{$val->task_srl}" data-project-srl="{$val->project_srl}" data-reg-date="{date('Ymd000000',strtotime($start_date .'+6 day'))}">{$val->w7}</span></td> -->
+                <td class="num"> <span class="wtotal">{intval($val->w1) +intval($val->w2)+intval($val->w3)+intval($val->w4)+intval($val->w5)+intval($val->w6)+intval($val->w7) }</span></th>
+                </tr>
+			 <!--@end-->
+              </tbody>
+              <tfoot>
+
+              </tfoot>
+            </table>
+          </div>
+
+          <div class="col-xs-12" id="comment_log">
+            <p class="save-con">* 표에서 업무시간을 클릭하시면 작업 상세이력을 보실 수 있습니다.</p>
+            <table class="">
+              <thead><tr><td></td></tr></thead>
+            </table>
+          </div>
+
+        </div>
+    </div>
+  </div>
+</div>
+
+  <script>
+  var params ={};
+  var mid = "{$mid}";
+  var param_member_srl ="{$member_srl}";
+  
+  params.project_srl = "{$project_srl}";
+  params.member_srl = "{$member_srl}";
+  params.member_srls = [];
+  params.group_srl ="{$team}";
+
+  jQuery(document).ready(function($){
+    var total =0;
+    var sum_total = 0 ;
+    var team = "{$team}";
+    for( var i=1 ; i < 8 ; i++){
+      total =0;
+      $(".data .w"+i).each(function(){
+        total += parseInt( $(this).text() ) ||0 ;
+      });
+      $("#total_w"+i).text(total);
+      sum_total += total;
+    }
+    jQuery("#total_wtotal").text(sum_total);
+ 
+    if(  team != ""  )
+    jQuery("#team-text").text(  $("#drop-down-teams li.active a").text()    );
+
+    wmcCalendar = new dhtmlXCalendarObject("report_date");
+    wmcCalendar.setWeekStartDay(0);
+
+	//// 해당 로그 가져 오기. 
+    jQuery("#data-table-body").on("click", ".num_detail span" , function(){
+      //alert( $(this).data("project-srl")  );
+	  var _title = jQuery(this).parent().siblings(":first-child").text() +":"+ jQuery(this).parent().siblings(":nth-child(2)").text()  ;
+
+      getCommentList("B" , 1 , "#comment_log" , $(this).data("project-srl"),  $(this).data("task-srl") , _title  ,  $(this).data("work-date")  );
+    });
+
+	//업무일지를 썻는지 확인하기 위해서 시간을 가져온다.
+	jQuery("#members .member_list").each(function($){
+		params.report_date= jQuery("#report_date").val();
+		params.member_srl= jQuery(this).data('member_srl');
+		params.member_srls.push( params.member_srl); /* 나중에 인력 필터링 할때 쓴다.  */
+		exec_json("pms.dispPmsWeeklyReportWorkTimeByMemberSrl",params, function(data){
+		 jQuery("#badge-"+data.member_srl).append("<span class='badge'>"+data.sum_mh+"</span>");
+		});
+	});
+  });
+
+  function getCommentList( type,  page , selector , project_srl ,task_srl , title , work_date   ){
+    params.page = page ;
+    params.type = type ;
+    params.mid = mid;
+    params.project_srl = project_srl;
+    params.task_srl = task_srl;
+	params.work_date = work_date ;
+	params.member_srl = param_member_srl ;
+    params.skintype ="table";
+	//params.member_srls = params.member_srl ; 
+    //params.act = "dispPmsCommentList";
+    params.act = "dispPmsWorkTimeCommentList";
+
+    jQuery.ajax({
+      type: "POST"
+      , url : "/"
+      , data : params
+      , success : function (data){
+        jQuery( selector ).html(data);
+
+		jQuery("#history-title").text(title);
+      }
+      , dataType: "html"
+    });
+  }
+  </script>

@@ -1,0 +1,9 @@
+<query id="deleteReleasenote" action="delete">
+    <tables>
+        <table name="releasenote" />
+    </tables>
+    <conditions>
+        <condition operation="equal" column="note_srl" var="note_srl" filter="number" notnull="notnull" />
+		<condition operation="equal" column="member_srl" var="member_srl" filter="number" pipe="and" />
+	</conditions>
+</query>

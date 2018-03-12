@@ -1,0 +1,15 @@
+<div class="panel panel-success">
+	<div class="panel-heading">  
+		<h3>주간 맨티스 등록 현황</h3>
+	</div>
+	<table class="table">
+		<tr>  
+			<th>주</th>
+			<th>건</th>
+		</tr>
+		<tr loop="$list=>$val">
+			<td>{$val->week_standard}</td>
+			<td>{$val->cnt}</td>
+		</tr>
+	</table>
+</div>

@@ -1,0 +1,50 @@
+<style>
+.refer-box {border:none}
+.refer-box .box-title{color:#3c8dbc}
+.pagination{margin:0 0 40px 0}
+
+.box-header{padding:10px 0;}
+.box-header.width-border {border-bottom:1px solid #9fa3a5}
+
+.box-header .box-title{font-size:16px; color:#000}
+.refer-table>tbody>tr>td{border-top:none}
+.refer-table th, .refer-table td{border-top:1px solid #efefef}
+.refer-table tr:last-child td{border-bottom:1px solid #9fa3a5}
+.refer-table .divi-line{border-right:1px solid #e0e1e2}
+</style>
+
+<div class="row">
+	<div class="header-tit"></div>
+
+	<div class="box refer-box">
+		<div class="box-header width-border">
+			<h3 class="box-title" id="history-title">-</h3>
+		</div>
+
+			<table class="table table-striped refer-table">
+			<!--@foreach($comment as $no => $val)-->
+{@
+$extra_vars = unserialize( $val->title  );
+debugPrint( $extra_vars );
+	if( !$extra_vars ) :
+			$extra_vars->amh = 0 ;
+			$extra_vars->pmh = 1 ;
+			$extra_vars->mh = 0 ;
+			$extra_vars->title = '기록없음' ;
+			$extra_vars->dt = '-' ;
+	endif;
+debugPrint( $extra_vars );	
+}			
+				<tr>
+					<td width="200">{$val->work_date} <!--@if($extra_vars->dt !='-')-->(기록{$extra_vars->dt})<!--@end--></td>
+					<td width="80" class="text-center">{$val->user_name}</td>
+					<td width="120" class="text-center">투입{$extra_vars->amh}시간(누적:{$extra_vars->mh})</td>
+					<td width="220">{round( $extra_vars->mh*100/$extra_vars->pmh )}%</td>
+					<td>{nl2br($extra_vars->title)}</td>
+				</tr>
+			<!--@end-->
+			</table>
+			<!-- END timeline item -->
+
+	</div>
+</div>

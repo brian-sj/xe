@@ -1,0 +1,23 @@
+<load target="filter/delete_elfinderxe.xml" />
+<load target="js/elfinderxe_admin.js" />
+<include target="header.html" />
+<form action="./" method="get" onsubmit="return procFilter(this, delete_elfinderxe)">
+	<input type="hidden" name="page" value="{$page}" />
+	<input type="hidden" name="module_srl" value="{$module_info->module_srl}" />
+    <h2 class="h2">{$lang->confirm_delete}</h2>
+	<div class="table">
+		<table width="100%" border="1" cellspacing="0">
+		<tr>
+			<th scope="row">{$lang->module_name}</th>
+			<td >{$module_info->mid}</td>
+		</tr>
+		<tr>
+			<th scope="row">{$lang->module}</th>
+			<td>{$module_info->module}</td>
+		</tr>
+		</table>
+	</div>
+	<div class="btnArea">
+		<span class="btn"><input type="submit" value="{$lang->cmd_delete}" /></span>
+	</div>
+</form>

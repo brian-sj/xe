@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin version="0.2">
+	<title xml:lang="ko">조직도 관련 모듈</title>
+	<description xml:lang="ko">조직도는 LDAP이다...</description>
+	<version>1.7.0</version>
+	<date>2010-11-16</date>
+	<author email_address="brian@wmcmail.org" link="http://si.wmchq.org/">
+		<name xml:lang="ko">Human Reource Structure</name>
+	</author>
+	<colorset>
+		<color name="white">
+			<title xml:lang="ko">하얀색</title>
+		</color>
+		<color name="black">
+			<title xml:lang="ko">검은색</title>
+		</color>
+	</colorset>
+	<extra_vars>
+		<group>
+		<title xml:lang="ko">전체 설정</title>
+			<var name="wizard" type="radio">
+				<title xml:lang="ko">위저드 사용</title>
+				<description xml:lang="ko">스킨 설정을 할 수 있는 내비게이션을 게시판 브라우저 좌측에 출력합니다.</description>
+				<options value="">
+					<title xml:lang="ko">관리자만(기본)</title>
+				</options>
+				<options value="N">
+					<title xml:lang="ko">사용 안함</title>
+				</options>
+			</var>
+			<var name="all_dn_member" type="select">
+				<title xml:lang="ko">조직 선택</title>
+				<options value="ou=users,ou=si,ou=GroupsReg">
+					<title xml:lang="ko">전산실(ou=users,ou=si)</title>
+				</options>
+				<options value="ou=users,ou=hr,ou=GroupsReg">
+					<title xml:lang="ko">인사실(ou=users,ou=hr)</title>
+				</options>
+			</var>
+			<var name="pm_dn_member" type="select">
+				<title xml:lang="ko">팀 과장 경로 선택</title>
+				<options value="ou=pm,ou=si,ou=GroupsAuth">
+					<title xml:lang="ko">전산실(ou=pm,ou=si)</title>
+				</options>
+				<options value="ou=pm,ou=hr,ou=GroupsAuth">
+					<title xml:lang="ko">인사실(ou=pm,ou=hr)</title>
+				</options>
+			</var>
+			<var name="gm_dn_member" type="select">
+				<title xml:lang="ko">팀 과장 경로 선택</title>
+				<options value="ou=gm,ou=pm,ou=si,ou=GroupsAuth">
+					<title xml:lang="ko">전산실(ou=gm,ou=pm,ou=si)</title>
+				</options>
+				<options value="ou=gm,ou=pm,ou=hr,ou=GroupsAuth">
+					<title xml:lang="ko">인사실(ou=gm,ou=pm,ou=hr)</title>
+				</options>
+			</var>	
+			
+			<var name="link_board" type="radio">
+				<title xml:lang="ko">링크 게시판으로 사용</title>
+				<description xml:lang="ko">게시판의 목록의 링크를 누르면 확장변수에서 입력한 사이트 주소로 이동합니다. 확장변수에서 'link_url' 항목을 등록하신 후 사용하세요. 'prettyphoto 애드온 사용'은 prettyphoto 애드온을 설치하고 활성화시키셔야 합니다. 자세한 사용법은 매뉴얼 또는 제작자의 홈페이지를 참조하세요.</description>
+				<options value="">
+					<title xml:lang="ko">사용 안함(기본)</title>
+				</options>
+				<options value="2">
+					<title xml:lang="ko">사용</title>
+				</options>
+				<options value="3">
+					<title xml:lang="ko">prettyPhoto 애드온 사용</title>
+				</options>
+			</var>
+		</group>	
+	</extra_vars>
+</skin>	

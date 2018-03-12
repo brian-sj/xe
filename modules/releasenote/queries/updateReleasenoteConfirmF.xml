@@ -1,0 +1,15 @@
+<query id="updateReleasenoteConfirmF" action="update">
+    <tables>
+        <table name="releasenote" />
+    </tables>
+    <columns>
+		<column name="releaser_confirm" default="curdate()" />
+		<column name="stt" default="Z" />
+    </columns>
+        <conditions>
+        <condition operation="equal" column="note_srl" var="note_srl" notnull="notnull" />
+    </conditions>
+</query>
+<!--
+F 에서 Z로 바꾸었다. 
+-->

@@ -1,0 +1,8 @@
+<query id="deleteReportWork" action="delete">
+    <tables>
+        <table name="pms_report_work_time" />
+    </tables>
+    <conditions> 
+        <condition operation="equal" column="report_work_srl" var="report_work_srl"   notnull="notnull" />   
+    </conditions>
+</query>

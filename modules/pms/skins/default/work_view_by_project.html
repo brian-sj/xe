@@ -1,0 +1,196 @@
+<style>
+#main_panel , #history_panel {width : 85%; margin : 20px auto; }
+.progress {margin-bottom : 0 !important ;}
+
+#work_time, #progress{width:30px;text-align:center}
+#work_time_obj,#progress_obj{display:inline-block;margin:0 0 0 10px}
+
+.list-group{width:250px; vertical-align:top;}
+
+.holiday { color : #cccccc;}
+
+#layout-td {width:100%}
+#layout-td .layout-td-child1{float:left; width : 25% ;}
+#layout-td .layout-td-child2{float:left; width : 70% ;}
+
+</style>
+<!--#include("./header.html")-->
+<load target="/common/js/plugins/dhtmlx/dhtmlx.js" />
+<load target="/common/js/plugins/dhtmlx/skins/terrace/dhtmlx.css" />
+
+<div id="main_panel" class="panel panel-primary">
+  <!-- Default panel contents -->
+  <div class="panel-heading"><h4>개인별 업무 시간 입력</h4></div>
+  <!-- Table -->
+
+<!-- gantt -->
+<table width="95%" style="margin:0px auto;" class="table">
+<tr>
+	<td>
+	<div class="panel panel-success">
+	  <div class="panel-heading"><h6>통계</h6></div>
+			<table class="table" width="100%" >
+			<tr>
+				<th width="30" class="holiday">일</th>
+				<th width="30">월</th>
+				<th width="30">화</th>
+				<th width="30">수</th>
+				<th width="30">목</th>
+				<th width="30">금</th>
+				<th scope="row">업무</th>
+			</tr>
+    <!--@foreach($list as $no => $val)-->			
+			<tr>
+				<td class="holiday">0</td>
+				<td>{$val->MON}</td>
+				<td>{$val->TUE}</td>
+				<td>{$val->WED}</td>
+				<td>{$val->THU}</td>
+				<td>{$val->FRI}</td>
+				<td scope="row">{$val->project_name}/{$val->task_name}</td>
+			</tr>
+	<!--@end-->		
+			
+			</table>
+			</div>
+</tr>
+</table>
+</div>
+
+<!-- gantt END  -->
+<load target="js/testdata2.js" />
+<load target="/common/sampledata/tree.js" />
+
+<script>
+
+/*
+exec_json("pms.dispPmsProjectWorkListAPI",params, function(data){ 
+		users_data3=data ;  
+		console.log(users_data2.data); 	
+		console.log(data);	
+});
+*/
+</script>
+
+
+<script type="text/javascript">
+var wmcTree ;
+var wmcPopup ;
+var responses = ['result'];
+var form_object = new FormData();
+var users_data3 ;
+var task ={};
+task.project_srl ="{$project_srl}";
+var params ={};
+params.project_srl =1;
+
+
+jQuery(document).ready( function($){
+
+			//wmcTree.loadXML("/common/sampledata/tree.xml");
+			//wmcTree.loadJSArray( treeArray );
+			jQuery("#category").on('change' , function(){ getProjectList()} );
+			jQuery("#project_srl").on('change' , function(){getTaskList( jQuery(this).val()  ) });
+			
+			
+			wmcCalendar = new dhtmlXCalendarObject("report_date");
+			ySlider3 = new dhtmlXSlider({parent:"work_time_obj" ,size:100 , min :1 ,max:13 , value:1});
+			ySlider2 = new dhtmlXSlider({parent:"progress_obj" ,size:100 , min :0 ,max:100 , value : 0});
+			
+			$("#save").bind('click',function( ){ 
+			
+				if( params.task_srl === undefined || params.task_srl === null ){
+console.log('ddd');				
+
+					if( !wmcPopup){
+console.log("wmcPopup is null ");					
+						wmcPopup = new dhtmlXPopup();
+						wmcPopup.attachHTML("업무를 지정하세요. <span class='label label-error'>New</span>");
+					}
+					if( wmcPopup.isVisible() ){
+						wmcPopup.hide();
+					}else{
+						var x = window.dhx4.absLeft(this);
+						var y = window.dhx4.absTop(this);
+						var w =this.offsetWidth;
+						var h = this.offsetHeight ;
+						
+						wmcPopup.show(x,y,w,h);
+					}
+					return false ;
+				} 
+				params.work_date = $("#report_date").val();
+				params.work_time = $("#work_time").val();
+				params.progress = $("#progress").val();
+				alert('save: ' + params.task_srl + params.project_srl );
+				exec_xml ( 'pms','procPmsWorkTimeSave' , params , callback_function_save , responses , form_object );
+				console.log( params);
+			} );
+			
+});	
+///  업무 시간을 저장합니다. 
+function callback_function_save( ret_obj ){
+	console.log( ret_obj );
+	// refresh는 일단 하지 않습니다. ..
+}
+function tonclick(id){
+	params.task_srl = id ;
+	params.project_srl =  task.project_srl ;
+	jQuery("#title").html("업무 : "+wmcTree.getItemText(id)) ;
+	// 업무 진행률과 , 업무 시간을 서버로 부터 가져 와서 뿌려줌. 3가지 필요사항은 member_srl , project_srl , task_srl 
+console.log('clicked..');	
+	//	console.log( exec_json );
+	console.log( params );
+	exec_json("pms.dispPmsReportWorkTimeAPI",params, function(data){ 
+							jQuery("#progress").val( data.progress) ;
+							if(data.work_time=="") data.work_time = 0 ;
+							jQuery("#work_time").val(data.work_time);
+
+						});
+		
+}
+function hidePopup(){
+	if(wmcPopup) wmcPopup.hide();
+}
+
+function getProjectList(){
+
+console.log('ddd');
+	params.category = jQuery("#category").val();
+console.log( params );	
+	exec_json("pms.dispPmsProjectListAPI",params
+		, function(data){ 
+			jQuery("#project_srl").html("");
+console.log(data);		
+			jQuery(data.data).each(function(index){
+				jQuery("#project_srl").append(jQuery("<option>").attr("value", this.project_srl).html( this.title )   );
+				if(index ==0){  getTaskList(this.project_srl ); } 
+			});
+		}
+		,function(error){ console.log(error);}
+	);
+}
+function getTaskList( project_srl ){
+    params = {};
+	console.log("dddd");
+    params.project_srl = project_srl ;
+	task.project_srl = project_srl; 
+	
+	exec_json("pms.dispPmsTaskListAPI",params, function(data){ 
+		console.log(data);
+		try{ wmcTree.destructor(); } catch(e){ console.log(e);}
+		try{
+			wmcTree = new dhtmlXTreeObject("treeboxbox_tree","100%","100%",0);
+			wmcTree.setImagePath("/common/js/plugins/dhtmlx/skins/terrace/imgs/dhxtree_terrace/");
+			//wmcTree.detachAllEvents();
+			wmcTree.setOnClickHandler(tonclick);
+			wmcTree.loadJSArray( data.data );		
+		}catch(e){}
+	console.log('end.....'); 	
+	});
+	
+	
+}
+
+
+</script>

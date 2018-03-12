@@ -1,0 +1,16 @@
+<query id="updateEapprv" action="update">
+    <tables>
+        <table name="eapprv" />
+    </tables>
+    <columns>
+		<column name="memo_xml" var="memo_xml"   />
+		<column name="memo_comment" var="memo_comment"   />
+		<column name="stt_int" var="stt_int" />
+		<column name="stt1" var="stt1"   />
+		<column name="stt2" var="stt2"   />
+		<column name="stt3" var="stt3"   />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="eapprv_srl" var="eapprv_srl" notnull="notnull"/>
+    </conditions>
+</query>

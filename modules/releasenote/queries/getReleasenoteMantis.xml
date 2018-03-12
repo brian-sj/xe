@@ -1,0 +1,14 @@
+<query id="getReleasenoteMantis" action="select">
+    <tables>
+        <table name="view_mantis" alias="v" />
+		<table name="releasenote_mantis_id" alias="r" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="r.mantis_id" default="v.id" />
+		<condition operation="equal" column="r.note_srl"  var="note_srl" notnull="notnull" pipe="and"/>
+		<condition operation="equal" column="r.mantis_id" var="mantis_id" pipe="and"/>
+    </conditions>
+</query>

@@ -1,0 +1,14 @@
+<query id="getMembersByDept" action="select">
+
+<!--   Dept info  to homepage   -->
+
+    <tables>
+        <table name="member" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="homepage" var="dept" />
+    </conditions>
+</query>

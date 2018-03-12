@@ -1,0 +1,13 @@
+<query id="updateEapprvShareToRead" action="update">
+    <tables>
+        <table name="eapprv_share" />
+    </tables>
+    <columns>
+		<column name="stt" default="Y" var="stt"  notnull="notnull" />
+		<column name="regdate" default="curdate()" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="eapprv_srl" var="eapprv_srl" notnull="notnull"/>
+		<condition operation="equal" column="member_srl" var="member_srl" notnull="notnull" pipe="and"/>
+    </conditions>
+</query>

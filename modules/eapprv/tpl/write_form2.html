@@ -1,0 +1,202 @@
+﻿<load target="css/brian.css" />
+
+<load target="js/jquery.imgareaselect.pack.js"/>
+<load target="css/imgareaselect-default.css"/>
+
+
+
+<!--%import("filter/admin_insert.xml")-->
+
+<div>
+</div>
+
+<form action="./" method="post"  enctype="multipart/form-data" name="formf">
+<input type='hidden' name='content' value="{$document_info->content}"/>
+<input type="hidden" name="module_srl" value="{$module_srl}">
+<input type="hidden" name="act" value="procBookcAdminInsertTitleImage">
+<input type="hidden" name="title_img" value="{$module_info->title_img}">
+<input type="hidden" name="success_return_url" value="/index.php?module=admin&act=dispBookcAdminInsert&user_yn=Y&document_srl={$document_info->document_srl}">
+
+	<div class='section'>
+		<h1>책제목 및 사진</h1>
+
+	<div class="write_header" >
+		<div style="float:left; width:100px; height:100px;" >
+			<img width="64" id="b_photo" src="{$module_info->title_img}" />
+		</div>
+		<div style="display:inline-block">
+		<span style="display:inline-block"> 분류 </span>
+		<select name="category_srl"  disabled>
+			<option value="">{$lang->category}</option>
+			<option loop="$category_list => $val" value="{$val->module_category_srl}" selected="selected"|cond="$val->grant&&$val->selected||$val->module_category_srl==$module_info->module_category_srl">
+				{str_repeat("&nbsp;&nbsp;",$val->depth)} {$val->title} ({$val->document_count})
+			</option>
+		</select>
+		<br>
+		<span class="input_title">{$lang->module_kind}</span> <input type="text" name="key"           disabled    value="{$module_info->mid}"  size="10" maxlength="20">
+		<br>
+		<span class="input_title">책제목</span><input type="text" name="key"   disabled    value=" {$module_info->browser_title}" size="10"/>
+		</div>
+		<div>
+		</div>
+		<br>
+	</div>
+		   <!--  <div id="imgCrop" style="width:64px;  height:64px ; overflow:hidden ; margin-left:5px;"><img id="preview"  src="{$module_info->title_img}" /> </div>  -->
+	<div class="x_clearfix btnArea">
+			<a href="{getUrl('module', 'admin' , 'act' , 'dispBookcAdminInsert' , 'module_srl' , $module_srl )}"><button type="button" id="cropSave" class="x_btn x_btn-primary"> <<< 제목 수정하기 <<< </button> </a>
+	</div>
+</form>
+
+
+	</div>
+	
+<form action="./" method="post"  onsubmit="return procFilter( this , admin_insert)" name="formd">
+<input type='hidden' name='content' value="{$document_info->content}"/>
+<input type="hidden" name="module_srl" value="{$module_srl}">
+<input type="hidden" name="act" value="procBookcAdminInsert">
+<input type='hidden' name='document_srl' value='{$document_info->document_srl}' />
+<input type="hidden" name="success_return_url" value="/index.php?module=admin&act=dispBookcAdminInfo&module_srl={$module_srl}&user_yn=Y">
+
+	<div class="section">
+	
+	<h1>내용 입력</h1>
+		<div ><span class="input_title"> 종류 </span>  <label for="radio_user_yn_y" ><span class="x_btn x_btn-primary">{$lang->user_yn}</span></label> <input type="radio" name="user_yn" value="Y"   id="radio_user_yn_y"  checked|cond="$user_yn=='Y'">  <label for="radio_user_yn_n" ><span class="x_btn x_btn-primary"> {$lang->user_yn_n}</span></label> <input type="radio" name="user_yn" value="N"   id="radio_user_yn_n"    checked|cond="$user_yn=='N'"></div>
+		<br>
+	  <span class="input_title">소주제</span><input cond="$document_info->title"  type="text" name="title" class="iText title" title="{$lang->title}" required maxlength="100" value="{htmlspecialchars($document_info->title)}" />
+		     <input cond="!$document_info->title" type="text" name="title" class="iText title" title="{$lang->title}" required maxlength="100" />
+			 
+	</div>		 
+	 
+		{$editor}
+
+
+	
+		<div class="x_clearfix btnArea">
+			<button type="submit" class="x_btn x_btn-primary">저장</button>
+	    </div>
+
+
+	   
+	   
+</form>
+
+
+	<div class="x_clearfix btnArea">
+			<a href="{getUrl('module', 'admin' , 'act' , 'dispBookcAdminList' )}"><button type="submit" class="x_btn x_btn-primary">목록으로 가기 </button><a>
+	</div>
+	
+	
+	
+
+
+
+<script>
+
+function onSubmit() {
+	if( document.formd.title =="" ) {
+		alert("소제목을 입력 하세요");
+		return false ;
+	}
+	
+	//alert('dddd' + document.formd.method );
+	
+	//alert('adfad');
+	
+	document.formd.method = "post";
+	document.formd.submit();
+}
+
+function completeAdminInsertBook(ret_obj) {
+    var error = ret_obj['error'];
+    var message = ret_obj['message'];
+    var page = ret_obj['page'];
+    var module_srl = ret_obj['module_srl'];
+	alert(message);
+    var url = current_url.setQuery('act','dispBookcAdminInfo').setQuery('module_srl', module_srl);
+    if(page) url.setQuery('page',page);
+    location.href = url;
+}
+
+
+var ias ;
+var sel_coor = {};
+
+var i = 1 ;
+jQuery( function ($){
+
+	jQuery('#b_photo').imgAreaSelect({ aspectRatio: '1:1'
+	, x1 : 10
+	, y1 : 10 
+	, x2 : 74 
+	, y2 : 74
+	, onSelectChange: function (img , c ){ showPreview( img , c);  } 
+	, onSelectStart     : function(){  window.scrollTo(0,0);  }
+	, onSelectEnd      : function( img , c ){
+									sel_coor.x = c.x1 ;
+									sel_coor.y = c.y1 ;
+									sel_coor.w 	= c.width ;
+									sel_coor.h 	= c.height ;
+									window.scrollTo( 0,0);
+									jQuery("#log").html(    ":"+ sel_coor.x +":"+ sel_coor.y  + ":"+ sel_coor.w +":" + sel_coor.h  ) ; 
+								}
+	}); 
+
+
+} );
+
+function showCoords(c){
+	sel_coor.x    = c.x ;
+	sel_coor.y     = c.y ;
+	sel_coor.w 	= c.w ;
+	sel_coor.h 	= c.h ;
+	showPreview(c);
+}
+function showPreview(img , c){
+	var rx =  64/c.width  ;
+	var ry =  64/c.height   ;
+		jQuery("#log").html(    ":"+ c.x1 +":"+ c.y1  + ":"+ c.width +":" + c.height  ) ; 
+	jQuery('#preview').css({
+		width:    Math.round(rx * 370) + 'px',
+		height:  Math.round(ry * 370) + 'px',
+		marginLeft: '-' + Math.round(rx * c.x1) + 'px',
+		marginTop: '-' + Math.round(ry * c.y1) + 'px'
+	});
+}
+
+/*
+
+jQuery("img#b_photo").load( function () {  
+	alert("aaa");
+
+    ias = jQuery('img#b_photo').imgAreaSelect({
+        handles: true,
+		//aspectRatio : '1:1',
+        onSelectEnd: function( img , selection ){
+			sel_coor.x = selection.x1 ;
+			sel_coor.y = selection.y1 ;
+			sel_coor.width = selection.width ;
+			sel_coor.height = selection.height ;
+		}
+    });
+
+}) ;
+*/
+
+/*
+jQuery("#cropSave").bind( 'click', function () {
+	alert (  sel_coor.x +":"+ sel_coor .y  +  ":" + sel_coor.w +  ":"+ sel_coor.h ) ;
+	if(sel_coor.w == undefined || sel_coor.w == 0) alert('ߵߪ; ¶dȘ ܼࠤ!');
+	else{
+		sel_coor.act="procBookcCropImage";
+		sel_coor.module="admin";
+		sel_coor.module_srl = "{$module_srl}";
+		sel_coor.user_yn= "{$user_yn}";
+		sel_coor.src ="{$module_info->title_img}";
+		document.location.href="index.php?"+ jQuery.param( sel_coor) ;
+	}
+});
+
+*/
+
+</script>
+

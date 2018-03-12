@@ -1,0 +1,44 @@
+<include target="_header.html" />
+<div cond="$oComment->isExists()" class="context_data">
+	<h3 class="author">
+		<a cond="$oComment->homepage" href="{$oComment->homepage}">{$oComment->getNickName()}</a>
+		<strong cond="!$oComment->homepage">{$oComment->getNickName()}</strong>
+	</h3>
+	{$oComment->getContent(false)}
+</div>
+<form action="./" method="post" onsubmit="return procFilter(this, delete_comment)" class="context_message">
+	<input type="hidden" name="mid" value="{$mid}" />
+	<input type="hidden" name="page" value="{$page}" />
+	<input type="hidden" name="act" value="procReleasenoteDeleteComment" />
+	<input type="hidden" name="eapprv_srl" value="{$eapprv_srl}" />
+	<input type="hidden" name="document_srl" value="{$oComment->get('document_srl')}" />
+	<input type="hidden" name="comment_srl" value="{$oComment->get('comment_srl')}" />
+	<h1>{$lang->cmd_comment_do} {$lang->confirm_delete}</h1>
+	<div class="btn-group" role="group" aria-label="...">
+		  <button type="submit" class="btn btn-primary">{$lang->cmd_delete}</button>
+		  <a href="{getSiteUrl('','act','dispEapprvContent','eapprv_srl', $eapprv_srl)}" ><button type="button" class="btn btn-default">{$lang->cmd_cancel}</button></a>
+	</div>
+</form>
+<hr>
+<script>
+
+/***
+*  요거 잘 않되네요. 쩝... 그냥 form 으로 날립니다. 
+*/
+
+function completeDeleteComment(ret_obj)
+{
+	var error = ret_obj.error;
+	var message = ret_obj.message;
+	var mid = ret_obj.mid;
+	var page = ret_obj.page;
+	var note_srl = "{$note_srl}";
+
+	var url = current_url.setQuery('mid',mid).setQuery('act','').setQuery('document_srl','').setQuery('act','dispReleasenoteContent' ).setQuery('note_srl', note_srl);
+	if(page) url = url.setQuery('page',page);
+	alert(message);
+	location.href = url;
+}
+</script>
+
+<include target="_footer.html" />

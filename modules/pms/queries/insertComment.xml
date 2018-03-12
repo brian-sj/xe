@@ -1,0 +1,29 @@
+<query id="insertComment" action="insert">
+    <tables>
+        <table name="pms_comment" />
+    </tables>
+    <columns>
+		<column name="project_srl" var="project_srl" notnull="notnull"/>
+		<column name="task_srl" var="task_srl"  default="0"/>	
+		<column name="comment_srl" var="comment_srl"  notnull="notnull"/>				
+		<column name="report_work_srl" var="report_work_srl"  /> 
+		<column name="member_srl" var="member_srl" />					
+		
+		<column name="type" var="type" default="D" />	
+		<column name="is_private" var="type" default="D" />		
+		<column name="title" var="title" notnull="notnull"/>		
+		<column name="content" var="content" notnull="notnull" />
+		<column name="extra_vars" var="extra_vars" />		
+		<column name="reg_date" default="curdate()" var="reg_date" />
+    </columns>
+</query>	
+<!--
+A,B 만 변경이 가능하다... 
+A : 직접입력
+B : 일일 업무 보고 
+--- 이하는 로그 
+M : 예산 직접 입력 삭제 
+D : Task 입력 변경 삭제 
+L : Link 입력 변경 삭제 
+R : 업무 시간 입력 변경 삭제 
+-->

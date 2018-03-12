@@ -1,0 +1,11 @@
+<table name="releasenote_program_code">
+    <column name="program_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+    <column name="category" type="varchar" size="2" />
+	<column name="title" type="varchar" size="100" />
+	<column name="del_yn" type="char"  size="1" default="N" />
+</table>
+<!--
+category  w 웹 , c 프로그램
+program_srl  프로그램 혹은 사이트 이름. 
+del_yn  화면에 보일것 , 안보일 것
+ -->

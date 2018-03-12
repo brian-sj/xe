@@ -1,0 +1,21 @@
+<query id="insertEapprv" action="insert">
+	<tables>
+		<table name="eapprv" />
+	</tables>
+	<columns>
+		<column name="eapprv_srl" var="eapprv_srl" filter="number"  />
+		<column name="member_srl" var="member_srl" filter="number" notnull="notnull" />
+		<column name="document_srl" var="document_srl" filter="number" notnull="notnull" />
+		
+		<column name="module_srl" var="module_srl" notnull="notnull" />
+		<column name="memo_xml" var="memo_xml"   />
+		<column name="memo_comment" var="memo_comment"   />
+		
+		<column name="stt_int" var="stt_int" default="2" />
+		<column name="stt1"    var="stt1"   default="1"/>
+		<column name="stt2"    var="stt2"   default="1"/>
+		<column name="stt3"    var="stt3"   default="1"/>
+		<column name="regdate" default="curdate()" />
+	</columns>
+</query>
+

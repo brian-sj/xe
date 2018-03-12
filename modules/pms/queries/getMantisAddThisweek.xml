@@ -1,0 +1,8 @@
+<query id="getMantisAddThisweek" action="select">
+    <tables>
+        <table name="view_mantis_added_thisweek"/>
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+</query>

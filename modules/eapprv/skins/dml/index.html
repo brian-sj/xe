@@ -1,0 +1,197 @@
+﻿
+<style>
+
+/* Pagination */
+/* list.html | _comment.html */
+.pagination {
+	margin: 0;
+	padding: 4px 0 10px 0;
+	text-align: center;
+	line-height: normal;
+	display: block;
+}
+.pagination a,
+.pagination strong {
+	position: relative;
+	color: #767676;
+	font: bold 12px/16px Tahoma, Sans-serif;
+	vertical-align: top;
+	display: inline-block;
+	text-decoration: none;
+	padding: 1px 8px;
+	margin: 0 -3px;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	background-color: #fff;
+	z-index: 2;
+}
+.pagination a:hover,
+.pagination a:active,
+.pagination a:focus {
+	background-color: #f8f8f8;
+}
+.pagination strong {
+	color: #f60;
+	font-size: 18px;
+}
+.pagination .direction {
+	font-weight: normal;
+	color: #767676;
+	text-decoration: none !important;
+	border: 0;
+	z-index: 1;
+}
+.pagination .direction:hover,
+.pagination .direction:active,
+.pagination .direction:focus {
+	color: #333;
+	background-color: #fff;
+}
+.pagination .prev {
+	border-left: 0;
+}
+.pagination .next {
+	border-right: 0;
+}
+.pagination .direction span {
+	position: relative;
+	display: inline-block;
+	width: 0;
+	height: 0;
+	font-size: 0;
+	line-height: 0;
+	vertical-align: top;
+	top: 4px;
+}
+.pagination .prev span {
+	border: 3px solid;
+	border-top: solid #fff;
+	border-bottom: solid #fff;
+	border-left: 0;
+	margin-right: 1px;
+	*left: -4px;
+}
+.pagination .next span {
+	border: 3px solid;
+	border-top: solid #fff;
+	border-bottom: solid #fff;
+	border-right: 0;
+	margin-left: 1px;
+}
+
+td.nowr { padding-top:14px !important;}
+
+tr.myturn td {background-color : #cccccc;}
+tr.processing td {background-color : #a2d4e3;}
+.myturnBox{display:inline-block;background:orange;padding:3px;border-radius:3px;font-weight:bold;margin:0 5px 0 0}
+.processingBox{display:inline-block;background:#016f96;padding:3px;border-radius:3px;font-weight:bold;margin:0 5px 0 0;color:#fff}
+.okBox{display:inline-block;background:#666;color:#fff;padding:3px;border-radius:3px;font-weight:bold;margin:0 5px 0 0}
+
+
+.fff {color:#FF9600;}
+.ddd {color:#016F96;}
+
+
+{@debugPrint($type);}
+</style>
+<div class="btn-group" style="margin-bottom:5px">
+	<a href="{getSiteUrl('','type', __AUTH_OWNER__)}" class="btn <!--@if ($type==__AUTH_OWNER__)-->btn-danger<!--@else-->btn-default<!--@end-->">내문서</a>
+	<a href="{getSiteUrl('','type', __AUTH_COMPLETE__)}" class="btn <!--@if ($type==__AUTH_COMPLETE__)-->btn-danger<!--@else-->btn-default<!--@end-->">완료</a>
+	<a href="{getSiteUrl('','type', __AUTH_SHARE__)}" class="btn <!--@if ($type==__AUTH_SHARE__)-->btn-danger<!--@else-->btn-default<!--@end-->">참조</a>
+</div>
+
+<a href="{getSiteUrl('', 'mid', $mid , 'act' , 'dispEapprvLineSetting' )}"><button type="button" style="border:0px"><img src="images/option.png" style="border:0px;width:28px;height:30px;cursor:pointer;"> </button></a>
+
+<div class="panel panel-success">
+  <div class="panel-heading"><h3>{$browser_title}</h3><!--<h5>(이 메뉴는 <img src="images/ie.png" style="border:0px;width:25px;height:25px;"> 사용 시 오류가 있으니, <img src="images/chrome.png" style="border:0px;width:25px;height:25px;">&nbsp;<img src="images/firefox.png" style="border:0px;width:25px;height:25px;"> 사용을 권장합니다.)</h5>--></div>
+<table id="boardList" class="table x_table-striped x_table-hover">
+	<thead>
+		<tr>
+			<th scope="col" class="nowr">{$lang->no}</th>
+			<th scope="col" class="nowr"> 제목</th>
+			<th scope="col" class="nowr"> 요청자 </th>
+			<th scope="col" class="title">결재상태</th>
+			<th scope="col" class="title">접수상태</th>
+			<th scope="col" class="title">작업상태</th>
+			<th scope="col" class="nowr">{$lang->regdate}</th>
+		</tr>
+	</thead>
+		<tbody>
+		
+<!--  내가 결재해야 할 문서  -->
+		<tr loop="$list_myturn => $no,$val" class="myturn">
+{@ $memo_xml = simplexml_load_string( $val->memo_xml ) ;}
+		
+			<td class="nowr"><span class="glyphicon glyphicon-info-sign fff" aria-hidden="true"></span></td>
+			<td class="nowr"><a href="{getUrl('','mid', $mid , 'act' , 'dispEapprvContent','eapprv_srl', $val->eapprv_srl, 'type', $type )}"><span class="myturnBox">결재요망</span>{cut_str($val->title, 50)}</a></td>
+			<td class="nowr">{$memo_xml->request_person}</td>
+			<td class="title"><img src="./images/{$val->stt1}.png" width="80px"/></td>
+			<td class="title"><img src="./images/{$val->stt2}.png" width="80px"/></td>
+			<td class="title"><img src="./images/{$val->stt3}.png" width="80px"/></td>
+			<td class="nowr">{zdate($val->regdate,"Y-m-d")}</td>
+
+		</tr>
+		<tr cond="count($list_myturn)==0" class="myturn">
+			<td colspan="9" align="center">현재 결재해야 할 문서가 없습니다. </td>
+		</tr>
+		
+<!--  진행 중인 문서 --->		
+		<tr loop="$list_processing => $no,$val" class="processing">
+{@ $memo_xml = simplexml_load_string( $val->memo_xml ) ; }
+			<td class="nowr"><span class="glyphicon glyphicon-asterisk ddd" aria-hidden="true"></span></td>
+			<td class="nowr"><a href="{getUrl('','mid', $mid , 'act' , 'dispEapprvContent','eapprv_srl', $val->eapprv_srl, 'type', $type )}"><span class="processingBox">진행중</span>{cut_str($val->title, 50)} </a></td>
+			<td class="nowr">{$memo_xml->request_person}</td>
+			<td class="title"><img src="./images/{$val->stt1}.png" width="80px"/></td>
+			<td class="title"><img src="./images/{$val->stt2}.png" width="80px"/></td>
+			<td class="title"><img src="./images/{$val->stt3}.png" width="80px"/></td>
+			<td class="nowr">{zdate($val->regdate,"Y-m-d")}</td>
+
+		</tr>
+		<tr cond="count($list_processing)==0" class="processing">
+			<td colspan="9" align="center">현재 진행 중인 문서가 없습니다. </td>
+		</tr>
+		
+		<tr loop="$list => $no,$val">
+{@ $memo_xml = simplexml_load_string( $val->memo_xml ) ; }
+			<td class="nowr">{$page_navigation->total_count - $no -($page_navigation->cur_page -1) * 20 }</td>
+			<td class="nowr"><a href="{getUrl('','mid', $mid , 'act' , 'dispEapprvContent','eapprv_srl', $val->eapprv_srl, 'type', $type , 'page', $page )}"><span class="okBox">{$type_label}</span>{cut_str($val->title, 50)} </a></td>
+			<td class="nowr">{$memo_xml->request_dept}</td>
+			<td class="nowr">{$memo_xml->request_person}</td>
+			<td class="title"><img src="./images/{$val->stt1}.png" width="80px"/></td>
+			<td class="title"><img src="./images/{$val->stt2}.png" width="80px"/></td>
+			<td class="title"><img src="./images/{$val->stt3}.png" width="80px"/></td>
+			<td class="nowr">{zdate($val->regdate,"Y-m-d")}</td>
+
+		</tr>
+		<tr cond="count($list)==0">
+			<td colspan="9" align="center">{$type_label}상태의 문서가 없습니다. </td>
+		</tr>
+
+	</tbody>   
+</table>	
+
+  <div class="panel-body">
+  <!-- 페이지 네비게이션 -->
+	<div class="pagination a1">
+		<a href="{getUrl( 'mid', $mid ,'page','','module_srl','')}" class="prevEnd">{$lang->first_page}</a> 
+		<!--@while($page_no = $page_navigation->getNextPage())-->
+			<!--@if($page == $page_no)-->
+				<strong>{$page_no}</strong> 
+			<!--@else-->
+				<a href="{getUrl( 'mid', $mid ,'page',$page_no,'module_srl','')}">{$page_no}</a> 
+			<!--@end-->
+		<!--@end-->
+		<a href="{getUrl( 'mid', $mid, 'page',$page_navigation->last_page,'module_srl','')}" class="nextEnd">{$lang->last_page}</a>
+	</div>
+
+	  
+  
+  </div>
+  <div class="panel-footer">
+    <strong>Total: {number_format($page_navigation->total_count)}, Page: {number_format($page_navigation->cur_page)}/{number_format($page_navigation->total_page)}</strong> 
+	<a href="{getUrl('mid', $mid ,'act' ,'dispEapprvWrite')}"><button class="btn btn-success" >쓰기</button></a>
+  </div>
+</div>
+
+
+

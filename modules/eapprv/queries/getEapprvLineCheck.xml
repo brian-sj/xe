@@ -1,0 +1,15 @@
+<query id="getEapprvLineCheck" action="select">
+    <tables>
+        <table name="eapprv_line" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="eapprv_srl" var="eapprv_srl" filter="number" notnull="notnull"  />
+		<condition operation="notequal" column="stt"  var="stt" pipe="and" />
+    </conditions>
+</query>
+<!-- 
+    ############# controller->_acceptProc 에서 사용 
+-->

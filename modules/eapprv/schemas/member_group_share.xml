@@ -1,0 +1,16 @@
+<table name="member_group_share">
+    <column name="site_srl" type="number" size="11" notnull="notnull" default="0" />
+    <column name="group_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+    <column name="list_order" type="number" size="11" notnull="notnull" index="idx_list_order" />
+	
+    <column name="title" type="varchar" size="80" notnull="notnull" />
+    <column name="regdate" type="date" />
+    <column name="is_default" type="char" default="N" />
+    <column name="is_admin" type="char" default="N" />
+    <column name="image_mark" type="text" />
+    <column name="description" type="text" />
+	
+	<column name="is_share"    type="char" default="N" />
+	<column name="member_srl" type="number" size="11"  index="idx_member_srl" />
+</table>
+<!--  member_group 에서 가져온 것이며 , 공유 그룹을 나타 낸다.   member_srl , is_share 가 추가 됩니다.   --> 

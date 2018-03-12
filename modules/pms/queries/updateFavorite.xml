@@ -1,0 +1,13 @@
+<query id="updateFavorite" action="update">
+    <tables>
+        <table name="pms_project_favorite" />
+    </tables>
+    <columns>
+		<column name="task_srl" default="null"/>	
+    </columns>
+	<conditions> 
+        <condition operation="equal" column="project_srl" var="project_srl"   notnull="notnull" />   
+        <condition operation="equal" column="member_srl" var="member_srl"   notnull="notnull" pipe="and"/>   
+        <condition operation="equal" column="task_srl" var="task_srl"   pipe="and"/>   
+	</conditions>
+</query>	

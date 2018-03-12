@@ -1,0 +1,18 @@
+<query id="reportWeeklyAdded" action="select">
+    <tables>
+        <table name="view_mantis_added_status" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+
+    </conditions>
+	
+	<navigation>
+        <index var="sort_index" default="week_standard" order="desc" />
+        <list_count var="list_count" default="10" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>

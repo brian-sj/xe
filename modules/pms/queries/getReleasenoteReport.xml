@@ -1,0 +1,30 @@
+<query id="getReleasenoteReport" action="select">
+    <tables>
+        <table name="releasenote" alias="r" />
+		<table name="documents" alias="d" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="stt" default="Z" />    
+        <condition operation="equal" column="stt3" default="Y" pipe="and"/>    
+        <condition operation="equal" column="r.document_srl" default="d.document_srl" pipe="and"/>    
+        <condition operation="more" column="releaser_confirm" var="start_date" pipe="and" />
+        <condition operation="less" column="releaser_confirm" var="end_date" pipe="and" />
+    </conditions>
+	
+	<navigation>
+        <index var="sort_index" default="releaser_confirm" order="asc" />
+        <list_count var="list_count" default="100" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>
+
+<!--
+<condition operation="notnull" column="worker_confirm" var="worker_confirm" pipe="and"/>
+<condition operation="notnull" column="tester_confirm" var="worker_confirm" pipe="and"/>
+<condition operation="notnull" column="manager_confirm" var="worker_confirm" pipe="and"/>
+
+-->

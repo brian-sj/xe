@@ -1,0 +1,53 @@
+<query id="getReleasenotes" action="select">
+    <tables>
+        <table name="releasenote" alias="r" />
+        <table name="wmc_code" alias="c" />
+		<table name="documents" alias="d" />
+
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="r.program_srl" default="c.code_int_val" />   
+		<condition operation="equal" column="r.document_srl" default="d.document_srl" pipe="and" />   
+		
+        <condition operation="equal" column="category" var="category" pipe="and" />    
+        <condition operation="equal" column="stt" var="stt" pipe="and" />    
+		
+		<condition operation="equal" column="worker_srl"  var="worker_srl" pipe="and"/>
+		<condition operation="equal" column="tester_srl"  var="tester_srl" pipe="and"/>
+		<condition operation="equal" column="manager_srl" var="manager_srl" pipe="and"/>
+		<condition operation="below" column="stt" var="stt_2" pipe="and" />    
+
+		<group pipe="and">
+			<condition operation="like" column="d.title" var="search_keyword" />
+			<condition operation="like" column="d.content" var="search_keyword" pipe="or" />
+        </group>
+		
+		<group pipe="and">
+            <condition operation="equal" column="worker_srl" var="my_member_srl" />
+			<condition operation="equal" column="t_releaser_srl" var="my_member_srl" pipe="or" />
+            <condition operation="equal" column="tester_srl" var="my_member_srl" pipe="or" />
+            <condition operation="equal" column="manager_srl" var="my_member_srl" pipe="or" />
+			<condition operation="equal" column="header_srl" var="my_member_srl" pipe="or" />
+			<condition operation="equal" column="releaser_srl" var="my_member_srl" pipe="or" />
+			<condition operation="like"  column="shared_members" var="my_member_srl" pipe="or" />   
+        </group>
+		
+    </conditions>
+	
+	<navigation>
+        <index var="sort_index" default="note_srl" order="desc" />
+        <list_count var="list_count" default="10" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>
+
+<!--
+<condition operation="notnull" column="worker_confirm" var="worker_confirm" pipe="and"/>
+<condition operation="notnull" column="tester_confirm" var="worker_confirm" pipe="and"/>
+<condition operation="notnull" column="manager_confirm" var="worker_confirm" pipe="and"/>
+
+-->

@@ -1,0 +1,35 @@
+<query id="getProjectFavoriteList" action="select">
+    <tables>
+        
+		<table name="pms_project_favorite" alias="f" />
+		<table name="pms_project" alias="p" />
+		<table name="member" alias="m" />
+    </tables>
+    <columns>
+        <column name="p.project_srl" />
+        <column name="p.category" />
+        <column name="p.title" />
+        <column name="p.planed_mh" />
+        <column name="m.user_name" />
+
+    </columns>
+	<conditions>
+		<condition operation="equal" column="p.project_srl" var="f.project_srl" pipe="and" /> 
+		<condition operation="equal" column="p.member_srl" var="m.member_srl" pipe="and" /> 
+		<condition operation="equal" column="f.member_srl" var="member_srl" notnull="notnull" pipe="and" />   
+		
+	</conditions>
+	
+	<navigation>
+        <index var="sort_index" default="p.project_srl" order="desc" />
+        <list_count var="list_count" default="100" />
+        <page_count var="page_count" default="100" />
+        <page var="page" default="1" />
+    </navigation>
+</query>
+<!-- 
+
+이름이 참.. 거시기 합니다. 
+내가 주 담당인것도 보이게 하는것으로   나의 업무 시간목록에서 사용됩니다. 
+
+-->

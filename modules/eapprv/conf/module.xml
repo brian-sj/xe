@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+    <grants>
+        <grant name="write_document" default="guest">
+            <title xml:lang="ko">글 작성</title>
+            <title xml:lang="en">write</title>
+        </grant>
+    </grants>
+    <permissions>
+
+    </permissions>
+
+	<actions>
+		<action name="dispEapprvAdminList" type="view" standalone="true" admin_index="true" menu_name="list" menu_index="true" />  
+		
+		<action name="dispEapprvList" index="true" type="view" standalone="true"/>
+		<action name="dispEapprvWrite" type="view" standalone="true"/>
+		<action name="dispEapprvUsers" type="view" standalone="true"/>
+		<action name="dispEapprvUsersByGroup" type="view" standalone="true"/>
+		<action name="dispEapprvGroupList" type="view" standalone="true" />
+
+		<action name="dispEapprvLineSetting" type="view" standalone="true" />
+		<action name="dispEapprvContent" type="view" standalone="true" />
+		<action name="dispEapprvPrint" type="view" standalone="true" />
+		
+		
+		<action name="dispEapprvLineByPreAPI" type="view" standalone="true" />
+		<action name="dispEapprvSharedByPreAPI" type="view" standalone="true" />
+		
+		
+		<action name="dispEapprvModifyComment" type="view" standalone="true" />
+		<action name="dispEapprvDeleteComment" type="view" standalone="true" />
+		
+		
+		<action name="procEapprvLineSettingSave" type="controller" standalone="true"/>
+		<action name="procEapprvShareSettingSave" type="controller" standalone="true"/>
+		
+		<action name="procEapprvLineDelete" type="controller" standalone="true"/>
+		<action name="procEapprvShareDelete" type="controller" standalone="true"/>
+		
+		<action name="procEapprvWrite" type="controller" standalone="true"/>
+		<action name="procEapprvShareListSave" type="controller" />
+		<action name="procEapprvLineInsert" type="controller" standalone="true"/>
+		<action name="procEapprvLineGmChange" type="controller" standalone="true"/>
+		<action name="procEapprvLoadProcess" type="controller" standalone="true"/> 
+		
+		<action name="procEapprvProc" type="controller" standalone="true"/>
+		<action name="procEapprvDrop" type="controller" standalone="true"/>
+		
+		
+		<action name="procEapprvAgreeOrNotInShare" type="controller" standalone="true"/>
+		
+		
+		<action name="procEapprvMemoSave" type="controller" standalone="true"/>
+		<action name="procEapprvInsertComment" type="controller" standalone="true" />
+		<action name="procEapprvDeleteComment" type="controller" standalone="true" /> 		
+
+		<action name="procEapprvSendMessage" type="controller" standalone="true" /> 		
+		
+    </actions>
+	<menus>
+		<menu name="eapprv">
+			<title xml:lang="en">Class</title>
+			<title xml:lang="ko">클라스</title>
+		</menu>
+	</menus>
+
+</module>

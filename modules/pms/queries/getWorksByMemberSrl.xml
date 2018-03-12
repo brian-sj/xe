@@ -1,0 +1,33 @@
+<query id="getWorksByMemberSrl" action="select">
+    <tables>
+        <table name="pms_report_work_time" alias="u"/>
+        <table name="pms_task" alias="t"/>
+        <table name="pms_project" alias="p"/>
+    </tables>
+    <columns>
+        <column name="u.*" />
+        <column name="p.category" />
+        <column name="p.project_srl" />
+        <column name="p.title" alias="project_title"/>
+        <column name="t.title" alias="task_title"/>
+        <column name="t.mh" />
+        <column name="t.planed_mh" />
+        <column name="t.progress" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="u.task_srl" var="t.task_srl" />
+		<condition operation="equal" column="t.project_srl" var="p.project_srl" pipe="and"/>
+		<condition operation="equal" column="u.member_srl" var="member_srl" notnull="notnull" pipe="and" />
+		<condition operation="equal" column="p.category" var="category" pipe="and" />
+		<condition operation="more" column="u.work_date" var="start_date" pipe="and" />
+		<condition operation="less" column="u.work_date" var="end_date" pipe="and" />
+    </conditions>
+	
+	
+	<navigation>
+        <index var="sort_index" default="u.work_date" order="desc" />
+        <list_count var="list_count" default="20" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>

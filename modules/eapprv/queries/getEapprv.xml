@@ -1,0 +1,18 @@
+<query id="getEapprv" action="select">
+    <tables>
+        <table name="eapprv" alias="e"/>
+		<table name="documents" alias="d"/>
+    </tables>
+    <columns>
+        <column name="e.*" />
+		<column name="d.title" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="e.document_srl" default="d.document_srl" filter="number" notnull="notnull"  />
+		<condition operation="equal" column="eapprv_srl" var="eapprv_srl" filter="number" notnull="notnull"  pipe="and"/>
+        <condition operation="equal" column="e.member_srl"      var="member_srl" filter="number" pipe="and" />
+    </conditions>
+	
+
+	
+</query>

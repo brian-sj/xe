@@ -1,0 +1,32 @@
+<query id="getOnProcDocListByShare" action="select">
+
+<!--   Dept info  to homepage   -->
+
+    <tables>
+        <table name="eapprv"  alias="e" />
+		<table name="documents" alias="d"  />
+		<table name="eapprv_share" alias="s"  />
+		
+    </tables>
+    <columns>
+        <column name="d.title" />
+		<column name="e.*" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="d.document_srl" var="e.document_srl" notnull="notnull" /> 
+		<condition operation="equal" column="e.eapprv" var="s.eapprv_srl" notnull="notnull" /> 
+        
+		<condition operation="equal" column="s.member_srl" var="member_srl" notnull="notnull" pipe="and"/>  
+		<condition operation="equal" column="e.stt" var="stt"  default="P"  pipe="and" />
+    </conditions>
+	
+	<navigation>
+        <index var="sort_index" default="e.document_srl" order="desc" />
+        <list_count var="list_count" default="20" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+	
+</query>
+
+<!--    member_srl 이  share에 걸려 있다.   참고 getOnProcDocList.xml    -->

@@ -1,0 +1,227 @@
+<style>
+#work_time, #progress {width:30px; text-align:center}
+#work_time_obj, #progress_obj {display:inline-block; margin:0 0 0 10px; width:200px}
+/*김지민*/
+.list-unstyled {padding:5px 0 20px 30px}
+.list-content {padding:10px 0; border-top:solid 1px #ebebeb}
+.list-content:first-child {border-top:none}
+.work-title {display:inline-block; margin-right:20px; font-size:20px}
+.text-center .btn {padding:6px 30px; margin:10px 3px 0 3px}
+.sud-divi {display:inline-block; width:20%}
+.list-time {display:table; table-layout:fixed; width:100%}
+.list-time .sud-divi, .list-time .box-task {display:table-cell; vertical-align:middle}
+
+#report_date {padding-left:10px; background-color:#fffeef; font-weight:600}
+.panel-heading {padding:10px 15px}
+.panel-heading .btn-success {margin-right:10px}
+.mdl-switch__label {font-weight:normal; font-size:14px}
+#main_panel {display:table}
+.height-line {border-left:solid 1px #e6e6e6; overflow:auto}
+.divi-tit {margin-top:20px}
+.work-divi {margin:0 -15px}
+
+.divi-list {height:477px; border-right:solid 1px #e6e6e6; padding:15px 0; overflow-y:auto}
+.none-line {border-right:none}
+.list-group-item {padding:5px 15px; font-size:12px}
+.divi-list-group {display:block; font-size:12px; color:#000}
+.divi-important {background-color:#d8dadf; border-right:solid 1px #c1c3c7}
+#project-category .divi-list-group{padding:7px 10px;  margin-top:-1px}
+#project-category .divi-list-group:hover {background-color:#2c6cd3; color:#fff}
+#project-category .active {background-color:#2c6cd3; color:#fff}
+#project .divi-list-group{ border-bottom:solid 1px #e5e5e5; padding:6px 10px}
+#project .divi-list-group:hover{background-color:#f8ebbb; color:#000; border-bottom:solid 1px #f8ebbb; border-top:solid 1px #f8ebbb; margin-top:-1px}
+#project .active{background-color:#f8ebbb; color:#000; border-bottom:solid 1px #f8ebbb; border-top:solid 1px #f8ebbb; margin-top:-1px}
+
+.w1, .w2, .w3, .w4, .w5, .w6 {cursor:pointer; padding:6px 10px; display:inline}
+.w1:hover, .w2:hover, .w3:hover, .w4:hover, .w5:hover, .w6:hover{border:1px solid #3c8dbc; background-color:#fff; margin-top:-1px; margin-bottom:-1px; border-radius: 3px}
+.reference-color {color:#ff0008; font-weight:normal}
+
+/* 강명희 달력픽스 나머지 것들 */
+.col-fixed-300{
+	padding-top:10px;
+    width:205px;
+    height:240px;
+}
+.col-offset-300{
+}
+.dhtmlxcalendar_dhx_web {margin-left:-15px !important;}
+</style>
+<!--#include("./header.html")-->
+<load target="/common/js/plugins/dhtmlx/dhtmlx.js" />
+<load target="/common/js/plugins/dhtmlx/skins/web/dhtmlx.css" />
+
+<load target="/common/js/plugins/toastr/toastr.js" />
+<load target="/common/js/plugins/toastr/toastr.css" />
+
+<div class="wrap">
+<div class="row">
+  <div class="col-xs-12 page-title">
+  	<div class="col-xs-7 pull-left"><h3>나의 업무시간</h3></div>
+  </div>
+</div>
+
+<div class="col-xs-12 min-width-st">
+<div id="main_panel" class="box box-primary depth-box">
+
+<div class="col-xs-7 work-divi">
+    <!--div class="layout-td-child2">
+      <div class="mdl-spinner mdl-js-spinner is-inactive" id="loading_spinner"></div>
+      <div id="treeboxbox_tree">업무를 선택해 주세요.</div>
+    </div-->
+<div class="col-xs-2 divi-list divi-important">
+    <div id="project-category" class="depth-list-group">
+      <a href="#" class="divi-list-group fir-list active" data-category="{__PMS_CATEGORY_OUT_FAVORITE__}">즐겨찾기</a>
+      <a href="#" class="divi-list-group" data-category="{__PMS_CATEGORY_OUT_MYDUTY__}">나의 업무 전체</a>
+      <a href="#" class="divi-list-group" data-category="R"> - 일상</a>
+      <a href="#" class="divi-list-group" data-category="D"> - 진행중</a>
+    </div>
+</div>
+<div class="col-xs-5 divi-list">
+  <div id="project" class="depth-list-group">
+	  <a href="#" class="divi-list-group">구분을 선택하세요</a>
+  </div>
+</div>
+<div class="col-xs-5 divi-list none-line">
+	<!-- 작업목록 -->
+	<div id="treeboxbox_tree"></div>
+</div>
+</div>
+
+<div class="col-xs-5 work-dive-right" style="padding:0">
+ <div class="row">
+	<div class="col-sm-4 list-unstyled my-work-calendar" id="work_calendar">
+	   
+	</div>
+    <div class="col-sm-8 col-offset-300">
+	
+	  <ul class="">
+		<!--@if($grant->is_admin)-->
+		<li class="list-content list-time" >
+			<form action="/" method="get" name="frm_admin_view" >
+			<input type="hidden" value="" name="error_return_url">
+			<input type="hidden" value="{$act}" name="act">
+			<input type="hidden" value="{$project_srl}" name="project_srl">
+			<select id="member_srl" name="member_srl" onchange="document.frm_admin_view.submit();">
+					<option value="">내꺼</option>
+				<!--@foreach($wmc_members as $key=> $val)-->
+					<option value="{$key}" selected|cond="$key==$member_srl" >{$val}</option>
+				<!--@end-->
+			</select>
+			</form>
+		</li>
+		<!--@end-->
+		<li class="list-content list-time"><h4 id="title" class="work-title">업무를 선택해 주세요.</h4><button type="button" id="btn-gocontent" class="btn btn-default pull-right" onclick="goContentPage( $(this).data('project_srl') );">프로젝트 보기</button><div class="reference-label reference-color" id="work-title-memo"></div></li>
+		<li class="list-content list-time"><span class="sud-divi">업무일</span>
+			<input id="report_date" type="text" value="{date('Y-m-d')}" readonly />
+			<div id="calendar-holder"></div>
+		</li>
+		<li class="list-content list-time"><span class="sud-divi">업무시간</span>
+		<span class="box-task">
+		  <input type="hidden" id="task_srl" name="task_srl" value="" />
+		  <input type="hidden" id="time_del" name="time_del" value="N" />
+		  <input type="hidden" id="report_work_srl" name="report_work_srl" value="" />
+		  <input id="work_time" type="text" name="work_time"
+			  data-provide="slider"
+			  data-slider-ticks="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]"
+			  data-slider-ticks-labels='[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]'
+			  data-slider-min="1"
+			  data-slider-max="12"
+			  data-slider-step="1"
+			  data-slider-value="3"
+			  data-slider-tooltip="hide">
+		  <span id="work_time_obj" linkto="work_time"></span>
+		  <!-- <p class="reference-label">업무시간을 0으로 저장하시면 기존에 기록하신 업무시간은 삭제되고 <br>진행률만 저장됩니다.</p> -->
+		</span>
+
+		</li>
+		<li class="list-content list-time"><span class="sud-divi">진행률</span><input id="progress" type="text" name="progress"><span id="progress_obj" linkto="progress"></span></li>
+		<li class="list-content list-time"><span class="sud-divi">건(대)수</span><input id="count" type="text" name="count"> 건(대)</span><p class="reference-label pull-right">* 보고시 처리건(대)수가 필요한 경우</p></li>
+	  </ul>
+	 </div>  
+  </div>  
+  <div class="row">	
+  <ul class="list-unstyled">
+    <li class="list-content list-timelist-con list-time"><span class="sud-divi">업무내용</span><textarea name="content" required id="content" class="form-control" rows="4" placeholder="업무내용을 입력해주세요."></textarea></li>
+    <li class="list-content list-timelist-con list-time">
+      <span class="sud-divi"></span>
+      <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-favorite">
+        <input type="checkbox" id="switch-favorite" class="mdl-switch__input" name="favorite" value="Y" >
+        <span class="mdl-switch__label">즐겨찾기 목록에 추가 합니다.</span>
+      </label>
+    </li>
+
+    <li class="list-content text-center">
+      <button class="btn btn-default" id="cancel">삭제</button><button class="btn btn-primary" id="save" onblur="hidePopup();">저장</button>
+    </li>
+  </ul>
+  </div>
+</div>
+
+
+<!--table class="table">
+<tr>
+		<td>
+			<div class="trow">
+				<div id="layout-td">
+					<div class="layout-td-child1">
+
+						<select class="form-control" name="category" id="category" >
+							<option value="F">즐겨찾기</option>
+							<option value="R">일상프로젝트</option>
+							<option value="E">완료</option>
+							<option value="D">진행중</option>
+						</select>
+						<select class="form-control" name="project_srl" id="project_srl" >
+						<option value="">업무(먼저프로젝트를 선택해주세요)</option>
+						<option  loop="$favoriteproject_list=>$val" value="{$val->project_srl}">{$val->title}</option>
+					</select>
+					<ul class="list-group" id="project_srl_list">
+					</ul>
+				</div>
+				</div>
+			</div>
+	</td>
+</tr>
+</table-->
+
+</div>
+
+	<div class="table-simple-heading">
+    <span class="represh-tit">주간업무 진행 시간입니다.<span class="reference-label-tworows"></span></span> <span class="reference-label pull-right">단위: 시간</span>
+  </div>
+  <div class="table-wrap" id="weeklydata"></div>
+
+</div>
+</div>
+<!-- gantt END  -->
+<script type="text/javascript">
+var wmcTree , wmcPopup , TYPE_DAILYREPORT ="{__PMS_COMMENT_TYPE_DAILY_REPORT__}" ;
+var responses = ['result', 'comment_srl' , 'project_srl'];
+var form_object = new FormData();
+var users_data3
+ , task ={}
+ , mid="{$mid}";
+
+var ySlider_work_time , ySlider_progress ;
+task.project_srl ="{$project_srl}";
+var params ={};
+params.project_srl =1;
+
+
+
+/*
+	나중에 고정형 달력 붙일때 써라...
+
+ */
+/*
+var myCalendar ;
+myCalendar = new dhtmlXCalendarObject("calendar-holder");
+myCalendar.setDate(new Date());
+myCalendar.attachEvent("onClick",function(d){
+	jQuery("#report_date").val( myCalendar.getFormatedDate(null,d) );
+});
+myCalendar.show();
+*/
+
+</script>
+<load target="js/work_view.js" />

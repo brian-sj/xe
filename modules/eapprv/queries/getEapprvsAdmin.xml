@@ -1,0 +1,13 @@
+<query id="getEapprvsAdmin" action="select">
+    <tables>
+		<table name="eapprv" />
+        <table name="eapprv_line" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="eapprv_line_srl" var="eapprv_line_srl" filter="number"  />
+        <condition operation="equal" column="member_srl" var="member_srl" filter="number" notnull="notnull" pipe="and"/>
+    </conditions>
+</query>

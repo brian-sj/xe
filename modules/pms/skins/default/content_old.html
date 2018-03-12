@@ -1,0 +1,112 @@
+<style>
+#main_panel , #history_panel {margin : 10px }
+.progress {margin-bottom : 0 !important ;}
+.hidden-content {display:none;}
+.title-link {cursor:pointer;}
+.pagination {vertical-align: middle;}
+select[multiple] {height:200px !important; margin-left:20px;}
+.btn_add {text-align:right;}
+#radiobox label{font-size:10px;}
+</style>
+<!--#include("./header.html")-->
+<load target="/common/js/plugins/dhtmlx/dhtmlx.js" />
+<load target="/common/js/plugins/gantt/dhtmlxgantt.js" />
+<load target="/common/js/plugins/gantt/dhtmlxgantt.css" />
+<load target="js/calendar.js" />
+
+<script>
+var mid ="{$mid}"
+	, opts =[]
+	, task ={}
+	, params ={}
+	, _obj ={};
+	task.project_srl ="{$project_srl}";
+	params.project_srl ="{$project_srl}";
+	params.prefix ="[NON]";
+
+</script>	
+<script>
+// radering javascript 
+	<block loop="$wmc_members=>$key,$val">
+	_obj = {}; _obj.key ={$key} ;_obj.label ="{$val}" ;opts.push(_obj);
+	</block>
+</script>	
+<script>
+jQuery(document).ready(function($){
+	$("#radiobox input[type=radio]").bind('click',function(){
+		params.prefix = $(this).val(); 
+	});
+
+});	
+	
+function onChange(a){
+	//params.project_srl = params.project_srl ;
+	if( jQuery("#favorite").attr("checked") =='checked'){
+		params.add ="Y"; // 즐겨 찾기에 추가 
+	}else{
+		params.add ="N"; // 즐겨 찾기에서 제외
+	}
+	exec_xml ( 'pms','procPmsFavoriteToggle' , params , callback_function_favorite , responses , form_object );
+}
+</script>
+
+	<div class="col-lg-10">
+	<div id="main_panel" class="panel panel-primary">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">
+	  <h5>{$data->title} (PM : {$data->user_name})
+		<div class="btn_add">
+			<input type="checkbox" data-customClass="favorite" onchange="onChange()" data-label="즐겨찾기" name="favorite" checked|cond="$cdata->favorite" value="F" id="favorite" class="">
+		</div>
+	  
+	  </h5></div>
+	  <!-- Table -->
+	  <table class="table">
+		<tr><th>부제목</th><td>{$data->sub_title}</td></tr>
+		<tr height="30"><th width="100" height="30">시작일</th><td>{zDate($data->start_date, "Y-m-d")}</td><th  width="100">MH(E)</th><td>600MH(75MD)</td><th  width="150">진척도(계산상)</th><td>
+					<div class="progress">
+						<div id="planed_mh" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+							50%
+						</div>
+					</div>
+			</td>
+			<th  width="100">예산</th><td>0</td></tr>
+		<tr><th>종료일(예정)</th><td>{zDate($data->end_date, "Y-m-d")}({zDate($data->planed_end_date, "Y-m-d")})</td><th>MH(A)</th><td>300MH(38MD)</td><th>진척도(실제)</th><td>
+					<div class="progress">
+						<div id="mh" class="progress-bar" role="progressbar" aria-valuenow="{$data->progress}" aria-valuemin="0" aria-valuemax="100" style="width: {$data->progress}%;">
+							{$data->progress}%
+						</div>
+					</div>	
+			</td>
+			<th>집행</th><td>0</td></tr>
+		<tr><th>공유자</th><td colspan="6">
+
+				<block loop="$wmc_members=>$key,$val4">
+					<span cond="in_array( $key, $shared_members)">{$val4}</span>
+				</block>
+				<button class="btn btn-info" type="button" data-toggle="tooltip" title="해당자의 즐겨찾기에 추가됩니다. 즐겨찾기에서 뺄때는 개인이 직접 빼주셔야 합니다." id="member_edit">수정 <span class="glyphicon glyphicon-info-sign"></span></button> 
+			<!--#include("./_share_member.html")-->
+									</td>
+								  <td><a href="{getUrl('mid', 'releasenote_AtAv26', 'act', 'dispReleasenoteWrite')}" target="_blank"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>배포요청쓰기</button></a>
+								      <a href="{getUrl('act', 'dispPmsProjectWrite' ,'project_srl' ,$data->project_srl )}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>수정</button></a>
+								  </td>
+		</tr>
+		<tr><th>내용</th><td colspan="7">{$data->content}</td>
+		</tr>
+	  </table>
+	</div>
+	</div>
+	<div class="col-lg-2">
+		<!--#include("./_file_attach.html")-->		
+	</div>
+	<div class="col-lg-12">
+		<!--#include("./_comment.html")-->	
+	</div>
+	<hr>
+<!-- gantt -->
+	<div class="col-lg-12">
+		<div id="gantt_here" style='width:100%; height:100%'></div>
+	</div>
+<!-- gantt END  -->
+
+

@@ -1,0 +1,391 @@
+
+<style>
+select[multiple] {height:200px !important; margin-left:20px}
+#tasklist .del {cursor:pointer}
+/*김지민*/
+.list-width{max-width:166px}
+
+
+/**   _comment_table  , _comment_worklog 에서 사용한다. **/
+.refer-box {border:none}
+.refer-box .box-title{color:#3c8dbc}
+.pagination{margin:0 0 40px 0}
+
+.box-header.width-border {border-bottom:1px solid #9fa3a5}
+
+.refer-table>tbody>tr>td{border-top:none}
+.refer-table th, .refer-table td{border-top:1px solid #efefef}
+.refer-table tr:last-child td{border-bottom:1px solid #9fa3a5}
+.refer-table .divi-line{border-right:1px solid #e0e1e2}
+.box-header.width-border{border-bottom:none}
+.grid,.grid2 {position:relative; overflow:hidden; text-align:center; margin-bottom:20px}
+.list_frame .cld_thead {overflow:hidden; width:100%; height:29px; padding-left:14px; border-top:1px solid #dadada; border-bottom:1px solid #f1f1f1; background:#f8f8f8; margin-bottom:0; padding-left:0; text-align:center}
+.list_frame .cld_thead li {float:left; padding-top:3px; font-size:12px; color:#777; text-indent:12px; text-indent:0}
+.list_frame .date {width:80px}
+.list_frame .user_name {width:80px}
+.list_frame .time {width:80px}
+.list_frame .memo {padding-left:20px}
+.list_area {clear:both; padding-left:0; margin:0; display:table; width:100%; color:#222}
+.list_area li {border-bottom:1px solid #f1f1f1; border-left:1px solid #f1f1f1; line-height:20px; padding:6px 0; display:table-cell; vertical-align:middle}
+.list_area li:first-child {border-left:none}
+/* gantt차트에서 invalid day index 에러 나오는것을 숨긴다. */
+.gantt_message_area {display:none}
+</style>
+
+<!--#include("./header.html")-->
+
+<load target="/common/js/plugins/toastr/toastr.js" />
+<load target="/common/js/plugins/toastr/toastr.css" />
+<load target="/common/js/plugins/isotope/isotope.pkgd.min.js" />
+<script>
+var mid ="{$mid}"
+	, opts =[]
+	, task ={}
+	, params ={}
+	, _obj ={};
+	task.project_srl ="{$project_srl}";
+	params.project_srl ="{$project_srl}";
+	params.prefix ="[NON]";
+var work_time_mh = "{$work_time->mh}";
+var project_sum_mh =0;
+var __TYPE_DAILY__ ="{__PMS_COMMENT_TYPE_DAILY_REPORT__}" ,
+    __TYPE_DIRECT__ ="{__PMS_COMMENT_TYPE_DIRECT_WRITE__}",
+	__TYPE_LOG__ = "{__PMS_COMMENT_TYPE_LINK_LOG__}";
+</script>
+<script>
+// radering javascript
+	<block loop="$wmc_members=>$key,$val">
+	_obj = {}; _obj.key ={$val->member_srl} ;_obj.label ="{$val->user_name}" ;opts.push(_obj);
+	</block>
+	
+</script>
+<script>
+function onChange(a){
+	//params.project_srl = params.project_srl ;
+	if( jQuery("#favorite").attr("checked") =='checked'){
+		params.add ="Y"; // 즐겨 찾기에 추가
+	}else{
+		params.add ="N"; // 즐겨 찾기에서 제외
+	}
+	//exec_xml ( 'pms','procPmsFavoriteToggle' , params , callback_function_favorite , responses , form_object );
+	exec_json("pms.procPmsFavoriteToggle",params, function(data){
+		var opts = {  "progressBar": true
+			, "positionClass": "toast-bottom-center" };
+		toastr.warning('즐겨찾기 설정이 저장되었습니다. ', null , opts);
+	});
+}
+function callback_function_favorite( ret_obj, responses, params, form_object ){
+	var error = ret_obj['error'];
+    var message = ret_obj['message'];
+	var opts = {  "progressBar": true
+				, "positionClass": "toast-bottom-center" };
+	toastr.warning('즐겨찾기 설정이 저장되었습니다. ', null , opts);
+}
+function getWorkTimeCommentList( type,  page , selector , project_srl ,task_srl  ){
+    params.page = page ;
+    params.type = type ;
+    params.mid = mid;
+    params.project_srl = project_srl;
+    params.task_srl = task_srl;
+	params.skintype ="timeline";
+console.log( params );
+    //params.act = "dispPmsCommentList";
+    params.act = "dispPmsWorkTimeCommentList";
+
+    jQuery.ajax({
+      type: "POST"
+      , url : "/"
+      , data : params
+      , success : function (data){
+        jQuery( selector ).html(data);
+      }
+      , dataType: "html"
+    });
+}
+function getCommentList( type,  page , selector ){
+	params.page = page ;
+	params.type = type ;
+	params.mid = mid;
+	params.act = "dispPmsCommentList";
+//console.log( params );
+	jQuery.ajax({
+		type: "POST"
+		, url : "/"
+		, data : params
+		, success : function (data){
+			jQuery( selector ).html(data);
+		}
+		, dataType: "html"
+		});
+}
+function saveComment(){
+console.log('dddd');
+	if(  jQuery("#comment-title").val() ==""  || jQuery("#comment-content").val() ==""  ){
+		alert("제목과 내용을 입력 하세요. ");
+		return false ;
+	}
+	return true ;
+}
+</script>
+
+<script>
+jQuery(document).ready(function($){
+	/** 첨부 파일 삭제 */
+	$(".wmc-btn-delete").bind('click',function(){
+		deleteFile( $(this).data('filesrl')  );
+	});
+
+	/**  라디오 박스 바꾸기 */
+	$("input:radio").iCheck({radioClass:'iradio_flat-green' });
+	$("#float-div-share input:checkbox").iCheck({checkboxClass:'icheckbox_flat-green'});
+
+	$("input:radio[name='scales']").on('ifClicked',function(){zoom_tasks(this);});
+
+	/** 체크박스 바꾸고,  즐겨 찾기 저장 */
+	$('#favorite').bootstrapToggle().change( function(){ onChange();});
+	//$("#float-div-share input:checkbox").bootstrapToggle();
+
+	/**  업로드 타입 라디오 박스 클릭시 접두어 붙임.  */
+	$("#radiobox input[type=radio]").bind('click',function(){
+		params.prefix = $(this).val();
+	});
+
+	/**  페이지 링크 */
+	$(document).on('click',"#comment_history .pagination a",function(e){
+console.log("#####################################");	
+		e.preventDefault();
+		getWorkTimeCommentList( "" , $(this).data('page') , "#comment_history" , task.project_srl ,"" );
+	});
+
+	$(document).on('click',"#comment_log .pagination a",function(e){
+		e.preventDefault();
+		getCommentList( __TYPE_LOG__ , $(this).data('page') , "#comment_log" );
+	});
+
+	$(document).on('click',"#comment_com .pagination a",function(e){
+		e.preventDefault();
+		getCommentList( __TYPE_DIRECT__ , $(this).data('page') , "#comment_com" );
+	});
+
+	//getCommentList( __TYPE_DAILY__    , 1 , "#comment_history" );
+	getCommentList( __TYPE_DIRECT__  , 1 , "#comment_com" );
+	
+	// 2016년 8월 18일  일단 숨긴다. 
+	// getCommentList( __TYPE_LOG__       , 1 , "#comment_log" );
+	getWorkTimeCommentList(  "" , 1 , "#comment_history" , task.project_srl , "" );
+
+});
+</script>
+
+<script>
+function insert_confirm(msg){
+	params.category = 'E';
+
+	exec_json("pms.procPmsProjectConfirmSave", params, function(data){
+		if (!msg) alert("저장했습니다.");
+			window.location.reload();
+			},function(error){ console.log(error);}
+		);
+
+}
+</script>
+{@debugPrint($grant);}
+<div class="wrap">
+	<div class="row">
+		<div class="col-xs-12 page-title">
+			<div class="col-xs-12">
+				<p class="breadcrumbs">{$data->gu1_name} > {$data->gu2_name}  </p>
+				<h3 class="box-title"><span class="label label-primary">{$g_category[$data->category]}</span> {$data->title}</h3>
+				<input type="checkbox" id="favorite" data-toggle="toggle" data-on="<i class='fa fa-star' aria-hidden='true'></i> 즐겨찾기 등록 " data-off="<i class='fa fa-star' aria-hidden='true'></i> 즐겨찾기해제" checked|cond="$favorite=='Y'"  value="F">
+				<!--@if ($data->category == 'P') -->
+				<button type="button" class="btn btn-danger" cond="$grant->gm_manager" onclick="insert_confirm()">완료 처리</button>
+				<!--@end -->
+
+				<div class="pull-right btn-group">
+					<a href="{getUrl('act', 'dispPmsProjectWrite' ,'project_srl' ,$data->project_srl )}"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 수정</button></a><a href="{getUrl('mid', 'releasenote_AtAv26', 'act', 'dispReleasenoteWrite')}" target="_blank"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 배포요청</button></a><a href="{getUrl('act', 'dispPmsProjectListView')}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> 목록</button></a>
+				</div>
+			</div>
+		</div>
+	</div>
+<!--div class="col-xs-12">
+	<div class="col-xs-3">
+		<div class="box box-primary">
+			<div class="box-header with-border"><h3 class="box-title">프로젝트 정보</h3></div>
+			<div class="box-body">
+				<div class="pmsInfo">
+					<div class="allProg">23%</div><span class="">경과일 20</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-9">
+	</div>
+</div-->
+
+	<div class="col-xs-12">
+		<div class="box box-danger list-group">
+			<ul class="col-xs-3 wrap-list list-height-line">
+				<li class="list-content">
+					주담당자<span class="list-value">{$data->user_name}</span>
+				</li>
+				<li class="list-content">
+					주무부서<span class="list-value">{$wmc_devdepts[$data->dev_dept]}</span>
+				</li>
+				<li class="list-content">
+					업무기간<span class="list-value">{$data->start_date} ~ {$data->end_date} (종료예정:{$data->planed_end_date})</span>
+				</li>
+				<li class="list-content">
+ 					업무 참여자
+					<span class="list-value list-width">
+						<block loop="$wmc_members=>$key,$val4">
+							<span cond="in_array( $val4->member_srl, $shared_members)">{$val4->user_name} </span>
+						</block>
+					</span>
+				</li>
+				<li class="btn-worker">
+					<button class="btn btn-warning btn-xs" type="button" data-toggle="tooltip" title="해당자의 즐겨찾기에 추가됩니다. 즐겨찾기에서 뺄때는 개인이 직접 빼주셔야 합니다." id="member_edit"><i class="glyphicon glyphicon-info-sign"></i> 업무 참여자 변경</button>
+					<!--#include("./_share_member.html")-->
+				</li>
+			</ul>
+			<ul class="col-xs-3  wrap-list list-height-line">
+				<li class="list-content">
+					총예산<span class="list-value"> 만원</span>
+				</li>
+				<li class="list-content">
+					- 직접비<span class="list-value"> 만원</span>
+				</li>
+				<li class="list-content">
+					- 간접비<span class="list-value">{$data->planed_mh*__TIME_MONEY__ } 만원</span>
+				</li>
+				<li class="list-content">
+					총지출<span class="list-value"> 만원</span>
+				</li>
+				<li class="list-content">
+					- 직접비<span class="list-value"> 만원</span>
+				</li>
+				<li class="list-content">
+					- 간접비<span class="list-value">{$work_time->mh*__TIME_MONEY__} 만원</span>
+				</li>
+			</ul>
+
+			<ul class="col-xs-3 wrap-list">
+				<li class="list-content">주요업무목록 (준비중)</li>
+			</ul>
+
+		</div>
+	</div>
+
+	<div class="col-xs-12"><!--  _task_list  -->
+		<!--#include("./_calendar_routine.html")-->
+	</div>
+
+<div class="col-xs-12">
+	<div class="row">
+		<div id="comment_history" class="col-xs-6"></div>
+		
+		<div id="comment_com" class="col-xs-6"><!--#include()--></div>
+	</div>
+</div>
+
+	<div class="col-xs-6">
+		<div class="box box-success collapsed-box">
+			  <!-- Default panel contents -->
+			  <div class="box-header with-border">
+          <h3 class="box-title">업무내용</h3>
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+			<div class="box-body">{$oDocument->getContent(false);}</div>
+		</div>
+	</div>
+
+	
+	<div class="col-xs-6"><!--#include("./_file_attach.html")--></div>
+	
+	<!-- 일단 로그는 숨기자...   -->
+	<!-- <div id="comment_log"  class="col-xs-3"></div> -->
+
+
+	<div class="row" >
+		<div class="col-xs-12">
+			<div class="col-xs-6" id="comment_com">
+			<!--#include()-->
+			</div>
+		</div>
+	</div>
+
+	<!--   progress edit modal   -->
+	<div class="modal fade modal-warning" id="edit-progress">
+		<div class="modal-dialog">
+			<form name="frmProgress" action="/" method="get">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span></button>
+						<h4 class="modal-title">진행률 변경</h4>
+					</div>
+
+					<div class="modal-body">
+						<input type="hidden" name="act" value="procPmsProjectProgressSave">
+						<input type="hidden" name="project_srl" value="{$project_srl}">
+						<input type="hidden" name="comment_srl" id="comment-srl" value="">
+						<input type="hidden" name="type" value="A">
+						<div class="input-group" style="width:100%">
+							<label>진행률</label>
+							<input type="text" id="project-progress" name="progress" placeholder="%" class="form-control" value="{$data->progress}">
+						</div>
+						<div class="form-group">
+							<label>예상 총 작업시간</label>
+							<input type="text" class="form-control" name="planed_mh" placeholder="시간" value="{$data->planed_mh}">
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">닫기</button>
+						<button type="submit" class="btn btn-outline">저장</button>
+					</div>
+				</div>
+			</form>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+<!--   history edit modal   -->
+	<div class="modal fade modal-warning" id="history">
+		<div class="modal-dialog">
+			<form name="frmtask" action="/" method="post" onsubmit="return saveComment()">
+				<div class="modal-content">
+					<div class="modal-header"> 
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span></button>
+						<h4 class="modal-title">작업기록 추가</h4>
+					</div>
+
+					<div class="modal-body">
+						<input type="hidden" name="success_return_url" value="{getUrl()}">
+						<input type="hidden" name="act" value="procPmsCommentSave">
+						<input type="hidden" name="progress" value="0">
+						<input type="hidden" name="project_srl" value="{$project_srl}">
+						<input type="hidden" name="comment_srl" id="comment-srl" value="">
+						<input type="hidden" name="type" value="{__PMS_COMMENT_TYPE_DIRECT_WRITE__}">
+						<div class="input-group" style="width:100%">
+							<input type="text" id="history-title" name="title" placeholder="제목" class="form-control">
+						</div>
+						<div>
+							<textarea name="content" id="comment-content" style="height:200px;" class="form-control" placeholder="내용"></textarea>
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">닫기</button>
+						<button type="submit" class="btn btn-outline">저장</button>
+					</div>
+				</div>
+			</form>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+</div>

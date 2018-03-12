@@ -1,0 +1,13 @@
+<query id="insertEapp" action="insert">
+    <tables>
+        <table name="wmc_eapp" />
+    </tables>
+    <columns>
+        <column name="eapp_srl" var="eapp_srl" notnull="notnull" default="sequence()" />
+        <column name="category" var="category" default="AA" maxlength="2" />
+		<column name="member_srl" var="member_srl" filter="number"  />
+		<column name="regdate" default="" />	
+		<column name="stt" var="stt" default="n" />	
+		<column name="title" var="title" default="." />	
+    </columns>
+</query>

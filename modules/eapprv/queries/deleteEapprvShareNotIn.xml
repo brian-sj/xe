@@ -1,0 +1,9 @@
+<query id="deleteEapprvShareNotIn" action="delete">
+    <tables>
+        <table name="eapprv_share" />
+    </tables>
+    <conditions>
+        <condition operation="equal" column="eapprv_srl" var="eapprv_srl" filter="number" notnull="notnull" />
+		<condition operation="notin" column="member_srl" var="shared_members"  pipe="and"/>
+	</conditions>
+</query>

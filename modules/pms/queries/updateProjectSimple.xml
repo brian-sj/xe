@@ -1,0 +1,18 @@
+<query id="updateProjectSimple" action="update">
+    <tables>
+        <table name="pms_project" />
+    </tables>
+    <columns>
+		<column name="memo" var="memo" />				
+		<column name="shared_members" var="shared_members" />	
+		
+		<column name="planed_mh" var="planed_mh" /> 
+		<column name="progress" var="progress" /> 
+		<column name="project_stt" var="project_stt" default="N" /> 
+		<column name="planed_start_date" var="planed_start_date" /> 
+		<column name="planed_end_date" var="planed_end_date" /> 		
+    </columns>
+	<conditions> 
+        <condition operation="equal" column="project_srl" var="project_srl"   notnull="notnull" />   
+    </conditions>
+</query>	

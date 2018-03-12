@@ -1,0 +1,435 @@
+<load target="/common/css/bootstrap.latest.css" />
+<load target="/common/js/bootstrap.latest.js" />
+<load target="/common/css/jquery-ui.css" />
+<load target="/common/js/jquery-ui.min.js" />
+<load target="css/jquery.selectBoxIt.css" />
+<load target="js/jquery.selectBoxIt.min.js" />
+<load target="/common/js/plugins/bootstrap-toggle/bootstrap-toggle.min.css" />
+<load target="/common/js/plugins/bootstrap-toggle/bootstrap-toggle.min.js" />
+<include target="_header.html" />
+<style>
+.release-stt {display:block; }
+.icon-stt {width:318px; height:100px}
+table.table .t-th,.t-td {width:120px}
+span.t-time{ display:inline-block; width:75px}
+span.t-name,span.t-rtime{font-weight:lighter; margin-left:4px}
+span.r-msg {color:#888800; border-bottom:1px solid #666; padding:2px 2px}
+span.t-msg i {cursor:pointer}
+span.t-msg i.nocursor {cursor:default}
+.release-comment {border-bottom:1px solid #ddd; margin:0 4px; padding:5px 0; font-weight:bold}
+.release-comment .comment-head {color:#666; width:150px; display:inline-block; font-weight:lighter}
+.release-comment .comment-body {color:#222200; font-weight:lighter}
+
+.read_footer {overflow:hidden}
+.read_footer .fileList {margin:15px 0; display:inline; float:left}
+.read_footer .toggleFile {border:0; background:url(icoSet.gif) no-repeat 0 2px; cursor:pointer; overflow:visible; padding:0 0 0 15px; color:#4b4b4b}
+.read_footer .files {display:none; list-style:none; margin:15px 0; padding:0; line-height:16px}
+.read_footer .files li {background:url(icoSet.gif) no-repeat 0 -28px; padding:0 0 0 15px}
+.read_footer .files a {color:#4b4b4b; position:relative; text-decoration:none}
+.read_footer .files a .fileSize {visibility:block; position:absolute; padding:1px 4px; left:100%; top:-4px; border:1px solid #ddd; font:11px Tahoma, Geneva, sans-serif; background:#fff; white-space:nowrap}
+.read_footer .files a:hover .fileSize, .read_footer .files a:active .fileSize, .read_footer .files a:focus .fileSize {visibility:visible}
+.read_footer {overflow:hidden}
+.read_footer .fileList {margin:15px 0; display:inline; float:left}
+.read_footer .toggleFile {border:0; background:url(icoSet.gif) no-repeat 0 2px; cursor:pointer; overflow:visible; padding:0 0 0 15px; color:#4b4b4b}
+.read_footer .files {display:none; list-style:none; margin:15px 0;	padding:0; line-height:16px}
+.read_footer .files li {background: url(icoSet.gif) no-repeat 0 -28px; padding:0 0 0 15px}
+.read_footer .files a {color:#4b4b4b; position:relative; text-decoration:none}
+.read_footer .files a .fileSize {visibility:block; position:absolute;	padding:1px 4px; left:100%;	top:-4px; border:1px solid #ddd; font:11px Tahoma, Geneva, sans-serif; background:#fff; white-space:nowrap}
+.read_footer .files a:hover .fileSize, .read_footer .files a:active .fileSize, .read_footer .files a:focus .fileSize {visibility:visible}
+.read_footer .tns {float: right;	margin: 15px 0} 
+.read_footer .tns a:hover, .read_footer .tns a:active, .read_footer .tns a:focus {text-decoration: underline}
+.read_footer .tags {display: inline-block; height: 16px; font-size: 11px; color: #666; vertical-align: top; padding: 0 15px 0 32px; line-height: 16px; background: url(icoSet.gif) no-repeat 0 -58px}
+#spop {width:200px; height:315px; z-index:1000; position:absolute; background-color:#fff; display:none}
+#spop .table4  td {height:18px; padding:3px 0 0 13px}
+#spop .table4 .spop-btn {padding:8px 0 0 40px}
+.spop-txt {border:solid 1px #B2B1B1; resize:none; width:168px; height:60px}
+/*김지민*/
+.panel-footer{padding:20px 15px;}
+.panel-body{padding:0 15px}
+.fdb_itm {border-bottom:none}
+.comment-box{border-top:solid 1px #b3b3b3; padding:20px;}
+.cmt_editor{padding-top:20px}
+</style>
+<body>
+
+	<div class="wrap">
+
+		<div class="row">
+			<div class="col-xs-12 page-title">
+				<div class="col-xs-7">
+					<h3 class="box-title pull-left">{$val->title}</h3>
+				</div>
+
+				<div class="col-xs-5 text-right">
+
+					<!--@if($grant->gm_manager)-->
+					<input type="checkbox" id="pmsadd" data-toggle="toggle" data-on="<i class='fa fa-star' aria-hidden='true'></i> 주간보고 등록 " data-off="<i class='fa fa-star' aria-hidden='true'></i> 주간보고 해제" checked|cond="$val->stt3=='Y'"  value="Y">
+					<a href="#" onclick="dropDocument({$val->note_srl})" ><button class="btn btn-danger">관리자 삭제</button></a>
+					<!--@end -->
+					<!--@if($grant->gm_manager||$val->manager_srl==$member_srl)-->
+					<a href="{getSiteUrl('','act','dispReleasenoteWrite','note_srl',$val->note_srl )}" ><button class="btn btn-primary">관리자 수정</button></a>
+					<!--@end -->
+					<a href="{getSiteUrl('','act','dispReleasenoteIndex','note_srl', '')}" ><button class="btn btn-default">목록</button></a>
+
+				</div>
+			</div>
+		</div>
+
+
+		<div class="col-xs-12">
+			<div class="box box-primary">
+
+				<div id="spop" class="panel panel-warning">
+					<div class="panel-heading">[메시지 보내기]</div>
+					<table class="table4">
+						<tr><td><input type="radio" name="msg" value="S" id="msg-s" data-text="결재해주세요." checked /><label for="msg-s">&nbsp;결재해주세요.</label></td></tr>
+						<tr><td><input type="radio" name="msg" value="T" id="msg-t" data-text="테스트완료하였습니다." /><label for="msg-t">&nbsp;테스트완료하였습니다.</label></td></tr>
+						<tr><td><input type="radio" name="msg" value="R" id="msg-r" data-text="댓글을 확인해주세요." /><label for="msg-r">&nbsp;댓글을 확인해주세요.</label></td></tr>
+						<tr><td><input type="radio" name="msg" value="A" id="msg-a" data-text="결재완료-배포 요망" /><label for="msg-a">&nbsp;결재완료-배포 요망</label></td></tr>
+						<tr><td><input type="radio" name="msg" value="C" id="msg-c" data-text="배포완료-확인 요망" /><label for="msg-c">&nbsp;배포완료-확인 요망</label></td></tr>
+						<tr><td><textarea name="plane-memo" id="plane-memo" class="spop-txt">결재해주세요.</textarea></td></tr>
+						<tr><td class="spop-btn"><button class="btn btn-warning" type="button" onclick="sendmsg()">전송</button>
+							<button class="btn btn-default" onclick="jQuery('#spop').hide()">닫기</button></td></tr>
+						</table>
+						<div class="panel-body">
+						</div>
+					</div>
+
+
+					<div class="panel-body">
+						<table class="table" >
+							<tr>
+								<th class="t-th">구분/선택</th>
+								<td class="t-td" style="color:#0066CC !important;font-weight:bold;width:220px">{$val->category} | {$val->memo}</td>
+								<th class="t-th">언어 | 배포</th>
+								<td style="width:200px;"> <span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> {$lang->lang_code[$val->lang]} </span>  &nbsp;  <span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> {$lang->releasenote_releasetype[$val->stt1]} </span></td>
+
+								<th style="width:300px;" rowspan="3">
+									<span class="t-time">작업</span><span class="t-name">{$val->worker_name}</span><span class="t-rtime">{zDate($val->worker_confirm, "Y-m-d H:i")}</span> <span class="t-msg" data-srl="{$val->worker_srl}"><i class="fa fa-paper-plane"></i></span>
+									<br>
+									<block cond="$val->t_releaser_srl">
+										<span class="t-time">개발배포</span><span class="t-name">{$val->t_releaser_name}</span><span class="t-rtime">{zDate($val->t_releaser_confirm, "Y-m-d H:i")}</span> <span class="t-msg" data-srl="{$val->t_releaser_srl}"><i class="fa fa-paper-plane"></i></span>
+										<br>
+									</block>
+									<span class="t-time">테스트</span><span class="t-name">{$val->tester_name}</span><span class="t-rtime">{zDate($val->tester_confirm, "Y-m-d H:i")}</span> <span class="t-msg" data-srl="{$val->tester_srl}"><i class="fa fa-paper-plane"></i></span>
+									<br>
+									<span class="t-time">팀장결재</span><span class="t-name">{$val->manager_name}</span><span class="t-rtime">{zDate($val->manager_confirm, "Y-m-d H:i")}</span> <span class="t-msg" data-srl="{$val->manager_srl}"><i class="fa fa-paper-plane"></i></span>
+									<br>
+									<span class="t-time">최종결재</span><span class="t-name">{$val->header_name}</span><span class="t-rtime">{zDate($val->header_confirm, "Y-m-d H:i")}</span> <span class="t-msg" data-srl="{$val->header_srl}"><i class="fa fa-paper-plane"></i></span>
+									<br>
+									<span class="t-time">배포완료</span><span class="t-name">{$val->releaser_name}</span><span class="t-rtime">{zDate($val->releaser_confirm, "Y-m-d H:i")}</span> <span class="t-msg" data-srl="{$val->releaser_srl}"><i class="fa fa-paper-plane"></i></span>
+								</th>
+								<td rowspan="3" style="padding-left:30px;">
+									<p><b>배포요청 단계</b></p>
+									<!--@if ($val->stt==__STT_ADDED_COMPLETE__) -->
+									<div class="icon_releasenote_step">
+										<span class="step_num blue">01</span><span>배포접수</span>
+									</div>
+									<!--@else if ($val->stt==__STT_TEST_UPLOAD_COMPLETE__) -->
+									<div class="icon_releasenote_step">
+										<span class="step_num green">02</span><span>작업완료</span>
+									</div>
+									<!--@else if ($val->stt==__STT_WORK_COMPLETE__) -->
+									<!--@if($val->t_releaser_confirm)-->
+									<div class="icon_releasenote_step">
+										<span class="step_num red">★</span><span>개발 배포</span>
+									</div>
+									<!--@else-->
+									<div class="icon_releasenote_step">
+										<span class="step_num green">02</span><span>작업완료</span>
+									</div>
+									<!--@end-->
+									<!--@else if ($val->stt==__STT_TEST_COMPLETE__) -->
+									<div class="icon_releasenote_step">
+										<span class="step_num ylw">03</span><span>테스트 완료</span>
+									</div>
+									<!--@else if ($val->stt==__STT_M_COMPLETE__) -->
+									<div class="icon_releasenote_step">
+										<span class="step_num vlt">04</span><span>과장 결재</span>
+									</div>
+									<!--@else if ($val->stt==__STT_H_COMPLETE__) -->
+									<div class="icon_releasenote_step">
+										<span class="step_num red">05</span><span>부서장 결재</span>
+									</div>
+									<!--@else if ($val->stt==__STT_RELEASE_COMPLETE__) -->
+									<div class="icon_releasenote_step">
+										<span class="step_num blue">06</span><span>배포 완료</span>
+									</div>
+									<!--@end-->
+								</td>
+							</tr>
+							<tr>
+								<th class="t-th">요청부서</th>
+								<td class="t-td">{$request_dept[$val->request_dept]}</td>
+								<th class="t-th">요청자</th>
+								<td class="t-td">{$val->request_name}</td>
+							</tr>
+							<tr>
+								<th>작업일자</th>
+								<td>{$val->start_date} ~ {$val->end_date} </td>
+								<th>배포예정일</th>
+								<td >{$val->release_date}</td>
+							</tr>
+							<tr>
+								<th>작업내용</th>
+								<td colspan="5" class="text-left">
+									<!--  이 배포에 등록된  맨티스 정보...    -->
+									<!--@foreach($reg_bug_list as $no => $val2)-->
+									<div class="alert alert-warning" role="alert">
+										<strong>{$val2->id}</strong>
+										<span class="reporter">{$val2->reporter}</span>
+										<span class="reporter">{$val2->handler}</span>
+										<a href="{__MANTIS_URL__}/view.php?id={$val2->id}" class="alert-link" target="_blank" ><span class="exp">{$val2->summary}</span></a>
+									</div>
+									<!--@end-->
+
+									<h2>{$val->title}</h2>
+									<div>
+
+										
+										{$oDocument->getContent(false)}
+										
+										<hr>[첨부 파일]
+										<div class="read_footer_">
+											<ul class="files">
+												<li loop="$oDocument->getUploadedFiles()=>$key,$file">
+													<a href="{getUrl('')}{$file->download_url}">{$file->source_filename} <span class="fileSize">[File Size:{FileHandler::filesize($file->file_size)}/Download:{number_format($file->download_count)}]</span></a>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</td>
+							</tr>
+
+							<!--   테스터 확인   -->
+							<form action="index.php" method="post">
+								<input type="hidden" name="act" value="procReleasenoteConfirmCheckTester">
+								<input type="hidden" name="note_srl" id="note_srl" value="{$note_srl}" >
+								<input type="hidden" name="tester_srl" id="tester_srl" >
+								<input type="hidden" name="stt" value="{__STT_ADDED_COMPLETE__}"|cond="$is_admin=='Y'" >
+								<!--@foreach($tester_list as $no => $val4)-->
+								<tr>
+									<th>보조 테스터</th>
+									<td>{$val4->user_name}&nbsp;&nbsp;<span class="t-msg" data-srl="{$val4->tester_srl}"><i class="fa fa-paper-plane"></i></span></td>
+									<td colspan="5">
+										<!--@if ($val4->regdate == '') -->
+										(미확인) &nbsp;&nbsp;&nbsp;
+										<button class="btn btn-info" cond="$val4->tester_srl==$member_srl||$is_admin=='Y'" onclick="confirmCheckTester('{$val4->tester_srl}')">테스트완료</button>
+										<!--@else-->
+										{zDate($val4->regdate, 'Y-m-d H:i');}</td>
+										<!--@end-->
+									</tr>
+									<!--@end-->
+								</form>
+
+
+								<!--   작업자 확인   -->
+								<form action="index.php" method="post">
+									<input type="hidden" name="act" value="procReleasenoteConfirmCheckSubWorker">
+									<input type="hidden" name="note_srl" id="note_srl" value="{$note_srl}" >
+									<input type="hidden" name="member_srl" id="sub_worker_srl" >
+									<input type="hidden" name="stt" value="{__STT_ADDED_COMPLETE__}"|cond="$is_admin=='Y'" >
+									<!--@foreach($sub_worker_list as $no => $val4)-->
+									<tr>
+										<th>보조 작업자</th>
+										<td>{$val4->user_name}&nbsp;&nbsp;<span class="t-msg" data-srl="{$val4->member_srl}"><i class="fa fa-paper-plane"></i></span></td>
+										<td colspan="7">
+											<!--@if ($val4->regdate == '') -->
+											(미확인) &nbsp;&nbsp;&nbsp;
+											<button class="btn btn-info" cond="$val4->member_srl==$member_srl||$is_admin=='Y'" onclick="confirmCheckSubWorker('{$val4->member_srl}')">작업 완료</button>
+											<!--@else-->
+											{zDate($val4->regdate, 'Y-m-d H:i');}</td>
+											<!--@end-->
+
+										</tr>
+										<!--@end-->
+									</form>
+
+
+								</table>
+
+
+
+							</div>  <!-- panel body -->
+
+							<div class="panel-footer">
+									<form action="index.php" method="post" class="text-right" style="margin-bottom:0">
+										<input type="hidden" id="check-act" name="act" value="procReleasenoteConfirmCheck" />
+										<input type="hidden" name="note_srl" value="{$val->note_srl}" />
+										<input type="hidden" id="gu" name="gu" value="" />
+
+										<!--@if ($val->stt ==__STT_ADDED_COMPLETE__ ) -->
+										<block cond="$val->t_releaser_srl">
+											<button class="btn btn-success" cond="$val->worker_srl==$member_srl||$is_admin=='Y'" onclick="confirmCheck('{__STT_TEST_UPLOAD_COMPLETE__}')" >작업 완료=> 개발 배포 </button>
+										</block>
+										<button class="btn btn-success" cond="$val->worker_srl==$member_srl||$is_admin=='Y'" onclick="confirmCheck('{__STT_WORK_COMPLETE__}')" >작업 완료=> 테스트 </button>
+										<!--@end -->
+
+										<!--@if ( $val->stt == __STT_TEST_UPLOAD_COMPLETE__ || ($val->stt ==__STT_WORK_COMPLETE__ && !$val->t_releaser_confirm ) ) -->
+										<button class="btn btn-success" cond="$val->t_releaser_srl==$member_srl||$is_admin=='Y'" onclick="confirmCheck('{__STT_TEST_UPLOAD_COMPLETE_NEED_TEST_UPLOAD__}')" >개발배포완료</button>
+										<button class="btn btn-danger" type="button"  cond="$val->t_releaser_srl==$member_srl||$is_admin=='Y'" onclick="confirmFail('{__REJECT__}')" >재수정 요청</button>
+										<!--@end -->
+
+										<!--@if ($val->stt ==__STT_WORK_COMPLETE__ ) -->
+										<button class="btn btn-danger" type="button" cond="$val->tester_srl==$member_srl||$is_admin=='Y'" onclick="confirmFail('{__REJECT__}')">재수정 요청</button>
+										<button class="btn btn-primary" cond="$val->tester_srl==$member_srl||$is_admin=='Y'" onclick="confirmCheck('{__STT_TEST_COMPLETE__}')">테스트 완료</button>
+										<!--@end -->
+										<!--@if ($val->stt == __STT_TEST_COMPLETE__ ) -->
+										<button class="btn btn-warning" cond="$val->manager_srl==$member_srl||$is_admin=='Y'" onclick="confirmCheck('{__STT_M_COMPLETE__}')">과장 결재</button>
+										<button class="btn btn-danger" type="button" cond="$val->manager_srl==$member_srl||$is_admin=='Y'" onclick="confirmFail('{__REJECT__}')">재수정 요청</button>
+										<!--@end -->
+										<!--@if ($val->stt == __STT_M_COMPLETE__ ) -->
+										<button class="btn btn-danger" cond="$val->header_srl==$member_srl||$is_admin=='Y'" onclick="confirmCheck('{__STT_H_COMPLETE__}')">부서장 결재</button>
+										<button class="btn btn-danger" type="button" cond="$val->header_srl==$member_srl||$is_admin=='Y'" onclick="confirmFail('{__REJECT__}')">재수정 요청</button>
+										<!--@end -->
+										<!--@if ($val->stt == __STT_H_COMPLETE__ ) -->
+										<button class="btn btn-danger" cond="$val->releaser_srl==$member_srl||$is_admin=='Y'" onclick="confirmCheck('{__STT_RELEASE_COMPLETE__}')">배포 완료</button>
+										<!--@end -->
+									</form>
+							</div>
+
+							<div class="comment-box">
+								<include target="_comment.html" />
+								<include target="_comment_write.html" />
+							</div>
+
+
+
+						</div>  <!-- panel -->
+
+
+
+
+					</div>
+
+
+
+
+					<!--
+					<form action="index.php" method="post">
+					<input type="hidden" name="act" value="procReleasenoteSaveComment" />
+					<input type="hidden" name="note_srl" value="{$val->note_srl}" />
+
+					<div class="input-group">
+					<input type="text" name="comment" class="form-control" placeholder="댓글은 수정/삭제가 불가능 합니다." style="width:850px;height:45px">
+					<input type="image" src="images/btn_comment.gif" />
+				</div>
+			</form>
+		-->
+
+		<form method="post" name="dropform" id="dropform" action="/index.php">
+			<input type="hidden" name="act" value="procReleasenoteDrop" >
+			<input type="hidden" name="mid" value="{$mid}" >
+			<input type="hidden" name="note_srl" value="{$val->note_srl}" >
+		</form>
+	</div>
+	<script>
+	var MODULE = "releasenote"
+	, ACT = "procReleasenoteSendMessage"
+	, $msgbox = null
+	, REJECT_ACT = "procReleasenoteRejectCheck"
+	, note_srl = "{$val->note_srl}"
+	, mid = "{$mid}"
+	, stt1 = "{$val->stt1}";
+
+	var adjust_left = 20;
+
+	function confirmCheck(arg) {
+		jQuery("#gu").val(arg);
+	}
+	function confirmFail(){
+		//jQuery('#check-act').val("procReleasenoteRejectCheck");
+
+		var responses =['items'];
+		var form_object = {};
+		var params = {};
+		params.note_srl = note_srl;
+		//console.log( params);
+
+		exec_xml(  MODULE , REJECT_ACT , params , function(ret_obj){
+			try{
+				alert(ret_obj.message);
+				document.location.reload();
+				//$msgbox.append("<span class='r-msg'>"+ret_obj.message+"</span>");
+				//$msgbox.unbind('click');
+			}catch(e){ console.log(e);
+
+			}
+		}
+		,responses, params, form_object );
+
+
+	}
+	function confirmCheckTester(tester_srl){
+		jQuery("#tester_srl").val(tester_srl);
+	}
+
+	function confirmCheckSubWorker( worker_srl){
+		jQuery("#sub_worker_srl").val(worker_srl);
+	}
+
+	function dropDocument(note_srl){
+
+		if(  confirm('문서가 영구폐기 됩니다. 정말 삭제 하겠습니까?') ) {
+			jQuery("#dropform").submit();
+		}
+	}
+
+
+	jQuery(document).ready(function($){
+		$(".t-msg").bind('click',function(){
+			$msgbox = $(this);
+			pos = $(this).position();
+			member_srl = $(this).data('srl') ;
+			$("#spop").css({left : pos.left +adjust_left , top :pos.top });
+			$("#spop").show();
+		});
+
+		$("#msg-s,#msg-t,#msg-r,#msg-a,#msg-c").bind('click', function(){
+			$("#plane-memo").val($(this).data('text')  );
+		});
+		$('#pmsadd').bootstrapToggle().change( function(){ onChange();});
+	});
+
+	function sendmsg(){
+		var responses =['items'];
+		var form_object = {};
+		var params = {};
+		params.member_srl = member_srl;
+		params.title = stt1=='A'? "정기배포":"★ 긴급배포";
+		params.note_srl = note_srl ;
+		params.mid = mid ;
+		params.plane_memo = jQuery('#plane-memo').val();
+
+		exec_xml(  MODULE , ACT , params , function(ret_obj){
+			try{
+				console.log( ret_obj );
+				$msgbox.find("i").addClass('nocursor');
+				$msgbox.append("<span class='r-msg'>"+ret_obj.message+"</span>");
+				$msgbox.unbind('click');
+
+			}catch(e){ console.log(e);
+
+			}
+			jQuery('#spop').hide();
+		}
+		,responses, params, form_object );
+
+	}
+
+	function onChange(a){
+		var params = {};
+		params.note_srl = note_srl ;
+
+		if( jQuery("#pmsadd").attr("checked") =='checked'){
+			params.add ="Y"; // 주간보고에 추가
+		}else{
+			params.add ="N"; // 주간보고에서 제외
+		}
+
+		exec_json("releasenote.procReleasenotePmsToggle",params, function(data){
+			alert('저장되었습니다.');
+		});
+	}
+	</script>
+</body>

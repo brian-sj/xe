@@ -1,0 +1,20 @@
+<query id="getProjectsMyDuty" action="select">
+    <tables>
+        <table name="pms_project" alias="p" />
+    </tables>
+    <columns>
+        <column name="p.project_srl" />
+        <column name="p.category" />
+        <column name="p.title" />
+    </columns>
+	<conditions>
+		<condition operation="like" column="shared_members" var="member_srl" />  
+	</conditions>
+	
+	<navigation>
+        <index var="sort_index" default="p.project_srl" order="desc" />
+        <list_count var="list_count" default="100" />
+        <page_count var="page_count" default="100" />
+        <page var="page" default="1" />
+    </navigation>
+</query>

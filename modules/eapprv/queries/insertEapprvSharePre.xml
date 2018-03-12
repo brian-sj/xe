@@ -1,0 +1,14 @@
+<query id="insertEapprvSharePre" action="insert">
+	<tables>
+		<table name="eapprv_share_pre" />
+	</tables>
+	<columns>
+		<column name="eapprv_share_pre_srl" var="eapprv_share_pre_srl" filter="number"  notnull="notnull" />
+		<column name="member_srl" var="member_srl" filter="number" notnull="notnull" />
+		<column name="shared_title" var="shared_title" notnull="notnull"   />
+		<column name="shared_members" var="shared_members_str" notnull="notnull"   />
+		<column name="stt" var="stt" default="NN"  />
+		<column name="regdate" default="curdate()" />
+	</columns>
+</query>
+

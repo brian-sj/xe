@@ -1,0 +1,54 @@
+﻿<load target="/common/css/jquery-ui.css" />
+<load target="/common/js/jquery-ui.min.js" />
+<load target="/common/css/material.min.css" />
+<load target="/common/js/material.min.js" />
+<style>
+
+.navbar-right .btn{height:32px;}
+.input-group .form-control {padding:5px 12px; height:32px; padding-bottom:0}
+.input-group form {margin-bottom:0}
+.input-group-btn{width:0}
+.navbar-right {margin-right:0}
+
+.table {font-size:12px}
+#body {max-width:1500px; margin:0 auto}
+.c .body .xe_width {max-width:1500px !important}
+</style>
+{@
+	$activeClass = "active";
+	$noActiveClass = "";
+}
+    <!-- Content Header (Page header) -->
+<div class="col-xs-12 sub-menu-st">
+ <ul class="nav nav-tabs nav-style">
+
+
+
+	
+    <li class="<!--@if($act=='dispPmsProjectListView'  || $act=='dispPmsProjectWrite' || $act=='dispPmsCalendarView' )-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a class="topbar-myTasksButton btnProject" data-reactid=".0.1" href="{getSiteUrl('','act','dispPmsProjectListView', 'page', '','category','D', 'gu1', '', 'gu3', '', 'report_date','', 'team','','work_date','','member_srl','','project_srl' ,'','complete','','ask_complete','','ask_keyword','','duty_keyword','' )}"  > </span>프로젝트 리스트</a>
+	<li class="<!--@if($act=='dispPmsWorkView')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a  href="{getUrl('act','dispPmsWorkView' ,'sort_index','' ,'work_date','', 'member_srl','','category','', 'gu1', '','gu3', '', 'report_date','', 'team','','work_date','','member_srl','','project_srl' ,'','complete','','ask_complete','','ask_keyword','','duty_keyword','' )}">나의 업무시간</a> </li>
+	<li class="<!--@if($act=='dispPmsPersonalWorkViewTable')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a  href="{getUrl('act','dispPmsPersonalWorkViewTable' ,'sort_index','','category','', 'gu1', '', 'gu3', '', 'report_date','', 'team','','work_date','','member_srl','','project_srl' ,'','complete','' ,'ask_complete','','ask_keyword','','duty_keyword','')}"> 개인/조직별 프로젝트 참가현황</a></li>
+	
+	
+<!--
+<li class="<!--@if(!$act || $act=='dispPmsIndex')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a class="topbar-myTasksButton btnProject" data-reactid=".0.1" href="{getSiteUrl('','act','dispPmsIndex', 'page', '','category','', 'gu1', '','gu3', '', 'report_date','', 'team','','work_date','','member_srl','' ,'project_srl' ,'','complete','','ask_complete','','ask_keyword','','duty_keyword','')}"  > </span>MY 페이지</a>	
+	
+	<li class="<!--@if($act=='dispPmsWorkProgressView')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a href="{getUrl('act','dispPmsWorkProgressView','sort_index','','category','', 'gu1', '', 'gu3', '', 'report_date','', 'team','','work_date','','member_srl','','project_srl' ,'' ,'complete','','ask_complete','','ask_keyword','','duty_keyword','')}"> 주간보고서 I</a> </li>
+	<li class="<!--@if($act=='dispPmsWorkProgressOperView')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a href="{getUrl('act','dispPmsWorkProgressOperView','sort_index','','category','', 'gu1', '', 'gu3', '', 'report_date','', 'team','','work_date','','member_srl','','project_srl' ,'' ,'complete','','ask_complete','','ask_keyword','','duty_keyword','')}"> 주간보고서 II</a> </li>
+	<li class="<!--@if($act=='dispPmsWorkRegularView')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a href="{getUrl('act','dispPmsWorkRegularView','sort_index','' ,'category','', 'gu1', '', 'gu3', '', 'report_date','', 'team','','work_date','','member_srl','','project_srl' ,'','complete','','ask_complete','','ask_keyword','','duty_keyword','')}"> 일상 주간보고서</a> </li>
+	
+	<li class="<!--@if($act=='dispPmsWinventory')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a href="{getUrl('act','dispPmsWinventory','sort_index','','category','', 'gu1', '', 'gu3', '', 'report_date','', 'team','','work_date','','member_srl','','project_srl' ,'','complete','','ask_complete','','ask_keyword','','duty_keyword','' )}"> 수발주 통계</a> </li>
+	<li class="<!--@if($act=='dispPmsWmccode')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a href="{getUrl('act','dispPmsWmccode','sort_index','' ,'category','', 'gu1', '','gu3', '', 'report_date','', 'team','','work_date','','member_srl','','project_srl' ,'' ,'complete','','ask_complete','','ask_keyword','','duty_keyword','')}"> 업무분류 </a> </li>
+
+	<li class="<!--@if($act=='dispPmsWinventory')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a href="{getUrl('act','dispPmstest1','sort_index','' )}"> test 1  </a> </li>
+	<li class="<!--@if($act=='dispPmsWinventory')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a href="{getUrl('act','dispPmstest2','sort_index','' )}"> test 2 </a> </li>
+	 --> 
+	<!--
+		<li class="<!--@if($act=='dispPmsFileView')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a  href="{getUrl('act','dispPmsFileView' ,'sort_index','')}">첨부 파일</a> </li>
+		<li class="<!--@if($act=='dispPmsListView')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a  href="{getSiteUrl('','act','dispPmsListView' ,'project_srl' ,'' ,'sort_index','')}"> <span id="plist" class="glyphicon glyphicon-list" aria-hidden="false" /> 개요보기 </a> </li>
+		<li class="<!--@if($act=='dispPmsListView')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a  href="{getSiteUrl('','act','dispPmsCalendarView' ,'sort_index','')}"> <span id="plist" class="glyphicon glyphicon-list" aria-hidden="false" /> 상세보기 </a> </li>
+		<a class="<!--@if($act=='dispPmsIndex')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->"> <a href="{getSiteUrl('','act','dispPmsWinventory' ,'sort_index','')}"> 개요 보기 </a> </li>
+	    <a class="<!--@if($act=='dispPmsBudgetView')-->{$activeClass}<!--@else-->{$noActiveClass}<!--@end-->" href="{getUrl('act','dispPmsBudgetView')}" data-reactid=".0.2"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span>예산</a></li>
+	-->
+</ul>
+</div>

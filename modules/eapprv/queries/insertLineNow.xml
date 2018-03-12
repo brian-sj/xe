@@ -1,0 +1,20 @@
+<query id="insertLineNow" action="insert">
+	<tables>
+		<table name="eapprv_line" />
+	</tables>
+	<columns>
+		<column name="eapprv_srl" var="eapprv_srl" filter="number"  notnull="notnull" />
+		<column name="line_stt" var="line_stt" notnull="notnull" />
+		<column name="member_srl" var="member_srl" filter="number" notnull="notnull" />
+
+		<column name="line_title" var="line_title" notnull="notnull" />
+		<column name="stt" var="stt"  default="1"  />
+		<column name="position" var="position"   />
+	</columns>
+</query>
+<!-- 
+
+stt 2 값이 내 접수 입니다. 
+
+-->
+

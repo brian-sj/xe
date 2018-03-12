@@ -1,0 +1,37 @@
+﻿<style>
+.dropdown-menu {overflow:auto; height:300px;}
+.float-div { width : 600px  ; float:left ; position : absolute; z-index:1000 ; display:none; } 
+.float-checkbox {display:inline-block ; width : 105px; padding-bottom:5px; margin-right: 5px;}
+</style>
+<script>
+jQuery(document).ready(function($){
+		//$("#member_edit,#member_edit_close").click(function(){ $(this).siblings(".float-div").toggle("slow"); });
+		$("#member_edit,#member_edit_close").click(function(){ $("#float-div-share").toggle("slow"); });
+});	
+	
+function share_user_select_all(){
+	console.log(  jQuery("#float-div-share .checkbox_user").length  );
+	jQuery("#float-div-share .checkbox_user").iCheck('toggle'); 
+	
+}	
+</script>
+
+<div class="float-div" id="float-div-share" >
+	<form method="post" action="/index.php">
+	<input type="hidden" name="act" value="procPmsShareListSave" >
+	<input type="hidden" name="mid" value="{$mid}" >
+	<input type="hidden" name="project_srl" value="{$data->project_srl}" >			
+		<div class="panel panel-danger" style="margin:5px 3px 0 5px ;">
+			<div class="panel-heading">업무 참여자를 선택해주세요. <a href="javascript:share_user_select_all()"><i class="fa fa-bars" aria-hidden="true"></i></a></div>
+			<div class="panel-body checkboxlist" style="color:#333;">
+				<block loop="$normal_members=>$key,$val4">
+				<div class="float-checkbox col-sm-3"><input class="checkbox_user" type="checkbox" id="s-{$key}" name="shared_members[]"  data-size="mini" checked|cond="in_array( $key, $shared_members)" data-label="{$val4}" value="{$key}"> <label for="s-{$key}"> {$val4} </label></div>
+				</block>
+			</div>
+			<div class="panel-footer">
+			<button type="button" id="member_edit_close" class="btn btn-success">닫기</button> <button class="btn btn-success">저장</button>
+			</div>
+		</div>
+
+	</form>
+</div>

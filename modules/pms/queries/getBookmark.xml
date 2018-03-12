@@ -1,0 +1,27 @@
+<query id="getBookmark" action="select">
+    <tables>
+        
+		<table name="pms_project_favorite" alias="f" />
+		<table name="pms_project" alias="p" />
+		<table name="pms_task" alias="t" />
+    </tables>
+    <columns>
+        <column name="t.project_srl" />
+        <column name="p.category" />
+        <column name="p.title" alias="ptitle"/>
+        <column name="t.title" alias="ttitle"/>
+        <column name="t.task_srl" alias="task_srl"/>
+    </columns>
+	<conditions>
+		<condition operation="equal" column="p.project_srl" var="f.project_srl" pipe="and" /> 
+		<condition operation="equal" column="f.task_srl" var="t.task_srl" pipe="and" /> 
+		<condition operation="equal" column="f.member_srl" var="member_srl" notnull="notnull" pipe="and" />   
+	</conditions>
+	
+	<navigation>
+        <index var="sort_index" default="p.project_srl" order="desc" />
+        <list_count var="list_count" default="100" />
+        <page_count var="page_count" default="100" />
+        <page var="page" default="1" />
+    </navigation>
+</query>

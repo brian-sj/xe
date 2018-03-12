@@ -1,0 +1,24 @@
+<table class="table  table-simple table-hover">
+<thead>
+  <tr>
+	<th style="width:100px">날짜</th>
+	<th style="width:400px">업무</th>
+	<th>메모</th>
+	<th style="width:110px">시간</th>
+	<th style="width:200px">진행률</th>
+  </tr>
+</thead>
+<tbody>
+  <tr loop="$work_list=>$key,$val">
+	{@$extra_vars = unserialize( $val->title );
+	}
+	<td class="text-center">{$val->work_date}</td>
+	<td>
+	  <div class="route"><span class="thisRoute">{$val->project_title}</span> <img src="images/icon_route.gif" alt=""> {$val->task_title}</div>
+	</td>
+	<td>{$extra_vars->title}</td>
+	<td class="text-center">{$val->mh} 시간</td>
+	<td><span class="badge bg">{$extra_vars->p}%</span></td>
+  </tr>
+</tbody>
+</table>

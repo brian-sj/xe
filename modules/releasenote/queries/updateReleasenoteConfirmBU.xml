@@ -1,0 +1,12 @@
+<query id="updateReleasenoteConfirmBU" action="update">
+    <tables>
+        <table name="releasenote" />
+    </tables>
+    <columns>
+		<column name="t_releaser_confirm" default="curdate()" />
+		<column name="stt" default="B" />
+    </columns>
+        <conditions>
+        <condition operation="equal" column="note_srl" var="note_srl" notnull="notnull" />
+    </conditions>
+</query>

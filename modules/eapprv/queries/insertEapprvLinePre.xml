@@ -1,0 +1,19 @@
+<query id="insertEapprvLinePre" action="insert">
+	<tables>
+		<table name="eapprv_line_pre" />
+	</tables>
+	<columns>
+		<column name="eapprv_line_pre_srl" var="eapprv_line_pre_srl" filter="number"  notnull="notnull" />
+		<column name="member_srl" var="member_srl" filter="number" notnull="notnull" />
+		<column name="line1" var="line1"  default="0"/>
+		<column name="line2" var="line2" default="0"/>
+		<column name="line3" var="line3"  default="0"/>
+		<column name="line4" var="line4" default="0"/>
+		<column name="line5" var="line5"  default="0"/>
+		<column name="line_title" var="line_title" notnull="notnull"   />
+		
+		<column name="stt" var="stt" default="NN"  />
+		<column name="regdate" default="curdate()" />
+	</columns>
+</query>
+

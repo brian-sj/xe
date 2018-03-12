@@ -1,0 +1,88 @@
+<style>
+ .box_ img {width:100%;}
+</style>
+
+
+<!--#include("./header.html")-->
+<load target="js/file.js" />
+{@
+$imgsExt = array('jpg', 'jpeg','png','gif' , 'ico');
+$docsExt = array('hwp', 'xls','xlsx','doc' ,'docx' , 'ppt' ,'pptx' , 'cell'  );
+}
+
+
+<!-- Square card -->
+<style>
+.demo-card-square.mdl-card {
+  width: 100%;
+}
+.demo-card-square > .mdl-card__title {
+  color: #fff;
+  
+}
+
+.mdl-card__title-text {font-size:12px !important;}
+</style>
+
+<script>
+
+
+jQuery(document).ready(function($){
+	$(".wmc-btn-save").bind('click', function(){
+		var srl =  $(this).data("filesrl") ;
+		saveFileComment(  srl   ,  $("#comment-"+ srl).val()  );
+	});
+	$(".wmc-btn-delete").bind('click',function(){
+		deleteFile( $(this).data('filesrl')  );
+	});
+});
+
+</script>
+
+
+<hr>
+
+<div class="row">
+ <br>
+ 필터  기능    <br>
+ 소팅  기능    <br>
+ 설명  저장 	<br>
+ 설명  삭제    <br>
+ 파일  다운로드 <br>
+ 
+ 
+ <a href="{getUrl('act','dispPmsCalendarView')}">프로젝트  보기</a>
+</div>
+
+<div class="row">
+	<div class="box_{$type} col-lg-2" loop="$list=>$val" id="card-div-{$val->pms_file_srl}">
+{@$ext = substr(strrchr($val->uploaded_filename,"."),1); }	
+		<!--@if( in_array( $ext , $imgsExt ) )-->
+			{@$img = "/files/pms/".$val->uploaded_filename}
+		<!--@else if( in_array( $ext , $docsExt ) )-->
+			{@$img = "/modules/pms/tpl/imgs/doc.png"}
+		<!--@else-->
+			{@$img = "/modules/pms/tpl/imgs/etc.png"}
+		<!--@end-->
+		<div class="demo-card-square mdl-card mdl-shadow--2dp">
+		  <div class="mdl-card__title mdl-card--expand" style="background:url('{$img}') bottom right 15% no-repeat #46B6AC;">
+			<h6 class="mdl-card__title-text">{$val->source_filename}</h6>
+		  </div>
+		  <div class="mdl-card__supporting-text">
+			 <input type="text" class="mdl-textfield__input" name="comment" id="comment-{$val->pms_file_srl}" value="{$val->comment}" placeholder="파일설명" style="font-size:12px;">
+		  </div>
+		  <div class="mdl-card__actions mdl-card--border">
+			<a class="mdl-button mdl-button--icon mdl-button--colored mdl-js-button mdl-js-ripple-effect wmc-btn-save" data-filesrl="{$val->pms_file_srl}">
+			  E
+			</a>
+			<a class="mdl-button mdl-button--icon mdl-button--colored mdl-js-button mdl-js-ripple-effect wmc-btn-delete" data-filesrl="{$val->pms_file_srl}">
+			  X
+			</a>
+			<a href="{getUrl('act','procPmsFileDownload','pms_file_srl', $val->pms_file_srl)}" class="mdl-button mdl-button--icon mdl-button--colored mdl-js-button mdl-js-ripple-effect wmc-btn-download" data-filesrl="{$val->pms_file_srl}">
+			   D
+			</a>
+			
+		  </div>
+		</div>
+	</div>
+</div>

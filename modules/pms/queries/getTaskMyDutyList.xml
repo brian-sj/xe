@@ -1,0 +1,40 @@
+<query id="getTaskMyDutyList" action="select">
+    <tables>
+        <table name="pms_task"  alias="t"/>
+        <table name="pms_project" alias="p"/>
+		<table name="member" alias="m"/>        
+    </tables>
+    <columns>
+        <column name="t.*" />
+		<column name="p.title" alias="project_title"/>
+		<column name="m.user_name" alias="user_name"/>		
+    </columns>
+    <conditions>
+		<condition operation="equal" column="p.project_srl" default="t.project_srl" /> 
+		<condition operation="equal" column="t.member_srl" notnull="notnull" default="m.member_srl" pipe="and" />		
+		
+		<condition operation="equal" column="work_member_srl" notnull="notnull" var="member_srl" pipe="and" /> 
+		<condition operation="more" column="t.reg_date"  var="start_date" pipe="and" /> 
+		<condition operation="less" column="t.reg_date"  var="end_date" pipe="and" /> 
+		<condition operation="in" column="category"  var="category" pipe="and" />
+		<condition operation="equal" column="stt"  default="N" pipe="and" /> 
+		<condition operation="less" column="t.progress"  var="progress_p" pipe="and" /> 
+		<condition operation="equal" column="t.progress"  var="progress_c" pipe="and" />
+		
+	<group pipe="and">
+		<condition operation="like" column="p.title" var="duty_keyword" />
+		<condition operation="like" column="t.title" var="duty_keyword" pipe="or"/>
+		<condition operation="like" column="p.content" var="duty_keyword" pipe="or"/>
+		<condition operation="like" column="m.user_name" var="duty_keyword" pipe="or"/>
+	</group>
+    </conditions>	
+	
+	<navigation>
+        <index var="sort_index" default="t.end_date" order="asc" />
+    </navigation>
+</query>
+<!-- 
+
+stt = : N  오직 작업만 P는 않됩니다. 
+
+-->

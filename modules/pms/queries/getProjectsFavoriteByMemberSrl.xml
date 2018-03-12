@@ -1,0 +1,23 @@
+<query id="getProjectsFavoriteByMemberSrl" action="select">
+    <tables>
+		<table name="pms_project_favorite" alias="f" />
+    </tables>
+    <columns>
+        <column name="*"/>
+
+    </columns>
+	<conditions>
+		<condition operation="equal" column="project_srl" var="project_srl" pipe="and" /> 
+		<condition operation="equal" column="member_srl" var="member_srl" pipe="and" /> 
+	</conditions>
+	
+	<navigation>
+        <index var="sort_index" default="project_srl" order="desc" />
+        <list_count var="list_count" default="100" />
+        <page_count var="page_count" default="100" />
+        <page var="page" default="1" />
+    </navigation>
+</query>
+<!--
+작성은 해 놓았는데.... favorite에 등록은 않된 경우... 혹은 빠진 경우... 
+-->

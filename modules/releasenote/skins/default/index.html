@@ -1,0 +1,228 @@
+<load target="css/jquery-ui.css" />
+<load target="/common/css/bootstrap.latest.css" />
+<load target="/common/js/bootstrap.latest.js" />
+<include target="_header.html" />
+<style>
+.small-dt {display:block;font-size:8px;color:#249bab !important;font-weight:bold}
+.str-flag {margin:0 4px 0 0;padding:2px;color:#e53600;background:#fff4e3}
+
+.aside{position:fixed; top:220px; right:20px; border:solid 1px #ccc; padding:0; margin:0; display:none}
+.aside ul, .aside li{padding:0; margin:0}
+.aside ul{list-style:none}
+.aside li{border-top:solid 1px #ccc}
+.aside li:first-child{border-top:none}
+.aside img{widht:130px;}
+.table tr:first-child td{font-weight:bold; border-top:solid 1px #ddd}
+.r-content {clear:both}
+.r-content .btn{margin:0 40px 10px 0}
+.cate{background:#222; border-radius:3px; padding:6px 10px 6px 0; float:left; margin-left:12px; color:#fff}
+.cate:first-child{margin-left:0}
+.cate input{margin:-3px 0 0 0}
+.icon-stt {width:130px; height:41px}
+
+/*김지민*/
+.input-group-btn {width:auto}
+.navbar-right {margin-right:0}
+.prettycheckbox, .prettyradio {margin-left:3px; margin-top:-3px}
+.prettycheckbox label, .prettyradio label {font-weight:400; font-size:13px;  margin:6px 0px;}
+form {margin-bottom:0}
+.panel-body {background-color:#f5f5f5}
+</style>
+<script>
+function cut_str($str, $length) {
+	if(strlen($str) > $length) $dot = "....";
+}
+
+jQuery(document).ready(function($){
+
+	$("input[name='category']").bind('change', function(){
+		var cat = $(this).val();
+		document.location.href = "/?mid={$mid}&act={$act}&page={$page_navigation->page}&category="+cat+"&stt={$stt}&filter={$filter}&stt_2={$stt_2}";
+	});
+
+
+	$("input[name='stt']").bind('change', function(){
+		var stt = $(this).val();
+		document.location.href = "/?mid={$mid}&act={$act}&page={$page_navigation->page}&category={$category}&stt="+stt +"&filter={$filter}&stt_2={$stt_2}";
+	});
+
+	$("input[name='filter']").bind('change', function(){
+		var filter = $(this).val();
+		document.location.href = "/?mid={$mid}&act={$act}&page={$page_navigation->page}&category={$category}&stt={$stt}&filter="+filter +"&stt_2={$stt_2}";
+	});
+
+	$("input[name='stt_2']").bind('change', function(){
+		var stt_2 = $(this).val();
+		document.location.href = "/?mid={$mid}&act={$act}&page={$page_navigation->page}&category={$category}&stt={$stt}&filter={$filter}&stt_2="+stt_2;
+	});
+
+	jQuery("input:radio").each(function(){
+		jQuery(this).prettyCheckable();
+	});
+});
+</script>
+
+<div class="wrap">
+	<div class="row index-row">
+		<div class="col-xs-12 page-title">
+			<div class="col-xs-7">
+				<h3 class="box-title pull-left">배포 요청 및 승인</h3>
+			</div>
+
+			<div class="col-xs-5 text-right">
+
+					<div class="date-search navbar-right">
+						<!--// search_keyword     -->
+						<div class="input-group pull-left">
+							<form method="get">
+								<input type="hidden" name="error_return_url" value="">
+								<input type="hidden" name="page" value="{$page}">
+								<input type="hidden" name="category" value="{$category}">
+								<input type="hidden" name="stt" value="{$stt}">
+								<input type="hidden" name="stt_2" value="{$stt_2?$stt_2:'A'}">
+								<input type="hidden" name="filter" value="{$filter}">
+								<input type="text" name="search_keyword" class="form-control" placeholder="Search" style="width:85px;" value="{$search_keyword}">
+								<span class="input-group-btn">
+									<button class="btn btn-success" type="submit" style="height:34px !important;" >Go!</button>
+								</span>
+							</form>
+						</div><!-- /search_keyword  -->
+						<a style="float:left; padding-left:10px; "href="{getSiteUrl('','act','dispReleasenoteWrite')}" ><button class="btn btn-primary" type="button">쓰기</button></a>
+
+					</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+<div class="col-xs-12">
+<div id="main_panel" class="box box-default">
+
+<div class="panel-body">
+
+		<div class="r-content">
+
+			<div class="cate">
+				<input type="radio" name="filter" value="{__ALL__}" data-label="전체" checked|cond="$filter==__ALL__" />
+				<input type="radio" name="filter" value="{__NOT_ALL__}" data-label="내문서" checked|cond="$filter!=__ALL__" />
+			</div>
+
+			<div class="cate">
+				<input type="radio" name="stt_2" value="{__ALL__}" data-label="전체" checked|cond="$stt_2==__ALL__" />
+				<input type="radio" name="stt_2" value="{__STT_RELEASE_COMPLETE__}" data-label="미배포" checked|cond="$stt_2 !=__ALL__"  />
+			</div>
+
+			<div class="cate">
+				<input type="radio" name="category" value="" data-label="전체" checked|cond="$category==''" />
+				<input type="radio" name="category" value="CS" data-label="CS" checked|cond="$category=='CS'" />
+				<input type="radio" name="category" value="WEB" data-label="WEB" checked|cond="$category=='WEB'" />
+			</div>
+
+			<div class="cate">
+				<input type="radio" name="stt" value="" data-label="전체" checked|cond="$stt==''" />
+				<input type="radio" name="stt" value="{__STT_ADDED_COMPLETE__}" data-label="1.배포 접수" checked|cond="$stt==__STT_ADDED_COMPLETE__" />
+				<input type="radio" name="stt" value="{__STT_WORK_COMPLETE__}" data-label="2.작업 완료" checked|cond="$stt==__STT_WORK_COMPLETE__" />
+				<input type="radio" name="stt" value="{__STT_TEST_COMPLETE__}" data-label="3.테스트 완료" checked|cond="$stt==__STT_TEST_COMPLETE__" />
+				<input type="radio" name="stt" value="{__STT_M_COMPLETE__}" data-label="4.팀장 결재" checked|cond="$stt==__STT_M_COMPLETE__" />
+				<input type="radio" name="stt" value="{__STT_H_COMPLETE__}" data-label="5.부서장 결재" checked|cond="$stt==__STT_H_COMPLETE__" />
+				<input type="radio" name="stt" value="{__STT_RELEASE_COMPLETE__}" data-label="6.배포 완료" checked|cond="$stt==__STT_RELEASE_COMPLETE__" />
+			</div>
+		</div>
+
+</div>
+
+	<table class="table non-mg">
+		<tr>
+			<td>No</td>
+			<td>구분</td>
+			<td>배포</td>
+			<td>프로그램/사이트명</td>
+			<td><a href="{getUrl('page',$page_navigation->cur_page,'sort_index','')}">작업내용</a></td>
+			<td>작업일자</td>
+			<td>작업자</td>
+			<td>개발배포자</td>
+			<td>테스터</td>
+			<td>담당팀장</td>
+			<td>부서장</td>
+			<td>배포확인</td>
+			<td><a href="{getUrl('page',$page_navigation->cur_page,'sort_index','release_date')}">배포기한</a></td>
+			<td>상태</td>
+		</tr>
+		{@ $s =0;}
+		<!--@foreach($list as $no => $val)-->
+		<tr>
+			<td>{$page_navigation->total_count - $s -($page_navigation->cur_page -1) * 10 }</td>{@$s++;}
+			<td>{$val->category}</td>
+			<td><!--@if ($val->stt1=='A')--><span style="color:#0B5086 !important;">정기</span><!--@else--><span style="color:#e53600 !important;font-weight:bold">긴급</span><!--@end--></td>
+			<td>[{$val->memo}]</td>
+			<td><a href="{getSiteUrl('','act','dispReleasenoteContent','note_srl',$val->note_srl )}" >[{cut_str($val->title, 50)}] <!--@if ($val->comment_count) --><span style="color:#e53600 !important;font-weight:bold;font-size:18px">&nbsp;{$val->comment_count}</span><!--@end--></a></td>
+			<td><strong class='str-flag'>S</strong>{$val->start_date} <br/><strong class='str-flag'>E</strong>{$val->end_date}</td>
+			<td><span class='name-title'>{$val->worker_name}</span><span class='small-dt'>{zDate($val->worker_confirm, "Y-m-d")}</span></td>
+			<td><span class='name-title'>{$val->t_releaser_name}</span><span class='small-dt'>{zDate($val->t_releaser_confirm, "Y-m-d")}</span></td>
+			<td><span class='name-title'>{$val->tester_name}</span><span class='small-dt'>{zDate($val->tester_confirm, "Y-m-d")}</span></td>
+			<td><span class='name-title'>{$val->manager_name}</span><span class='small-dt'>{zDate($val->manager_confirm, "Y-m-d")}</span></td>
+			<td><span class='name-title'>{$val->header_name}</span><span class='small-dt'>{zDate($val->header_confirm, "Y-m-d")}</span></td>
+			<td><span class='name-title'>{$val->releaser_name}</span><span class='small-dt'>{zDate($val->releaser_confirm, "Y-m-d")}</span></td>
+
+			<td>{$val->release_date}</td>
+			<td>
+				<!--@if ($val->stt==__STT_ADDED_COMPLETE__) -->
+				<img class="icon-stt" src="images/01.png" alt="배포 접수">
+				<!--@else if ($val->stt==__STT_TEST_UPLOAD_COMPLETE__) -->
+				<img class="icon-stt" src="images/02.png" alt="작업 완료">
+				<!--@else if ($val->stt==__STT_WORK_COMPLETE__) -->
+				<!--@if($val->t_releaser_confirm)-->
+				<img class="icon-stt" src="images/02-1.png" alt="개발 배포 완료">
+				<!--@else-->
+				<img class="icon-stt" src="images/02.png" alt="작업 완료">
+				<!--@end-->
+				<!--@else if ($val->stt==__STT_TEST_COMPLETE__) -->
+				<img class="icon-stt" src="images/03.png" alt="테스트 완료">
+				<!--@else if ($val->stt==__STT_M_COMPLETE__) -->
+				<img class="icon-stt" src="images/04.png" alt="팀장 결재">
+				<!--@else if ($val->stt==__STT_H_COMPLETE__) -->
+				<img class="icon-stt" src="images/05.png" alt="부서장 결재">
+				<!--@else if ($val->stt==__STT_RELEASE_COMPLETE__) -->
+				<img class="icon-stt" src="images/06.png" alt="배포 완료">
+				<!--@end-->
+			</td>
+		</tr>
+		<!--@end-->
+	</table>
+
+
+
+	<!-- 페이지 네비게이션 -->
+<div class="panel-footer">
+	<ul class="pagination">
+		<li><a href="{getUrl('page','','module_srl','')}" class="prevEnd">{$lang->first_page}</a></li>
+		<!--@while($page_no = $page_navigation->getNextPage())-->
+		<!--@if($page == $page_no)-->
+		<li class="active"><a href="{getUrl('page',$page_no,'module_srl','')}">{$page_no}</a></li>
+		<!--@else-->
+		<li><a href="{getUrl('page',$page_no,'module_srl','')}">{$page_no}</a></li>
+		<!--@end-->
+		<!--@end-->
+		<li><a href="{getUrl('page',$page_navigation->last_page,'module_srl','')}" class="nextEnd">{$lang->last_page}</a></li>
+	</ul>
+</div>
+
+</div>
+</div>
+
+
+
+
+</div> <!-- div class content  -->
+
+<div class="aside">
+	<ul>
+		<li><img src="images/01.png" alt="작업완료"></li>
+		<li><img src="images/02.png" alt="테스트완료"></li>
+		<li><img src="images/03.png" alt="결재완료"></li>
+		<li><img src="images/04.png" alt="배포완료"></li>
+	</ul>
+</div>
+</div>

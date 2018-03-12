@@ -1,0 +1,186 @@
+<style>
+.navbar{margin-bottom:0}
+.panel-body {padding-top:30px}
+.mdl-data-table th{font-weight:600; color:#333}
+th, .num{text-align:center}
+th, .num span{cursor:pointer}
+th, td{border-bottom: 1px solid #e0e0e0}
+tfoot tr{background-color: #fffeef}
+tfoot th{border-color:#b1b1b1}
+.table>thead>tr>th{border-bottom:1px solid #b1b1b1}
+.table > thead:first-child > tr:first-child > th{border-top:1px solid #444}
+.scroll-height{overflow-y:auto; height:500px}
+.container-fluid{padding:0}
+.navbar-brand{font-size:12px}
+.navbar-inverse .navbar-nav > li > a {font-size: 12px;}
+.date-search{float:left; color:#9d9d9d; margin:8px 0 0 0}
+.date-search .desc {padding-right:20px; padding-top:7px; display:inline-block}
+
+.input-group{width:150px; float:right;}
+.input-group .form-control {padding:5px 12px; height:32px;}
+</style>
+<!--#include("./header.html")-->
+<load target="/common/js/plugins/dhtmlx/dhtmlx.js" />
+<load target="/common/js/plugins/dhtmlx/skins/terrace/dhtmlx.css" />
+<div class="row">
+  <div class="col-xs-12 page-title">
+        <div class="col-xs-7 pull-left"><h3>����/������ ������Ʈ ������Ȳ</h3></div>
+  </div>
+</div>
+<div class="col-xs-12">
+<div id="main_panel" class="box box-default">
+  <div class="panel-body">
+    <nav class="navbar navbar-inverse ">
+		<div class="container-fluid">
+
+
+
+
+			<div class="collapse navbar-collapse">
+        <div class="navbar-header"><a class="navbar-brand">�� �Ǵ� ���� ����</a></div>
+				<ul class="nav navbar-nav">
+					<li>
+					  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span id="team-text"> �� ����</span>
+						<span class="caret"></span></a>
+						<ul class="dropdown-menu" id="drop-down-teams">
+						  <li loop="$teams => $key , $val"  class="active"|cond="$key==$team"><a href="{getUrl('team' , $key ,'member_srl' ,'' )}"> {$val}</a></li>
+						</ul>
+					</li>
+					<li loop="$team_members=>$key,$val" class="active"|cond="$member_srl==$val->member_srl">
+            <a href="{getUrl('team',$team,'member_srl',$val->member_srl)}">{$val->user_name}</a>
+          </li>
+				</ul>
+
+        <div class="date-search navbar-right">
+          <span class="desc">{$start_date}~{$end_date}</span>
+          <div class="input-group" >
+		  <form action="/">
+            <input type="text" class="form-control" id="report_date" placeholder="��¥�˻�">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">�˻�</button>
+            </span>
+		  </form>
+          </div><!-- /input-group -->
+        </div>
+
+
+				<!--ul class="nav navbar-nav navbar-right">
+				  <li><a href="#"> Monthly ����</a> </li>
+				  <li><a href="#"> Weekly ����</a> </li>
+				  <li><a href="#"> Project Report ����</a> </li>
+				</ul-->
+			</div>
+		</div>
+	</nav>
+  </div>
+  <div class="panel-body">
+  <div class="scroll-height">
+  	<table class="table table-hover" width="100%" >
+  	<thead>
+  		<tr>
+  			<th id="user_name" class="mdl-data-table__cell--non-numeric">������Ʈ ��</th>
+  			<th class="text-left">����</th>
+  			<th>������</th>
+  			<th>ȭ����</th>
+  			<th>������</th>
+  			<th>������</th>
+  			<th>�ݿ���</th>
+  			<th>������</th>
+  			<th>�Ͽ���</th>
+  			<th>�հ�</th>
+  		</tr>
+  	</thead>
+  	<tbody id="data-table-body">
+  		<tr class="data" loop="$list => $key ,$val">
+  		  <td class="mdl-data-table__cell--non-numeric"><a target="_blank" href="{getUrl('act','dispPmsCalendarView','project_srl' , $val->project_srl)}">{$val->project_name}</a></td>
+  		  <td class="mdl-data-table__cell--non-numeric">{$val->task_name}</td>
+  		  <td class="num"> <span class="w2" data-task-srl="{$val->task_srl}" data-project-srl="{$val->project_srl}">{$val->w2}</span></td>
+  		  <td class="num"> <span class="w3" data-task-srl="{$val->task_srl}" data-project-srl="{$val->project_srl}">{$val->w3}</span></td>
+  		  <td class="num"> <span class="w4" data-task-srl="{$val->task_srl}" data-project-srl="{$val->project_srl}">{$val->w4}</span></td>
+  		  <td class="num"> <span class="w5" data-task-srl="{$val->task_srl}" data-project-srl="{$val->project_srl}">{$val->w5}</span></td>
+  		  <td class="num"> <span class="w6" data-task-srl="{$val->task_srl}" data-project-srl="{$val->project_srl}">{$val->w6}</span></td>
+  		  <td class="num"> <span class="w7" data-task-srl="{$val->task_srl}" data-project-srl="{$val->project_srl}">{$val->w7}</span></td>
+  		  <td class="num"> <span class="w1" data-task-srl="{$val->task_srl}" data-project-srl="{$val->project_srl}">{$val->w1}</span></td>
+  		  <td class="num"> <span class="wtotal">{intval($val->w1) +intval($val->w2)+intval($val->w3)+intval($val->w4)+intval($val->w5)+intval($val->w6)+intval($val->w7) }</span></th>
+  		</tr>
+  	</tbody>
+  	<tfoot>
+  		<tr>
+  			<th ></th>
+  			<th ></th>
+  			<th id="total_w2">0 </th>
+  			<th id="total_w3">0 </th>
+  			<th id="total_w4">0 </th>
+  			<th id="total_w5">0 </th>
+  			<th id="total_w6">0 </th>
+  			<th id="total_w7">0 </th>
+  			<th id="total_w1">0 </th>
+  			<th id="total_wtotal">0 </th>
+  		</tr>
+  	</tfoot>
+  	</table>
+  </div>
+
+	<div class="col-xs-12" id="comment_log">
+		<table class="">
+		<thead><tr><td>..</td></tr></thead>
+		</table>
+	</div>
+  </div>
+</div>
+</div>
+<script>
+var params ={};
+var mid = "{$mid}";
+params.project_srl = "{$project_srl}";
+
+jQuery(document).ready(function($){
+var total =0;
+var sum_total = 0 ;
+var team = "{$team}";
+for( var i=1 ; i < 8 ; i++){
+	total =0;
+	$(".data .w"+i).each(function(){
+		total += parseInt( $(this).text() ) ||0 ;
+	});
+	$("#total_w"+i).text(total);
+	sum_total += total;
+}
+jQuery("#total_wtotal").text(sum_total);
+
+if(  team != ""  )
+jQuery("#team-text").text(  $("#drop-down-teams li.active a").text()    );
+
+
+	wmcCalendar = new dhtmlXCalendarObject("report_date");
+	wmcCalendar.setWeekStartDay(0);
+
+jQuery("#data-table-body").on("click", ".num span" , function(){
+	//alert( $(this).data("project-srl")  );
+	getCommentList("B" , 1 , "#comment_log" , $(this).data("project-srl"),  $(this).data("task-srl") );
+});
+
+});
+
+function getCommentList( type,  page , selector , project_srl ,task_srl  ){
+	params.page = page ;
+	params.type = type ;
+	params.mid = mid;
+	params.project_srl = project_srl;
+	params.task_srl = task_srl;
+	params.skintype ="table";
+	params.act = "dispPmsCommentList";
+console.log( params  );
+	jQuery.ajax({
+		type: "POST"
+		, url : "/"
+		, data : params
+		, success : function (data){
+			jQuery( selector ).html(data);
+		}
+		, dataType: "html"
+		});
+}
+
+
+</script>

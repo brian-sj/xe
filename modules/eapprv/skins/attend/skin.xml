@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<skin version="0.2">
+	<title xml:lang="ko"> 근태현황 </title>
+	<description xml:lang="ko"> 설정을 입력 합니다. </description>
+	<version>1.7.0</version>
+	<date>2010-11-16</date>
+	<author email_address="brian@watv.org" link="http://si.wmchq.org/">
+		<name xml:lang="ko">SKETCHBOOK</name>
+	</author>
+	<colorset>
+		<color name="white">
+			<title xml:lang="ko">하얀색</title>
+		</color>
+		<color name="black">
+			<title xml:lang="ko">검은색</title>
+		</color>
+	</colorset>
+	<extra_vars>
+		<group>
+		<title xml:lang="ko">*모바일 설정</title>
+			<var name="file_output_block" type="radio">
+				<title xml:lang="ko">외부망 -> 결재 완료전 다운로드 금지</title>
+				<description xml:lang="ko">외부망에서 결재 받지 않은 파일 다운로드를 못하게 합니다.  </description>
+				<options value="2">
+					<title xml:lang="ko">상관없이 다운로드</title>
+				</options>
+				<options value="1">
+					<title xml:lang="ko">다운로드 금지</title>
+				</options>
+			</var>
+			
+			<var name="out_ip_range" type="text">
+				<title xml:lang="ko">외부망 아이피 대역(172.17.7*)</title>
+				<description xml:lang="ko"></description>
+			</var>
+		</group>
+	</extra_vars>
+</skin>

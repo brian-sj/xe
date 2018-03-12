@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<lang>
+	<item name="elfinderxe">
+		<value xml:lang="ko"><![CDATA[elFinderXE 파일 관리기]]></value>
+		<value xml:lang="en"><![CDATA[elFinderXE File Manager]]></value>
+	</item>
+	<item name="elfinderxe_management">
+		<value xml:lang="ko"><![CDATA[elFinderXE 파일 관리기]]></value>
+		<value xml:lang="en"><![CDATA[elFinderXE File Manager]]></value>
+	</item>
+	<item name="cmd_create_filemanager">
+		<value xml:lang="ko"><![CDATA[파일 관리기 등록]]></value>
+		<value xml:lang="en"><![CDATA[Create file manager]]></value>
+	</item>
+	<item name="cmd_manage_selected_filemanager">
+		<value xml:lang="ko"><![CDATA[선택한 파일 관리기 설정]]></value>
+		<value xml:lang="en"><![CDATA[Manage selected file manager]]></value>
+	</item>
+	<item name="cmd_elfinderxe_list">
+		<value xml:lang="ko"><![CDATA[파일 관리기 목록]]></value>
+		<value xml:lang="en"><![CDATA[File manager list]]></value>
+	</item>
+	<item name="cmd_view_info">
+		<value xml:lang="ko"><![CDATA[파일 관리기 설정]]></value>
+		<value xml:lang="en"><![CDATA[File manager setup]]></value>
+	</item>
+	<item name="default_setup">
+		<value xml:lang="ko"><![CDATA[모듈 기본 정보]]></value>
+		<value xml:lang="en"><![CDATA[Basic module info]]></value>
+	</item>
+	<item name="about_default_setup">
+		<value xml:lang="ko"><![CDATA[파일 관리기 모듈의 기본적인 정보를 입력합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Setup the basic configurations of file manager module.]]></value>
+	</item>
+	<item name="elfinderxe_name">
+		<value xml:lang="ko"><![CDATA[모듈 이름]]></value>
+		<value xml:lang="en"><![CDATA[Module name]]></value>
+	</item>
+	<item name="cmd_create_elfinderxe">
+		<value xml:lang="ko"><![CDATA[파일 관리기 등록]]></value>
+		<value xml:lang="en"><![CDATA[Create file manager]]></value>
+	</item>
+	<item name="advanced_setup">
+		<value xml:lang="ko"><![CDATA[상세 설정]]></value>
+		<value xml:lang="en"><![CDATA[Detailed setup]]></value>
+	</item>
+	<item name="about_advanced_setup">
+		<value xml:lang="ko"><![CDATA[파일 관리기의 세부 옵션을 설정합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Setup the detailed configurations of file manager.]]></value>
+	</item>
+	<item name="root_path">
+		<value xml:lang="ko"><![CDATA[최상위 디렉토리 경로]]></value>
+		<value xml:lang="en"><![CDATA[Root directory path]]></value>
+	</item>
+	<item name="about_root_path">
+		<value xml:lang="ko"><![CDATA[파일 관리기에서 보여질 최상위 디렉토리의 절대 경로를 입력합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Type the root directory path that show on file manager.]]></value>
+	</item>
+	<item name="root_url">
+		<value xml:lang="ko"><![CDATA[최상위 디렉토리 URL]]></value>
+		<value xml:lang="en"><![CDATA[Root directory URL]]></value>
+	</item>
+	<item name="about_root_url">
+		<value xml:lang="ko"><![CDATA[웹에서 접근 가능한 최상위 디렉토리의 URL을 입력합니다. (예 : http://tuwlab.com/xe/ftp )]]></value>
+		<value xml:lang="en"><![CDATA[Type the root directory path that can be accessed through web. (eg. http://tuwlab.com/xe/ftp )]]></value>
+	</item>
+	<item name="root_alias">
+		<value xml:lang="ko"><![CDATA[최상위 디렉토리 이름]]></value>
+		<value xml:lang="en"><![CDATA[Root directory alias]]></value>
+	</item>
+	<item name="about_root_alias">
+		<value xml:lang="ko"><![CDATA[파일 관리기에서 최상위 디렉토리의 실제 이름 대신 표시할 문자를 입력합니다. (예 : FTP 공개 자료)]]></value>
+		<value xml:lang="en"><![CDATA[Type the alias that show on file manager instead of actual name of root directory (eg. FTP Open Material)]]></value>
+	</item>
+	<item name="extension">
+		<value xml:lang="ko"><![CDATA[확장자 필터]]></value>
+		<value xml:lang="en"><![CDATA[Extension filter]]></value>
+	</item>
+	<item name="extension_list">
+		<value xml:lang="ko"><![CDATA[확장자 필터 목록]]></value>
+		<value xml:lang="en"><![CDATA[Extension filter list]]></value>
+	</item>
+	<item name="extension_disable">
+		<value xml:lang="ko"><![CDATA[비활성]]></value>
+		<value xml:lang="en"><![CDATA[DISABLE]]></value>
+	</item>
+	<item name="extension_allow">
+		<value xml:lang="ko"><![CDATA[허용]]></value>
+		<value xml:lang="en"><![CDATA[ALLOW]]></value>
+	</item>
+	<item name="extension_deny">
+		<value xml:lang="ko"><![CDATA[차단]]></value>
+		<value xml:lang="en"><![CDATA[DISALLOW]]></value>
+	</item>
+	<item name="about_extension">
+		<value xml:lang="ko"><![CDATA[허용하거나 차단할 파일 확장자를 지정합니다. '|'를 사용하여 여러 개 지정할 수 있습니다. (예 : jpg|png|gif)]]></value>
+		<value xml:lang="en"><![CDATA[Type the file extension to allow or disallow. You can use '|' to more than one extension. (eg. jpg|png|gif)]]></value>
+	</item>
+	<item name="tmb_size">
+		<value xml:lang="ko"><![CDATA[썸네일 크기]]></value>
+		<value xml:lang="en"><![CDATA[Thumbnail size]]></value>
+	</item>
+	<item name="about_tmb_size">
+		<value xml:lang="ko"><![CDATA['아이콘으로 보기' 모드에서 표시할 썸네일의 가로 및 세로 크기를 픽셀(Pixel) 단위로 지정합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Type the size of thumbnail that shown on 'Icon View' mode in pixel unit.]]></value>
+	</item>
+	<item name="tmb_crop">
+		<value xml:lang="ko"><![CDATA[썸네일 생성 방식]]></value>
+		<value xml:lang="en"><![CDATA[Thumbnail creating method]]></value>
+	</item>
+	<item name="tmb_crop_t">
+		<value xml:lang="ko"><![CDATA[비율에 맞게 자르기(CROP)]]></value>
+		<value xml:lang="en"><![CDATA[Cut by ratio(CROP)]]></value>
+	</item>
+	<item name="tmb_crop_f">
+		<value xml:lang="ko"><![CDATA[크기에 맞게 줄이기(FIT)]]></value>
+		<value xml:lang="en"><![CDATA[Resize to thumbnail size(FIT)]]></value>
+	</item>
+	<item name="about_tmb_crop">
+		<value xml:lang="ko"><![CDATA['아이콘으로 보기'모드에서 표시되는 썸네일을 생성하는 방식을 지정합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Set up the creating method of thumbnail that shown on 'Icon View' mode.]]></value>
+	</item>
+	<item name="default_view">
+		<value xml:lang="ko"><![CDATA[파일 목록 표시 방식]]></value>
+		<value xml:lang="en"><![CDATA[File browser view mode]]></value>
+	</item>
+	<item name="default_view_icons">
+		<value xml:lang="ko"><![CDATA[아이콘]]></value>
+		<value xml:lang="en"><![CDATA[ICONS]]></value>
+	</item>
+	<item name="default_view_list">
+		<value xml:lang="ko"><![CDATA[간단히]]></value>
+		<value xml:lang="en"><![CDATA[LIST]]></value>
+	</item>
+	<item name="about_default_view">
+		<value xml:lang="ko"><![CDATA[최초 접속시 파일 목록을 표시하는 방식을 지정합니다. 다음번 접속시에는 마지막 설정이 자동 적용됩니다.]]></value>
+		<value xml:lang="en"><![CDATA[Set up the default view mode of file browser. Last setting of view mode option will be automatically saved for the future use.]]></value>
+	</item>
+	<item name="elfinderxe_width">
+		<value xml:lang="ko"><![CDATA[파일 브라우저 너비]]></value>
+		<value xml:lang="en"><![CDATA[Width of file browser]]></value>
+	</item>
+	<item name="about_elfinderxe_width">
+		<value xml:lang="ko"><![CDATA[파일 관리기의 가로 크기를 픽셀(Pixel) 단위로 지정합니다. (기본값 : 500)]]></value>
+		<value xml:lang="en"><![CDATA[Type the width of file browser in pixel unit. (Default : 500)]]></value>
+	</item>
+	<item name="elfinderxe_width_auto">
+		<value xml:lang="ko"><![CDATA[자동(100%)]]></value>
+		<value xml:lang="en"><![CDATA[Auto(100%)]]></value>
+	</item>
+	<item name="elfinderxe_height">
+		<value xml:lang="ko"><![CDATA[파일 브라우저 높이]]></value>
+		<value xml:lang="en"><![CDATA[Height of file browser]]></value>
+	</item>
+	<item name="about_elfinderxe_height">
+		<value xml:lang="ko"><![CDATA[파일 관리기의 세로 크기를 픽셀(Pixel) 단위로 지정합니다. (기본값 : 400)]]></value>
+		<value xml:lang="en"><![CDATA[Type the height of file browser in pixel unit. (Default : 400)]]></value>
+	</item>
+	<item name="date_format">
+		<value xml:lang="ko"><![CDATA[날짜 표시 형식]]></value>
+		<value xml:lang="en"><![CDATA[Date format]]></value>
+	</item>
+	<item name="about_date_format">
+		<value xml:lang="ko"><![CDATA[파일 브라우저의 날짜 표시 형식을 지정합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Set up the date display format of file browser.]]></value>
+	</item>
+	<item name="elfinderxe_ui">
+		<value xml:lang="ko"><![CDATA[표시할 화면 구성 요소]]></value>
+		<value xml:lang="en"><![CDATA[UI Settings]]></value>
+	</item>
+	<item name="about_elfinderxe_ui">
+		<value xml:lang="ko"><![CDATA[파일 브라우저를 구성하는 화면 구성 요소 중 표시할 항목을 지정합니다.]]></value>
+		<value xml:lang="en"><![CDATA[You can customize User Interface through show or hide UI elements]]></value>
+	</item>
+	<item name="ui_toolbar">
+		<value xml:lang="ko"><![CDATA[도구상자(상단)]]></value>
+		<value xml:lang="en"><![CDATA[Toolbox(Top)]]></value>
+	</item>
+	<item name="ui_places">
+		<value xml:lang="ko"><![CDATA[즐겨찾기(좌측)]]></value>
+		<value xml:lang="en"><![CDATA[Bookmark(Left)]]></value>
+	</item>
+	<item name="ui_tree">
+		<value xml:lang="ko"><![CDATA[탐색 트리(좌측)]]></value>
+		<value xml:lang="en"><![CDATA[Directory tree(Left)]]></value>
+	</item>
+	<item name="ui_path">
+		<value xml:lang="ko"><![CDATA[현재 경로(하단)]]></value>
+		<value xml:lang="en"><![CDATA[Current path(Bottom)]]></value>
+	</item>
+	<item name="ui_stat">
+		<value xml:lang="ko"><![CDATA[폴더 정보(하단)]]></value>
+		<value xml:lang="en"><![CDATA[Directory info(Bottom)]]></value>
+	</item>
+	<item name="additional_setup">
+		<value xml:lang="ko"><![CDATA[추가 설정]]></value>
+		<value xml:lang="en"><![CDATA[Additional setup]]></value>
+	</item>
+	<item name="about_additional_setup">
+		<value xml:lang="ko"><![CDATA[관리용 설명 및 헤더 & 푸터 내용을 입력합니다.]]></value>
+		<value xml:lang="en"><![CDATA[Type the comment and header&footer contents.]]></value>
+	</item>
+</lang>

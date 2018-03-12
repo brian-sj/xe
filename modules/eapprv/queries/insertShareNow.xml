@@ -1,0 +1,9 @@
+<query id="insertShareNow" action="insert">
+	<tables>
+		<table name="eapprv_share" />
+	</tables>
+	<columns>
+		<column name="eapprv_srl" var="eapprv_srl" filter="number"  notnull="notnull" />
+		<column name="member_srl" var="member_srl" filter="number" notnull="notnull" />
+	</columns>
+</query>

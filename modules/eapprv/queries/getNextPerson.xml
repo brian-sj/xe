@@ -1,0 +1,22 @@
+<query id="getNextPerson" action="select">
+    <tables>
+        <table name="eapprv_line" alias="p"/>
+		<table name="member" alias="m"/>
+    </tables>
+    <columns>
+        <column name="p.*" />
+		<column name="m.user_id" />
+    </columns>
+    <conditions>
+		<condition operation="equal"    column="p.member_srl"  var="m.member_srl" filter="number" notnull="notnull" />
+        <condition operation="equal"    column="eapprv_srl"  var="eapprv_srl" filter="number" notnull="notnull" pipe="and"/>
+		<condition operation="null"    column="p.regdate"      pipe="and" /> 
+    </conditions>
+	<navigation>
+        <index  default="line_stt" var="a" order="c" />
+		<index  default="position" var="b" order="d" />
+        <list_count var="list_count" default="1" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>

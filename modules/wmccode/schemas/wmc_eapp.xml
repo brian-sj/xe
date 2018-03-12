@@ -1,0 +1,62 @@
+<table name="wmc_eapp">
+    
+	<column name="module_srl"  type="varchar" size="20" notnull="notnull" primary_key="primary_key" />  
+	<column name="eapp_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+	<column name="target_srl" type="number" size="11" default="0" notnull="notnull" primary_key="primary_key"  />
+	<column name="member_srl"    type="number" size="11" default="0" notnull="notnull" primary_key="primary_key"  />
+	<column name="stt_int" type="number" size="4" notnull="notnull" />
+	<column name="memo_obj"    type="varchar" size="8000" notnull="notnull" />
+	<column name="memo_comment"    type="varchar" size="1000" notnull="notnull" />
+	<column name="stt1" type="char" size="1" notnull="notnull" /> 
+	<column name="stt2" type="char" size="1" notnull="notnull" /> 
+	<column name="stt3" type="char" size="1" notnull="notnull" /> 
+	<column name="regdate" type="date" default="currdate()"/>  
+</table>
+<!--
+
+stt_int   신청라인 , 접수라인 , 확인라인 3개를 표현  0,1,2,3 
+stt       진행상태를 나타낸다.                 1,2,3 
+
+아래것은 eapprv 상태값을 같이 쓴다. 
+
+define("APP_APPROVED" , 'A');	
+define("APP_PROCESS" , 'P');	
+define("APP_NOTINITIALIZED" , 'N');	
+define("APP_REJECT" , 'R');	 
+define("APP_LINE_STT_APPLICATION" , 'NA');	 
+define("APP_LINE_STT_EXEQUTION" , 'NE');	 
+define("APP_LINE_STT_NORMAL" , 'NN');
+
+define("__LINE_STT_1__" , "1");  // 신청 결재 ,  
+define("__LINE_STT_2__" , "2");
+define("__LINE_STT_3__" , "3");
+
+define("__STT_ACCEPT__" , "2"); 	//내 차례 
+define("__STT_OK__" 	, "3"); 	//승인  
+define("__STT_REJECT__" , "0"); 	//반려 
+define("__STT_READY__"  , "1"); 	//대기 
+
+define("__LINE1_TITLE__","담당");
+define("__LINE2_TITLE__","과장");
+define("__LINE3_TITLE__","부장");
+
+define("__LINE4_TITLE__","국장");
+define("__LINE5_TITLE__","총회장");
+
+define("__LINE1_CODE__", "A");  // 담당 
+define("__LINE2_CODE__", "C");  // 과장 
+define("__LINE3_CODE__", "E");   // 부장 
+define("__LINE4_CODE__", "F");   // 국장
+define("__LINE5_CODE__", "G");   // CEO
+
+define("__AUTH_OWNER__" , 100);  // 내 문서 .
+define("__AUTH_LINE__" , 10 );   // 결재 권한. 
+define("__AUTH_SHARE__" , 1 );   // 공유 권한. 
+define("__AUTH_NONE__" , 0 );	 // 권한 없음.
+
+define("__AUTH_COMPLETE__" , 300 );	 		//  내 권한인데 완료된것. 
+define("__AUTH_PROCESSING__" , 400 );	 	//  내 권한인데 진행 중인것.
+			
+			
+
+-->

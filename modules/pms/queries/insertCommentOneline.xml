@@ -1,0 +1,22 @@
+<query id="insertCommentOneline" action="insert">
+    <tables>
+        <table name="pms_comment_oneline" />
+    </tables>
+    <columns>
+		<column name="oneline_srl" var="oneline_srl" notnull="notnull"/>
+		<column name="target_srl" var="target_srl"  notnull="notnull"/>				
+		
+		<column name="member_srl" var="member_srl" />					
+		<column name="type" var="type" default="D" />	
+		<column name="title" var="title" notnull="notnull"/>		
+		
+		<column name="extra_vars" var="extra_vars" />		
+		<column name="reg_date" default="curdate()" var="reg_date" />
+    </columns>
+</query>	
+<!--
+type : 일단... D 는 코멘트에서 사용하는 한줄 주석이다.       comment_srl 이 target_srl 이 된다... 
+              E 는 결제에서 사용하는 한줄 주석이것지...  -> wmceapprv_srl 이 target_srl 이 된다. 
+			  
+ 
+-->

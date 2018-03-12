@@ -1,0 +1,218 @@
+<form name="frm_comment_memo" action="/" id="frm-comment-memo" method="post" onsubmit="return saveComment()">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span></button>
+						<h4 class="modal-title">메모 추가</h4>
+					</div>
+
+					<div class="modal-body">
+						<input type="hidden" name="success_return_url" value="{getUrl()}">
+						<input type="hidden" name="act" value="procPmsCommentSave">
+						<input type="hidden" name="progress" value="0">
+						<input type="hidden" name="project_srl" value="{$project_srl}">
+						<input type="hidden" name="is_update" value="{$is_update}">
+						<input type="hidden" name="comment_srl" id="comment-srl" value="{$data->comment_srl}">
+						<!-- <input type="hidden" name="type" value="{__PMS_COMMENT_TYPE_DIRECT_WRITE__}"> -->
+
+						<table class="table" style="width:100%">
+<!--
+							<tr>
+								<th>일자</th>
+								<td><input class="form-control" type="text" id="request_date" name="request_date" value=""></td>
+							</tr>
+-->
+							<tr class="modal-list">
+								<th>구분</th>
+								<td>
+								<select name="type" class="form-control" id="type" <!--@if ($type=='edit') --><!--@else--> disabled <!--@end-->>
+								<option value="{__PMS_COMMENT_TYPE_DIRECT_WRITE__}" selected|cond="$data->type==__PMS_COMMENT_TYPE_DIRECT_WRITE__ ||$data->type" >업무메모</option>
+								<option value="{__PMS_COMMENT_TYPE_MEETING_REPORT__}" selected|cond="$data->type==__PMS_COMMENT_TYPE_MEETING_REPORT__" >회의록</option>
+								<option value="{__PMS_COMMENT_TYPE_ISSUE__}" selected|cond="$data->type==__PMS_COMMENT_TYPE_ISSUE__" >이슈</option>
+								<option value="{__PMS_COMMENT_TYPE_DIRECT_WORK__}" selected|cond="$data->type==__PMS_COMMENT_TYPE_DIRECT_WORK__" >업무지시</option>
+								<option value="{__PMS_COMMENT_TYPE_CHECKLIST__}" selected|cond="$data->type==__PMS_COMMENT_TYPE_CHECKLIST__" >체크리스트</option>
+								<option value="{__PMS_COMMENT_TYPE_ETC__}" selected|cond="$data->type==__PMS_COMMENT_TYPE_ETC__" >기타</option>
+								</select>
+								</td>
+							</tr>
+							<tr class="modal-list">
+								<th>업무선택</th>
+								<td >
+								<select class="form-control" name="task_srl" <!--@if ($type=='edit') --><!--@else--> disabled <!--@end-->>
+									<option value="" selected|cond="$data->task_srl==''">선택</option>
+									<option loop="$task_list=>$val" value="{$val->task_srl}" selected|cond="$data->task_srl==$val->task_srl">{$val->title}</option>
+								</select>
+								</td>
+							
+							</tr>
+							<tr class="modal-list">
+								<th>제목</th>
+								<td>
+									<!--@if ($type=='edit') -->
+									<input type="text" id="history-title" name="title" placeholder="제목" class="form-control" value="{$data->title}">
+									<!--@else-->
+									{$data->title}
+									<!--@end-->
+								</td>
+							</tr>
+
+							<tr class="modal-list">
+								<th>내용</th>
+								<td>
+									<!-- <input type="hidden" name="content" id="comment-content" class="form-control" placeholder="내용" value="{$data->content}"> -->
+									<!--@if ($type=='edit') -->
+										<textarea name="content" style="height:250px;" id="comment-content" class="form-control" placeholder="내용" value="">{$data->content}</textarea> 
+									<!--@else-->
+										<span class="con-comment"><pre>{$data->content}</pre></span>
+									<!--@end-->
+									
+								</td>
+							</tr>
+
+							<tr class="modal-list">
+								<th>파일첨부 <span class="badge badge-danger">{sizeof($file_list)}</span></th>
+								<td>
+									<div id="memodragandrophandler" data-comment-srl="{$data->comment_srl}">마우스로 파일을 끌어오세요.</div>
+									<div id="status1"> </div>
+									<ul class="down-list" loop="$file_list=>$val">
+										<li id="pms_{$val->pms_file_srl}">
+											<a href="{getUrl('act','procPmsFileDownload','pms_file_srl',$val->pms_file_srl)}"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><!-- {zDate($val->regdate,'Y-m-d')} --><span class="down-file">{$val->source_filename}</span></a>
+											<a href="#"  onclick="deletePmsFile({$val->pms_file_srl})"><i class="fa fa-times file-close" aria-hidden="true"></i></a>
+										</li>
+									</ul>
+								</td>
+							</tr>
+<!--회람요청 체크버튼을 클릭하면 -->
+<!--
+							<tr class="modal-list">
+								<th>회람요청</th>
+								<td>
+									<button type="button" class="btn btn-sm btn-success">회람자 선택</button>
+									<ul class="reading-list">
+										<li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="reading-date">2016-08-15</span><span class="reading-name">김창운</span></li>
+										<li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span><span class="reading-date">2016-08-28</span><span class="reading-name">이상승</span></li>
+										<li><span class="reading-date reading-none">(미수신)</span><span class="reading-name">김현아</span></li>
+										<li><span class="reading-date reading-none">(미수신)</span><span class="reading-name">김지민</span></li>
+									</ul>
+								</td>
+							</tr>
+-->
+					</table>
+			</form>
+						</div>
+					</div>
+					<div class="modal-footer">
+<!-- 						<div class="select-box pull-left">
+							<input type="checkbox" value="Y" name="msg" id="msg" checked> 메신저 알림.
+							<input type="checkbox" value="Y" name="private" id="private"> Private
+						</div> -->
+						<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+						<button id="comment-memo-save" onclick="commentMemoSave()" type="button" class="btn btn-Blue" data-dismiss="modal">저장</button>
+					</div>
+					<!--@if ($type=='edit') -->
+					<!--@else-->
+					<div class="modal-body modal-comment">
+						<table class="modal-con" style="width:100%">
+							<tr class="modal-list">
+								<th>댓글 <span class="badge badge-danger" id="comment-oneline-count">{sizeof($comment_list)}</span></th>
+								<td><form onsubmit="return commentMemoOnelineSave();">
+									<div class="input-group input-group-sm">
+									<input type="text" id="comment-memo-oneline-title" name="" placeholder="" class="form-control" style="width:420px;"> 
+									
+										<span class="input-group-btn"><button id="comment-memo-oneline-save" onclick="commentMemoOnelineSave()" type="button" class="btn btn-Blue">등록</button>
+									</form>	
+										</span>
+									</div>
+									<ul class="comment-list comment-oneline-list">
+										
+										<li loop="$comment_list=>$val" class="oneline_{$val->oneline_srl}">
+											<span class="comment-name">{$val->user_name}</span><span class="con-comment">{$val->title} 
+												<!--@if($val->member_srl==$logged_info->member_srl) -->
+												<a href="javascript:void(0)" onclick="commentMemoOnelineDelete({$val->oneline_srl})"><i class="fa fa-times memo-close" aria-hidden="true"></i></a>
+												<!--@end-->
+											</span>
+										</li>
+									</ul>
+								</td>
+
+							</tr>
+						</table>
+					</div>
+					<!--@end-->
+				</div>
+
+<script>	
+/* 댓글 쓰기,수정 하는 곳이다. */		
+function commentMemoSave(){
+	var cparams = {};
+	cparams.project_srl = document.frm_comment_memo.project_srl.value  ;
+	cparams.comment_srl = document.frm_comment_memo.comment_srl.value  ;
+	cparams.title = document.frm_comment_memo.title.value ;
+	cparams.content = document.frm_comment_memo.content.value ;
+	cparams.type = document.frm_comment_memo.type.value ;
+	cparams.task_srl = document.frm_comment_memo.task_srl.value ;	
+	cparams.is_update = document.frm_comment_memo.is_update.value ;	
+	
+console.log( cparams );	
+	exec_json("pms.procPmsCommentSave",cparams, function(data){
+		alert("저장되었습니다.");
+		jQuery("#comment-memo-oneline-title").val("");
+		
+		
+		document.location.reload();
+	});
+}
+/* 대댓글을 기록하는 곳이다...  */
+function commentMemoOnelineSave(){
+	var cparams = {};
+	cparams.target_srl = document.frm_comment_memo.comment_srl.value ; 
+	cparams.type="D";
+	cparams.title = jQuery("#comment-memo-oneline-title").val() ;
+	
+	exec_json("pms.procPmsCommentOnelineSave",cparams, function(data){
+		if(data.success=="OK"){
+			//alert("저장되었습니다.");
+			var cnt =  parseInt( $("#comment-oneline-count").text())||0 ;
+			cnt++;
+			$("#comment-oneline-count").text(cnt);
+			$(".comment-oneline-list").prepend('<li class=oneline_"'+data.oneline_srl+'"><span class="comment-name">'+data.user_name+'</span><span class="con-comment">'+cparams.title+'<a href="javascript:void(0)" onclick="commentMemoOnelineDelete("'+data.oneline_srl+'")"> <i class="fa fa-times memo-close" aria-hidden="true"></i></a></span></li>');
+		}
+		else {
+			alert("저장하지 못하였습니다. 관리자에게 문의 바랍니다.");
+		}
+
+	});
+	jQuery("#comment-memo-oneline-title").val("") ;
+	return false;
+}
+/* 댓글 지우기   */
+function commentMemoOnelineDelete(oneline_srl){
+	var cparams = {};
+	cparams.target_srl  = document.frm_comment_memo.comment_srl.value ; 
+	cparams.oneline_srl = oneline_srl;
+	exec_json("pms.procPmsCommentOnelineDelete",cparams, function(data){
+		if(data.success=="OK"){
+			alert("삭제되었습니다."); 
+			var cnt =  parseInt( $("#comment-oneline-count").text())||0 ;
+			cnt--;
+			$("#comment-oneline-count").text(cnt);
+			$(".comment-oneline-list .oneline_"+oneline_srl).remove();
+		}
+		else {
+			alert("저장하지 못하였습니다. 관리자에게 문의 바랍니다.");
+		}
+
+	});
+}
+
+function deletePmsFile(pms_file_srl){
+	params.pms_file_srl = pms_file_srl;
+	if(confirm("삭제하시겠습니까?")){
+		exec_json("pms.procPmsFileDelete",params, function(data){
+				//document.location.reload();
+				jQuery("#pms_"+pms_file_srl).remove();
+				},function(error){ console.log(error);}
+			);
+   }
+}
+</script>

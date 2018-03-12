@@ -1,0 +1,18 @@
+<query id="updateEapprvLineSetNextPerson" action="update">
+    <tables>
+        <table name="eapprv_line" />
+    </tables>
+    <columns>
+        <column name="stt"  var="stt" notnull="notnull" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="eapprv_srl" var="eapprv_srl" notnull="notnull" />
+		<condition operation="equal" column="member_srl" var="member_srl" notnull="notnull" pipe="and"/>
+		<condition operation="equal" column="line_stt"   var="line_stt" notnull="notnull" pipe="and"/>
+    </conditions>
+</query>
+<!-- 
+
+updateEapprvLine 과 나머지는 동일 하지만 , 다음 사람을 지정하는 것이므로 regdate는 계속 null 이 들어간다. 
+
+-->

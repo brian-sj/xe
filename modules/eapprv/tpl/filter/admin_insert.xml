@@ -1,0 +1,14 @@
+<filter name="admin_insert" module="book" act="procBookcAdminInsert" confirm_msg_code="confirm_submit">
+    <form>
+        <node target="mid" required="false" maxlength="40" filter="alpha_number" />
+        <node target="title" required="true" maxlength="250" />
+    </form>
+	<response callback_func="completeAdminInsertBook">
+        <tag name="error" />
+        <tag name="message" />
+        <tag name="module" />
+        <tag name="act" />
+        <tag name="page" />
+        <tag name="module_srl" />
+    </response>
+</filter>

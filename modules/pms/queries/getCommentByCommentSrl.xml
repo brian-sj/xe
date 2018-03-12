@@ -1,0 +1,21 @@
+<query id="getComment" action="select">
+    <tables>
+        <table name="pms_comment" alias="c"/>
+    </tables>
+    <columns>
+        <column name="c.*" />
+    </columns>
+	<conditions>
+		<condition operation="equal" column="comment_srl" var="comment_srl" />
+	</conditions>
+	<navigation>
+        <index var="sort_index" default="comment_srl" order="desc" />
+        <list_count var="list_count" default="20" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>
+<!-- 
+type :B 
+regdate 오늘인거 하면 하루 간단 일지를 꺼낼 수 있다. 
+-->

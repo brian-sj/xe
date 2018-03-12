@@ -1,0 +1,15 @@
+<query id="getOnProcessLine" action="select">
+
+<!--   Dept info  to homepage   -->
+
+    <tables>
+        <table name="eapprv_proc" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="eapprv_srl" var="eapprv_srl" notnull="notnull" />
+		<condition operation="equal" column="member_srl" var="member_srl" pipe="and" />
+    </conditions>
+</query>

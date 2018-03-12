@@ -1,0 +1,21 @@
+<query id="getEapprvMyDocuments" action="select">
+    <tables>
+        <table name="documents" alias="d"/>
+		<table name="eapprv" alias="v"/>
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="d.document_srl" var="v.document_srl" filter="number" notnull="notnull"  />
+        <condition operation="equal" column="v.member_srl"    var="member_srl"      filter="number" notnull="notnull" pipe="and" />
+		<condition operation="like"    column="d.title"    var="title"       pipe="and" /> 
+		
+    </conditions>
+	<navigation>
+        <index var="sort_index" default="v.regdate" order="order_type" />
+        <list_count var="list_count" default="20" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>

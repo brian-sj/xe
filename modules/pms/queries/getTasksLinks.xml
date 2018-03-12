@@ -1,0 +1,15 @@
+<query id="getTasksLinks" action="select">
+    <tables>
+        <table name="pms_task_link" alias="p"/>
+        
+    </tables>
+    <columns>
+        <column name="p.*" />
+        
+    </columns>
+    <conditions>
+		<condition operation="equal" column="project_srl" notnull="notnull" var="project_srl" /> 
+		
+    </conditions>
+</query>
+ 

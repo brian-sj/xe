@@ -1,0 +1,327 @@
+<style>
+.dropdown-menu {overflow:auto; height:300px}
+.float-div {width:400px; float:left; position:absolute; z-index:1000; display:none}
+.float-checkbox {display:inline-block; width:75px}
+
+.box-body{margin:0; padding:0}
+.table>tbody>tr>th {border-left:1px solid #dadee1; vertical-align:middle}
+.table>tbody>tr>th:first-child {border-left:none; border-right:solid 1px #ececec}
+.table>tbody>tr>td:ladt-child {border-right:none;}
+.table{margin-bottom:0}
+.table>tbody>tr>th {width:130px; background-color:#f5f5f6; text-align:left; padding-left:15px}
+.table>tbody>tr>th, .table>tbody>tr>td {border-top:1px solid #ececec; border-right:1px solid #ececec; padding:10px}
+.table>tbody>tr>td {text-align:left; min-width:90px}
+.table>tbody>tr>th.line-fir, .table>tbody>tr>td.line-fir {border-top:none}
+
+/*김지민*/
+.table-pad {margin:0 15px 20px 15px}
+.text-warning {color:#f53c3c}
+.divi-line {border-top:solid 1px #e5e5e5; display:table; width:100%; padding:20px 0}
+.line-fir {border-top:none}
+.list-title {display:inline-block}
+.list-con {display:inline-block; width:100%}
+.divi-title {font-weight:600; display:table-cell; vertical-align:middle; width:13%; font-size:14px}
+.divi-subtitle {text-align:right !important; background-color:#fbfbfb}
+.divi-subtitle label {font-weight:normal; font-size:13px; padding-top:8px}
+.form-group {margin-bottom:0; display:inline-block}
+.form-control {border-radius:2px; -webkit-border-radius:2px; border-color:#cececf; color:#000}
+.text-box {width:100%; padding-top:30px}
+.panel-footer {padding:30px 15px}
+.panel-footer .btn {padding:5px 26px; margin:0 3px}
+
+#line2_node,#line3_node{display:none;}
+</style>
+<!--#include("./header.html")-->
+<load target="/common/js/plugins/dhtmlx/dhtmlx.js" />
+<load target="/common/js/plugins/dhtmlx/skins/terrace/dhtmlx.css" />
+<script>
+/* 전자 결재용.  */
+var   mid ="{$mid}" 
+	, module_srl = "{$module_srl}"
+	, target_srl = "{$project_srl}" ;
+
+
+var gu2 ="{$data->gu2}";
+jQuery(function($) {
+	wmcCalendar = new dhtmlXCalendarObject(["start_date", "planed_start_date", "planed_end_date", "end_date", "request_date"]);
+});
+
+jQuery(document).ready(function($){
+	jQuery(".sub-worker").click(function(){jQuery(".float-div").toggle("slow"); });
+	$("#gu1").bind('change' , function(){
+		params = {};
+		params.code_var_val =  $(this).find("option:selected").data('code') ;
+		changeGuSelectedBox(params);
+	});
+	//초기값
+	params ={};
+	params.code_var_val = $("#gu1 option:selected").data('code') ;
+	changeGuSelectedBox(params);
+
+});
+function changeGuSelectedBox( params ){
+	params.code_gu = '{__CODE_PMS__}';
+	params.code_gu2 = '{__CODE_PMS_SUB__}';
+	exec_json("pms.dispPmsBySubCodeAPI",params, function(data){
+		$("#gu2").html("");
+		$(data.code).each(function(i){
+			$("#gu2").append( "<option value='"+$(this).attr('code_int_val')+"'>"+ $(this).attr('memo')    );
+		});
+		$("#gu2 option[value='"+gu2+"']").attr('selected',true);
+	});
+}
+</script>
+
+<div class="wrap">
+	<div class="row">
+		<div class="col-xs-12 page-title">
+			<div class="col-xs-4 pull-left"><h3>프로젝트 신청서</h3></div>
+			<div class="col-xs-8 text-right">
+				<div class="regist_top">
+					<a href="{getUrl('act','dispPmsProjectListView')}" class="btn btn-default">목록</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-lg-6 col-md-8 margin-left" >
+			<div id="eapprv_panel" class="box box-widget">
+			{$eapp}
+			</div>
+		</div>	
+	</div>
+
+	<!--div class="row"-->
+	<form name="frm" method="post" act="/"  >
+		<input type="hidden" name="act" value="procPmsProjectSave" />
+		<input type="hidden" name="mh" value="0" />
+		<input type="hidden" id="comment_status" name="comment_status" value="ALLOW" >
+		<input type="hidden" value="/index.php?mid={$mid}&act=dispPmsProjectListView&project_srl={$project_srl}" name="error_return_url">
+		<input type="hidden" name="page" value="{$page}" />
+		<input type="hidden" name="project_srl" value="{$data->project_srl}">
+
+
+		<div class="col-xs-12">
+			<div id="main_panel" class="box box-primary">
+				<!-- Default panel contents -->
+				<div class="box-body">
+					<!-- Table -->
+					<table class="table">
+						<tr>
+							<th class="line-fir divi-title">진행 구분<span class="text-warning"> *</span></th>
+							<td class="line-fir" colspan="8">
+								<input type="radio" name="category" value="{__PMS_CATEGORY_IN_ACCEPT__}" checked|cond="$data->category==__PMS_CATEGORY_IN_ACCEPT__||!$data->category">&nbsp;접수&nbsp;
+								<input type="radio" name="category" value="{__PMS_CATEGORY_IN_PLAN__}" checked|cond="$data->category==__PMS_CATEGORY_IN_PLAN__" />&nbsp;예정&nbsp;
+								<input type="radio" name="category" value="{__PMS_CATEGORY_IN_ING__}" checked|cond="$data->category==__PMS_CATEGORY_IN_ING__" />&nbsp;진행&nbsp;
+								<input type="radio" name="category" value="{__PMS_CATEGORY_IN_APPLYCLOSE__}" checked|cond="$data->category==__PMS_CATEGORY_IN_APPLYCLOSE__" />&nbsp;완료신청&nbsp;
+								<!-- <input type="radio" name="category" value="{__PMS_CATEGORY_IN_CLOSE__}" checked|cond="$data->category==__PMS_CATEGORY_IN_CLOSE__" />&nbsp;완료&nbsp; -->
+								&nbsp;&nbsp;&nbsp;
+								<input type="radio" name="category" value="{__PMS_CATEGORY_IN_HOLDING__}" checked|cond="$data->category==__PMS_CATEGORY_IN_HOLDING__" />&nbsp;보류&nbsp;
+								<input type="radio" name="category" value="{__PMS_CATEGORY_IN_DROP__}" checked|cond="$data->category==__PMS_CATEGORY_IN_DROP__" />&nbsp;폐기&nbsp;
+								<input type="radio" name="category" value="{__PMS_CATEGORY_IN_REGULAR__}" checked|cond="$data->category==__PMS_CATEGORY_IN_REGULAR__" />&nbsp;일상
+								&nbsp;&nbsp;&nbsp;<br>
+								<span class="text-warning"><small>* 일상업무 중 공통업무 주무부서를 부서장(관리), 주담당자는 부서장님으로 지정합니다. 완료신청을 하시면 부서장님의 결재후 완료됩니다.</small></span>
+							</td>
+						</tr>
+						<tr>
+							<th class="divi-title">프로젝트명<span class="text-warning"> *</span></th>
+							<td class="" colspan="8">
+								<input type="text" class="form-control" id="title" name="title" value="{$data->title}" required />
+							</td>
+						</tr>
+						<tr>
+							<th class="divi-title">업무분류</th>
+							<td class="divi-subtitle"><label for="gu3"><span class="text-warning">* </span>대분류</label></td>
+							<td class="">
+								<select class="form-control" id="gu3" name="gu3" required>
+									<option value="" selected|cond="$data->gu3==''">선택</option>
+									<option value="A" selected|cond="$data->gu3=='A'">기획</option>
+									<option value="D" selected|cond="$data->gu3=='D'">개발</option>
+									<option value="M" selected|cond="$data->gu3=='M'">운영</option>
+								</select>
+							</td>
+							<td class="divi-subtitle"><label for="gu1"><span class="text-warning">* </span>중분류</label></td>
+							<td>
+								<select  class="form-control" id="gu1" name="gu1" required >
+									<option value="" data-code="X" selected|cond="$data->gu1==''">선택</option>
+									<!--//리얼에서는 순서가 바껴서 array_reverse 사용함 -->
+									<!--@foreach(array_reverse($main_code_list) as $key=> $val)-->
+									<option value="{$val->code_int_val}" selected|cond="$val->code_int_val==$data->gu1" data-code="{$val->code_var_val}" >{$val->memo}</option>
+									<!--@end-->
+								</select>
+							</td>
+							<td class="divi-subtitle"><label for="gu2">소분류</label></td>
+							<td>
+								<select  class="form-control" id="gu2" name="gu2" >
+									<option value="0" selected|cond="$data->gu2==''">선택</option>
+									<!--@foreach($sub_code_list as $key=> $val)-->
+									<option value="{$val->code_int_val}" selected|cond="$val->code_int_val==$data->gu2" >{$val->memo}</option>
+									<!--@end-->
+								</select>
+							</td>
+							<td class="divi-subtitle"></td><td></td>
+						</tr>
+						<tr>
+							<th class="divi-title">업무요청자</th>
+							<td class="divi-subtitle"><label for="request_date">요청일</label></td>
+							<td class="">
+								<input class="form-control" type="text" id="request_date" name="request_date" value="{$data->request_date}" / >
+							</td>
+						</th>
+
+						<td class="divi-subtitle"><label for="request_dept"><span class="text-warning">* </span>요청 부서</label></td>
+						<td class="">
+							<select class="form-control" name="request_dept" id="request_dept" name="request_dept" required>
+								<option value="">선택</option>
+								<!--@foreach($request_dept as $key=> $val)-->
+								<option value="{$key}" selected|cond="$key==$data->request_dept" >{$val}</option>
+								<!--@end-->
+							</select>
+						</td>
+						<td class="divi-subtitle"><label for="request_person">요청자</label></td>
+						<td class="">
+							<input class="form-control" type="text" id="request_person" name="request_person" value="{$data->request_person}" />
+						</td>
+						<td class="divi-subtitle"></td><td></td>
+					</tr>
+					<tr>
+						<th class="divi-title">업무담당자</th>
+						<td class="divi-subtitle"><label for="member_srl"><span class="text-warning">* </span>주담당자</label></td>
+						<td>
+							<select class="form-control" id="member_srl" name="member_srl" >
+								<option value="188" selected|cond="">선택</option>
+								<!--@foreach($wmc_members as $key=> $val)-->
+								<option value="{$val->member_srl}" selected|cond="$val->member_srl==$data->member_srl" >{$val->user_name}</option>
+								<!--@end-->
+							</select>
+						</td>
+						<td class="divi-subtitle"><label for="dev_dept">주무부서</label></td>
+						<td>
+							<select class="form-control" id="dev_dept" name="dev_dept" >
+								<option value="2">선택</option>
+								<!--@foreach($dev_depts as $key=> $val)-->
+								<option value="{$key}" selected|cond="$key==$data->dev_dept" >{$val}</option>
+								<!--@end-->
+							</select>
+						</td>
+						<td class="divi-subtitle"><label for="">업무참여자</label></td>
+						<td>
+							<select class="form-control" id="" name="" >
+								<option value="">선택</option>
+							</select>
+						</td>
+						<td class="divi-subtitle"><label for="">업무공유자</label></td>
+						<td>
+							<select class="form-control" id="" name="" >
+								<option value="">선택</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th class="divi-title">업무일정</th>
+						<td class="divi-subtitle"><label for="planed_mh">시간</label></td>
+						<td>
+							<input class="form-control" type="text" id="planed_mh" name="planed_mh" value="{$data->planed_mh}" placeholder="시간" />
+						</td>
+						<td class="divi-subtitle"><label for="start_date"><span class="text-warning">* </span>시작일</label></td>
+						<td>
+							<input class="form-control" type="text" id="start_date" name="start_date" value="{$data->start_date}" required / >
+						</td>
+						<td class="divi-subtitle"><label for="planed_end_date">종료예정일</label></td>
+						<td>
+							<input class="form-control" type="text" id="planed_end_date" name="planed_end_date" value="{$data->planed_end_date}" / >
+						</td>
+						<td class="divi-subtitle"><label for="end_date">종료일</label></td>
+						<td>
+							<input class="form-control" type="text" id="end_date" name="end_date" value="{$data->end_date}" / >
+						</td>
+					</tr>
+					<tr>
+						<th class="divi-title">예산</th>
+						<td class="divi-subtitle"><label for="">총예산</label></td>
+						<td>
+							<input class="form-control" type="text" id="" name="" value=""  / >
+						</td>
+						<td class="divi-subtitle"><label for="">직접비</label></td>
+						<td>
+							<input class="form-control" type="text" id="" name="" value=""  / >
+						</td>
+						<td class="divi-subtitle"><label for="">간접비</label></td>
+						<td>
+							<input class="form-control" type="text" id="" name="" value=""  / >
+						</td>
+						<td class="divi-subtitle"><label for="">(전자결재예산)</label></td>
+						<td>
+							<input class="form-control" type="text" id="" name="" value=""  / >
+						</td>
+					</tr>
+					<tr>
+						<th class="divi-title" rowspan="2">업무내용</th>
+						<td colspan="8">
+							<input class="form-control" type="text" id="" name="" value=""  / >
+						</td>
+					</tr>
+					<tr>
+						<td colspan="8">
+							<input class="form-control" type="text" id="" name="" value=""  / >
+						</td>
+					</tr>
+					<tr>
+						<th class="divi-title">관련결재문서</th>
+						<td class="divi-subtitle"><label for="">기안일자</label></td>
+						<td>
+							<input class="form-control" type="text" id="" name="" value=""  / >
+						</td>
+						<td class="divi-subtitle"><label for="">제목</label></td>
+						<td>
+							<input class="form-control" type="text" id="" name="" value=""  / >
+						</td>
+						<td class="divi-subtitle"><label for="">기안자</label></td>
+						<td>
+							<input class="form-control" type="text" id="" name="" value=""  / >
+						</td>
+						<td class="divi-subtitle"><label for="">결재완료</label></td>
+						<td>
+							<input class="form-control" type="text" id="" name="" value=""  / >
+						</td>
+					</tr>
+					<tr>
+						<th class="divi-title" rowspan="4">게시판</th>
+						<td class="divi-subtitle"><label for="">업무대상</label></td>
+						<td colspan="7">
+							<input class="form-control" type="text" id="" name="" value=""  / >
+						</td>
+					</tr>
+					<tr>
+						<td class="divi-subtitle"><label for="">추진배경</label></td>
+						<td colspan="7">
+							<input class="form-control" type="text" id="" name="" value=""  / >
+						</td>
+					</tr>
+					<tr>
+						<td class="divi-subtitle"><label for="">기대효과</label></td>
+						<td colspan="7">
+							<input class="form-control" type="text" id="" name="" value=""  / >
+						</td>
+					</tr>
+					<tr>
+						<td class="divi-subtitle"><label for="">기타</label></td>
+						<td class="" colspan="7">
+							<input class="form-control" type="text" id="" name="" value=""  / >
+						</td>
+					</tr>
+				</table>
+
+
+				<!-- //Table -->
+			</div>
+
+			<div class="panel-footer text-center">
+				<a href="{getUrl('act','dispPmsProjectListView')}" class="btn btn-default">목록</a><button class="btn btn-primary">저장</button>
+			</div>
+		</div>
+	</div>
+	<!--/div-->
+</form>
+</div>

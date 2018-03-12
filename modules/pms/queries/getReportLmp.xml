@@ -1,0 +1,25 @@
+<query id="getReportLmp" action="select">
+    <tables>
+        <table name="lmp_in_out" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+        <condition operation="like" column="sw_name" var="sw_name"  />   
+		<condition operation="like" column="user" var="user"  pipe="and"/>   
+		<condition operation="like" column="dept_gu" var="dept"  pipe="and"/>   
+		<condition operation="equal" column="stt" var="stt"  pipe="and"/>   
+		<condition operation="more" column="act_date" var="start_date"  pipe="and"/>   
+		<condition operation="below"  column="act_date" var="end_date"  pipe="and"/>
+		<condition operation="like" column="memo" var="memo"  pipe="and" />   
+
+    </conditions>
+    <navigation>
+        <index var="sort_index" 	default="act_date" order="desc" />
+		<index var="sort_index1" 	default="act_date" order="desc" />
+        <list_count var="list_count" default="20" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>

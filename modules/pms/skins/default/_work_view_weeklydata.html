@@ -1,0 +1,40 @@
+			<table class="table table-simple table-hover" width="100%">
+			<thead>
+						<tr>
+							<th style="width:50%" scope="row">업무</th>
+							<th width="30" class="label-color text-center">일요일 <span class="date">({substr($dt->sunday,5)})</span></th>
+							<th width="30" class="text-center">월요일 <span class="date">({substr($dt->monday,5)})</span></th>
+							<th width="30" class="text-center">화요일 <span class="date">({substr($dt->tuesday,5)})</span></th>
+							<th width="30" class="text-center">수요일 <span class="date">({substr($dt->wednesday,5)})</span></th>
+							<th width="30" class="text-center">목요일 <span class="date">({substr($dt->thursday,5)})</span></th>
+							<th width="30" class="text-center">금요일 <span class="date">({substr($dt->friday,5)})</span></th>
+
+						</tr>
+			</thead>
+			<tbody id="report_table">
+				<!--@foreach($list as $no => $val)-->
+						<tr scope="row" class="data" data-project-srl="{$val->project_srl}" data-task-srl="{$val->task_srl}" data-category="{$val->category}">
+							<td scope="row" style="cursor:pointer" onclick="bookmarkAddWorkTime( {$val->project_srl}  , {$val->task_srl} , this  , '{$val->category}' );"><span style="color:#337AB7">[{$val->project_name}]</span> {$val->task_name}{$start_date}</td>
+							<td class="label-color"><div class="territory-cursor w1 work" data-report-date="{$dt->sunday}">{$val->w1}  </div></td>
+							<td ><div class="territory-cursor w2 work text-center" data-report-date="{$dt->monday}">{$val->w2}</div></td>
+							<td ><div class="territory-cursor w3 work text-center" data-report-date="{$dt->tuesday}">{$val->w3}</div></td>
+							<td ><div class="territory-cursor w4 work text-center" data-report-date="{$dt->wednesday}">{$val->w4}</div></td>
+							<td ><div class="territory-cursor w5 work text-center" data-report-date="{$dt->thursday}">{$val->w5}</div></td>
+							<td ><div class="territory-cursor w6 work text-center" data-report-date="{$dt->friday}">{$val->w6}</div></td>
+
+						</tr>
+				<!--@end-->
+			</tbody>
+			<tfoot>
+						<tr>
+							<th scope="row" class="text-left"><div class="primary">합계</div></th>
+							<th class="label-color"><div id="total_w1" class="sun text-center">0</div></th>
+							<th><div id="total_w2" class="mon text-center">0</div></th>
+							<th><div id="total_w3" class="tue text-center">0</div></th>
+							<th><div id="total_w4" class="wed text-center">0</div></th>
+							<th><div id="total_w5" class="thu text-center">0</div></th>
+							<th><div id="total_w6" class="fri text-center">0</div></th>
+
+						</tr>
+			</tfoot>
+			</table>

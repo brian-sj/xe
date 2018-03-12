@@ -1,0 +1,50 @@
+<query id="getReleasenotesOnlyShared" action="select">
+    <tables>
+        <table name="releasenote" alias="r" />
+        <table name="releasenote_testers" alias="t" type="outer join" />
+		
+        <table name="wmc_eapp" alias="e" />
+        <table name="wmc_code" alias="c" />
+		<table name="documents" alias="d" />
+
+    </tables>
+    <columns>
+        <column name="r.*" />
+        <column name="c.*" />
+        <column name="d.*" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="r.program_srl" default="c.code_int_val" />   
+		<condition operation="equal" column="r.note_srl" default="t.note_srl" pipe="and" />   
+		<condition operation="equal" column="r.note_srl" default="e.eapp_srl" pipe="and" />   
+		<condition operation="equal" column="r.document_srl" default="d.document_srl" pipe="and" />   
+		
+        <condition operation="equal" column="category" var="category" pipe="and" />    
+        <condition operation="equal" column="r.stt" var="stt" pipe="and" />    
+		
+		<condition operation="equal" column="worker_srl"  var="worker_srl" pipe="and"/>
+		<condition operation="equal" column="tester_srl"  var="tester_srl" pipe="and"/>
+		<condition operation="equal" column="manager_srl" var="manager_srl" pipe="and"/>
+		<condition operation="below" column="r.stt" var="stt_2" pipe="and" />    
+		<group pipe="and">
+			<condition operation="like" column="d.title" var="search_keyword" />
+			<condition operation="like" column="d.content" var="search_keyword" pipe="or" />
+        </group>
+		
+		<group pipe="and">
+            <condition operation="equal" column="e.member_srl" var="my_member_srl" />
+			<condition operation="equal" column="t.tester_srl" var="my_member_srl" pipe="or" />
+        </group>
+		
+    </conditions>
+	
+	<navigation>
+        <index var="sort_index" default="r.note_srl" order="desc" />
+        <list_count var="list_count" default="10" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>
+<!--   
+  test 도 WMC_line에 넣어야 하지만 아직 옮기지 못했어요... 나중에 살림살이가 나아지면 옮깁시다. 
+-->

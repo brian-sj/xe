@@ -1,0 +1,53 @@
+  <table class="table">
+    <tr>
+		<th width="40"><a href="{getUrl('sort_index','project_srl')}">No.</a></th>
+		<th width="40">결재</th>
+		<th width="40"><a href="{getUrl('sort_index','gu3')}">대분류</a></th>
+		<th width="50"><a href="{getUrl('sort_index','gu1')}">중분류</a></th>
+		<th width="80"><a href="{getUrl('sort_index','gu2')}">소분류</a></th>
+		<th width="40">진행</th>
+		<th ><a href="{getUrl('sort_index','title')}">업무명</a><br>
+		<input type="text"  placeholder="제목" name="title" value="{$title}" /></th>
+		<th width="100"><a href="{getUrl('sort_index','request_dept')}">요청부서</a>
+		<select name="request_dept" onchange="searchfrm.submit()">
+			<option value="" selected|cond="$request_dept==''">전체</option>
+			<!--@foreach($request_dept as $key=> $val)-->
+			<option value="{$key}" selected|cond="$key==$data->request_dept" >{$val}</option>
+			<!--@end-->
+		</select></th>
+		<th width="80"><a href="{getUrl('sort_index','dev_dept')}">주무부서</a>
+		<select id="dev_dept" name="dev_dept" onchange="searchfrm.submit()" >
+			<option value="" selected|cond="">선택</option>
+			<!--@foreach($dev_depts as $key=> $val)-->
+			<option value="{$key}" selected|cond="$key==$dev_dept" >{$val}</option>
+			<!--@end-->	
+		</select>
+		<th width="80"><a href="{getUrl('sort_index','user_name')}">주담당자</a>
+		<input type="text" style="width:60px" placeholder="이름" name="user_name" value="{$user_name}" /></th>
+		</th>
+		<!--
+		<input type="text" style="width:100px" placeholder="담당과" name="dev_dept" value="{$dev_dept}" /></th>		-->
+		<th width="50">시작</th>
+		<th width="50">예정</th>
+		<th width="50">완료</th>
+		<th width="80">진행(경과일)</th>
+	</tr>
+	<!--@foreach($list as $no => $val)-->
+	<tr>
+		<td>{$val->project_srl}</td>
+		<td></td>
+		<td><!--@if ($val->gu3=='A')-->기획<!--@else if ($val->gu3=='D')-->개발<!--@else-->운영<!--@end--></td>
+		<td><img src="images/{$val->gu1}.png" class="icon" title="{$val->gu1_name}"  /></td>
+		<td>{$val->gu2_name}</td>
+		<td>{$val->category}</td>
+		<td><a href="{getSiteUrl('','act','dispPmsCalendarView','project_srl',$val->project_srl )}" >{cut_str($val->title, 80)}</a>&nbsp;&nbsp;<a href="{getSiteUrl('','act','dispPmsProjectWrite','project_srl',$val->project_srl )}" ><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>Edit</a></td>
+		<td>{$request_dept[$val->request_dept]}</td>
+		<td>{$val->dev_dept}</td>
+		<td>{$val->user_name}</td>
+		<td class="date">{zDate($val->start_date, "Y-m-d")}</td>
+		<td class="date">{zDate($val->planed_end_date, "Y-m-d")}</td>
+		<td class="date">{zDate($val->end_date, "Y-m-d")}</td>
+		<td><!--@if($val->category=='E')-->완료({$val->duration_c}D)<!--@else-->{$val->progress}%({$val->duration}D)<!--@end--></td>
+	</tr>
+	<!--@end-->
+  </table>

@@ -1,0 +1,75 @@
+<!--// Comment v2 -->
+<a cond="$mi->fdb_style=='fdb_v2' && $mi->default_style!='guest'" class="nametag ui_font bubble" href="#" onclick="jQuery(this).nextAll('ul,.bd_pg').slideToggle();return false" title="Click! {$lang->comment} {$lang->cmd_view}~"><strong class="bg_color bx_shadow">Comment <b>'{$oDocument->getCommentcount()}'</b></strong></a>
+
+<!--// Comment v1 -->
+<block cond="$oDocument->getCommentcount()">
+<div cond="!$mi->fdb_style" class="fdb_tag<!--@if($mi->cmt_wrt_position=='cmt_wrt_btm')--> bg_f_f9 css3pie<!--@end-->">
+	<a class="ui_font bubble" href="#" onclick="jQuery(this).parent().nextAll('ul,.bd_pg').slideToggle();return false" title="{$lang->comment} {$lang->cmd_view}">Comments <b>'{$oDocument->getCommentcount()}'</b></a>
+</div>
+
+<ul class="fdb_lst_ul {$mi->fdb_hide}">
+	<block loop="$oDocument->getComments()=>$key,$comment">
+<!--@if($comment->get('depth'))-->
+	<li id="comment_{$comment->comment_srl}" class="fdb_itm clear re bg{($comment->get('depth'))%2}" style="margin-left:{(($comment->get('depth')-1)%10+1)*2}%">
+		<i class="fa fa-share fa-flip-vertical re"></i><i cond="$comment->get('depth')>10" class="fa fa-share fa-flip-vertical re rere"></i>
+<!--@else-->
+	<li id="comment_{$comment->comment_srl}" class="fdb_itm clear">
+<!--@end-->
+		<!--// 프로필 -->
+		
+		<!--// 댓글 정보 -->
+		<div class="meta">
+			<a cond="$comment->member_srl" href="#popup_menu_area" class="member_{$comment->member_srl}" onclick="return false">{$comment->getNickName()}</a>
+			<a cond="!$comment->member_srl && $comment->homepage" href="{$comment->getHomepageUrl()}" target="_blank">{$comment->getNickName()}</a>
+			<b cond="!$comment->member_srl && !$comment->homepage">{$comment->getNickName()}</b>
+			<span class="date">({zDate($comment->get('regdate'), "Y.m.d H:i")})</span>
+			
+			<span cond="$comment->isSecret()" class="ico_secret">SECRET</span>
+			<!--// 첨부파일 -->
+			<block cond="$comment->hasUploadedFiles()">
+			<div class="tg_btn2" style="cursor:pointer"><b class="ui-icon ui-icon-disk">Files</b>{$lang->uploaded_file} <small>({$comment->get('uploaded_count')})</small></div>
+			<div id="files_{$comment->comment_srl}" class="cmt_files tg_cnt2" style="display:none">
+				<button type="button" class="tg_blur2"></button><button type="button" class="tg_close2" title="{$lang->cmd_close}"><b class="ui-icon ui-icon-closethick">X</b></button>
+				<ul class="wrp">
+					<li loop="$comment->getUploadedFiles()=>$key,$file"><em>&bull;</em> <a class="bubble" href="{getUrl('')}{$file->download_url}" title="[File Size:{FileHandler::filesize($file->file_size)}/Download:{number_format($file->download_count)}]">{$file->source_filename}</a></li>
+				</ul>
+				<button type="button" class="tg_blur2"></button>
+			</div>
+			</block>
+		</div>
+		<!--// 댓글 본문 -->
+		{$comment->getContent(false)}
+		<div class="fdb_nav img_tx">
+			<block cond="$is_admin=='Y'||$comment->get('member_srl')==$member_srl">
+			<a href="{getUrl('act','dispEapprvDeleteComment','comment_srl',$comment->comment_srl)}"><i class="fa fa-eraser"></i>{$lang->cmd_delete}</a>
+			</block>
+		</div>
+	</li>
+	</block>
+</ul>
+
+<!--// 댓글 페이지네이션 -->
+<block cond="$oDocument->comment_page_navigation">
+<div class="bd_pg clear {$mi->fdb_hide}">
+	<a href="{getUrl('cpage',1)}#{$oDocument->get('document_srl')}_comment" class="direction" title="{$lang->first_page}"><i class="fa fa-angle-double-left"></i> <span>First</span></a>
+	<block loop="$page_no=$oDocument->comment_page_navigation->getNextPage()">
+		<strong cond="$cpage==$page_no" class="this">{$page_no}</strong> 
+		<a cond="$cpage!=$page_no" href="{getUrl('cpage',$page_no)}#{$oDocument->get('document_srl')}_comment">{$page_no}</a>
+	</block>
+	<a href="{getUrl('cpage',$oDocument->comment_page_navigation->last_page)}#{$oDocument->get('document_srl')}_comment" class="direction" title="{$lang->last_page}"><span>Last</span> <i class="fa fa-angle-double-right"></i></a>
+</div>
+</block>
+</block>
+
+<script>
+jQuery(document).ready(function($){
+	$(".tg_close2").bind('click' , function(){
+		$(".tg_cnt2").filter(':visible').fadeOut(200).prev().focus();
+	});
+	$(".tg_btn2").bind('click' , function(){
+		$(".tg_cnt2").filter(':hidden').fadeIn(200);
+	});
+	
+	
+});
+</script>

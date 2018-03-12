@@ -1,0 +1,11 @@
+<query id="insertShareUser" action="insert">
+    <tables>
+        <table name="wmc_share" />
+    </tables>
+    <columns>
+        <column name="target_srl" var="target_srl" notnull="notnull" filter="number" />
+		<column name="member_srl" var="member_srl" notnull="notnull" filter="number" />
+		<column name="target_sub_srl" var="target_sub_srl" />	
+		<column name="stt" var="stt" />
+    </columns>
+</query>

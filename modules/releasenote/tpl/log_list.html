@@ -1,0 +1,65 @@
+﻿<include target="_header.html" />
+
+
+<table class="table table-hover notprived" width="110%">
+<thead><tr>
+
+	<th>아이디/아이피</th>
+	<th>메모</th>
+	<th>시간</th>
+	
+	</tr>
+</thead>
+<tbody>
+	<tr loop="$list => $no,$val">
+		<td>{$val->user_id}/{$val->ip}</td>
+		<td>{$val->agent}</td>
+		<td>{$val->regdate}</td>
+
+	</tr>
+</tbody>
+</table>
+
+<form action="./" class="x_pagination x_pull-left" style="margin:0" no-error-return-url="true">
+	<input type="hidden" name="module" value="{$module}" />
+	<input type="hidden" name="act" value="{$act}" />
+	<input cond="$homepage" type="hidden" name="homepage" value="{$args->homepage}" />
+	<input cond="$blog" type="hidden" name="blog" value="{$args->blog}" />
+	<input cond="$nick_name" type="hidden" name="nick_name" value="{$args->nick_name}" />
+	<input type="hidden" name="club_srl" value="{$args->club_srl}">
+	<input type="hidden" name="club_name" value="{$args->club_name}">
+	<ul>
+		<li class="x_disabled"|cond="!$page || $page == 1"><a href="{getUrl('page', '')}">&laquo; {$lang->first_page}</a></li>
+		<block cond="$page_navigation->first_page != 1 && $page_navigation->first_page + $page_navigation->page_count > $page_navigation->last_page - 1 && $page_navigation->page_count != $page_navigation->total_page">
+		{@$isGoTo = true}
+		<li>
+			<a href="#goTo" data-toggle title="{$lang->cmd_go_to_page}">&hellip;</a>
+			<span cond="$isGoTo" id="goTo" class="x_input-append">
+				<input type="number" min="1" max="{$page_navigation->last_page}" required name="page" title="{$lang->cmd_go_to_page}" />
+				<button type="submit" class="x_add-on">Go</button>
+			</span>
+		</li>
+		</block>
+
+		<!--@while($page_no = $page_navigation->getNextPage())-->
+		{@$last_page = $page_no}
+		<li class="x_active"|cond="$page_no == $page"><a  href="{getUrl('page', $page_no)}">{$page_no}</a></li>
+		<!--@end-->
+
+		<block cond="$last_page != $page_navigation->last_page && $last_page + 1 != $page_navigation->last_page">
+		{@$isGoTo = true}
+		<li>
+			<a href="#goTo" data-toggle title="{$lang->cmd_go_to_page}">&hellip;</a>
+			<span cond="$isGoTo" id="goTo" class="x_input-append">
+				<input type="number" min="1" max="{$page_navigation->last_page}" required name="page" title="{$lang->cmd_go_to_page}" />
+				<button type="submit" class="x_add-on">Go</button>
+			</span>
+		</li>
+		</block>
+		<li class="x_disabled"|cond="$page == $page_navigation->last_page"><a href="{getUrl('page', $page_navigation->last_page)}" title="{$page_navigation->last_page}">{$lang->last_page} &raquo;</a></li>
+	</ul>
+</form>
+
+	
+	
+	

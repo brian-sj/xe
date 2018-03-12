@@ -1,0 +1,11 @@
+<table name="eapprv_group">
+    <column name="eapprv_group_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+    <column name="member_srl" type="number" size="11" default="0" notnull="notnull" index="idx_member_srl" />
+	<column name="group_title" type="varchar" size="200" notnull="notnull" />
+    <column name="group_content" type="varchar" size="2000" notnull="notnull" />
+	<column name="regdate" type="date" index="idx_regdate" />    
+</table>
+<!--
+	업무 요청과 같은 내용이다... 
+	같이 쓴다... 만약 eapprv모듈이 없다면 이 테이블이 만들어질 것이다. 아니면 안만들어 지겠지... 
+-->

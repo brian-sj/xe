@@ -1,0 +1,427 @@
+<style>
+.title-background {background-color:#f7f8f9; padding:8px}
+.title-background .box-title {font-size:17px; display:inline-block; letter-spacing:-1px; line-height:1.4;
+text-overflow:ellipsis; overflow:hidden; white-space:nowrap; word-wrap:normal; width:77%; padding-top:4px}
+.percentage {color:#f94851}
+.wrap-list {margin-bottom:0}
+.list-value {font-weight:normal}
+.list-value span {font-family:arial; font-size: 15px; font-weight:bold}
+
+/*김지민*/
+.table thead th {text-align:center}
+.progress{ background-color:#e2e2e2}
+.filtering{padding:20px 15px 10px 15px}
+.box-body  {padding:10px 15px 20px 15px}
+.input-group {vertical-align:middle; display:inline-block; padding-left:7px; width:145px;}
+
+.route{color:#000;}
+.route img {vertical-align:top; padding:2px 3px 0 3px}
+.thisRoute {color:#3c8dbc}
+
+/* 강명희 */
+.wmc-work-complete{ text-decoration: line-through}
+.route a {color:#333;font-weight:400}
+
+.favorite_box{max-height:570px; overflow-y:auto; margin-bottom:20px}
+.ask_box{max-height:250px; overflow-y:auto; margin-bottom:5px}
+.duty_box{max-height:250px; overflow-y:auto; margin-bottom:5px}
+.list-content {padding:3px 0 !important;} 
+
+.work_date_box{max-height:200px; overflow-y:auto; margin-bottom:5px} 
+.weekly_box{max-height:200px; overflow-y:auto; margin-bottom:5px}
+
+.territory-cursor { cursor:default !important;}
+#report_table td { cursor:default !important;}
+</style>
+  <!--#include("./header.html")-->
+<load target="/common/js/plugins/dhtmlx/dhtmlx.js" />
+<load target="/common/js/plugins/dhtmlx/skins/web/dhtmlx.css" />
+<load target="/common/js/plugins/mbballoon/mb.balloon.css" />
+<load target="/common/js/plugins/mbballoon/jquery.mb.balloon.js" />
+<load target="/common/js/plugins/input-mask/jquery.inputmask.bundle.min.js" />
+<load target="js/popup.js"/>
+  <script>
+  var mid ="{$mid}"
+  ,project_srl ="{$project_srl}";
+  </script>
+
+  <div class="wrap">
+    <div class="row index-row">
+      <div class="col-xs-12 page-title">
+        <div class="col-xs-7 pull-left"><h3>MY 페이지</h3></div>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <section class="content">
+        <div class="row">
+          <div class="col-xs-12 favorite_box">
+
+		    <div class="col-xs-3"  loop="$my_list=>$key,$val">
+              <div class="box box-warning">
+                <div class="box-header with-border title-background">
+                  <h3 class="box-title">{$val->title}</h3>
+                  <a href="{getUrl('act','dispPmsCalendarView','project_srl' , $val->project_srl)}" target="_blank"><button type="button" class="btn btn-xs btn-primary detail-btn detail-btn pull-right">자세히</button></a>
+                </div>
+                <ul class="wrap-list">
+                  <li class="list-content">
+                    <div class="wrap-progress">
+                      <div class="wrap-percentage">
+                        <span class="badge bg-red pull-left">진행률</span>
+                        <div class="percentage pull-right"><span>{$val->progress?$val->progress:0}</span>%</div>
+                      </div>
+                      <div class="progress">
+                        <div class="progress-bar" style="width: {$val->progress}%"></div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-content">주담당자<strong class="list-value">{$val->user_name}</strong></li>
+                  <li class="list-content">주무부서<strong class="list-value">{$val->dev_dept}</strong></li>
+                  <li class="list-content">업무기간<strong class="list-value"><span id="project-sum-mh">{$val->start_date} ~ {$val->planed_end_date}</span></strong></li>
+                  <li class="list-content">업무진행<strong class="list-value"></strong></li>
+                  <li class="list-content">투입예정<strong class="list-value"><span>{$val->planed_mh}</span> 시간</strong></li>
+                  <!-- <li class="list-content">투입시간(All/1W)<strong class="list-value"><span>{$val->planed_mh}/{$val->mh}</span> 시간</strong></li> -->
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-xs-3"  loop="$list=>$key,$val">
+              <div class="box box-primary">
+                <div class="box-header with-border title-background">
+                  <h3 class="box-title">{$val->title}</h3>
+                  <a href="{getUrl('act','dispPmsCalendarView','project_srl' , $val->project_srl)}" target="_blank"><button type="button" class="btn btn-xs btn-primary detail-btn detail-btn pull-right">자세히</button></a>
+                </div>
+                <ul class="wrap-list">
+                  <li class="list-content">
+                    <div class="wrap-progress">
+
+                      <div class="wrap-percentage">
+                        <span class="badge bg-red pull-left">진행률</span>
+                        <div class="percentage pull-right"><span>{$val->progress?$val->progress:0}</span>%</div>
+                      </div>
+                      <div class="progress">
+                        <div class="progress-bar" style="width: {$val->progress?$val->progress:0}%"></div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="list-content">주담당자<strong class="list-value">{$val->user_name}</strong></li>
+				  <li class="list-content">주무부서<strong class="list-value">{$val->dev_dept}</strong></li>
+                  <li class="list-content">업무기간<strong class="list-value"><span id="project-sum-mh">{$val->start_date} ~ ({$val->planed_end_date})</span></strong></li>
+				  <li class="list-content">업무진행<strong class="list-value"></strong></li>
+                  <li class="list-content">투입예정<strong class="list-value"><span>{$val->planed_mh}</span> 시간</strong></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+      <section class="content">
+        <div class="col-xs-6">
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <form method="post" name="ask_searchfrm" id="ask_searchfrm" >
+			  <h3 class="box-title"><a href="{getUrl('act','dispPmsIndex','ask_complete','','ask_keyword','')}" ><i class="fa fa-bars" aria-hidden="true"></i></a> 요청한 업무</h3>
+			   <div class="box-tools pull-right">
+			    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+				 <a class="btn btn-default <!--@if ($ask_complete=='') -->active<!--@end-->" href="{getUrl('act','dispPmsIndex','ask_complete','')}">전체</a>
+				 <a class="btn btn-default <!--@if ($ask_complete=='N')-->active<!--@end-->" href="{getUrl('act','dispPmsIndex','ask_complete','N')}">진행</a>
+				 <a class="btn btn-default <!--@if ($ask_complete=='Y')-->active<!--@end-->" href="{getUrl('act','dispPmsIndex','ask_complete','Y')}">완료</a>
+			    </div>
+
+			    <div class="input-group">
+				 <input type="text" class="form-control" style="width:100px; height:30px;" name="ask_keyword" id="ask_keyword" value="{$ask_keyword}" placeholder="keyword">
+				 <span class="input-group-btn">
+				  <button class="btn btn-default" type="submit" style="height:30px;"><i class="fa fa-search"></i></button>(등록일 기준)
+				 </span>
+			    </div>
+			  </div>
+			  </form>
+            </div>
+            <!-- /.box-header -->
+
+
+
+            <div class="box-body ask_box" id="my-order-table-wrapper">
+              <table id="my-order-table" class="table">
+                <thead>
+                  <tr>
+                    <th style="width:80px">요청일</th>
+                    <th style="width:80px">예정일</th>
+                    <th>업무명</th>
+		          	<th style="width:80px">담당자</th>
+                    <th colspan="2" style="width:120px">진행률</th>
+                  </tr>
+                </thead>
+              <tbody>
+                <tr loop="$ask_list=>$key,$val" class="tr_{$val->project_srl}_{$val->task_srl} <!--@if($val->progress==100)-->wmc-work-complete<!--@end-->">
+{@
+if ($val->progress ==0)
+	$tag = '';
+else if ($val->progress ==100)
+	$tag = "-blue";
+else
+	$tag = "-green";
+}
+                  <td class="text-center">{zDate($val->reg_date,'Y-m-d')}</td>
+                  <td class="text-center">{zDate($val->end_date,'Y-m-d')}</td>
+                  <td >
+					<div class="route">
+					<a href="{getUrl('act','dispPmsCalendarView','project_srl' , $val->project_srl)}" class="btn_detail" target="_blank">
+						<span class="thisRoute">{$val->project_title}</span> <img src="images/icon_route.gif" alt=""> {$val->title}
+					</a>
+					<a href="javascript:void(0);" class="btn_modify"><span class="icon_modify  link"  data-addclose="true" data-project_srl="{$val->project_srl}" data-task_srl="{$val->task_srl}"></span></a>
+					</div>
+					</td>
+				    <td class="text-center">{$val->user_name}</td>
+					<td>
+                    <div class="progress progress-xs">
+                      <div style="width: {$val->progress}%" class="progress-bar progress-bar{$tag}"></div>
+                    </div>
+                  </td>
+                  <td style="width:40px"><span class="progress-num badge bg{$tag}">{$val->progress}%</span></td>
+
+                </tr>
+              </tbody></table>
+            </div>
+            <!-- /.box-body -->
+
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="box box-success">
+            <div class="box-header with-border">
+			<form method="post" name="searchfrm" id="searchfrm" >
+              <h3 class="box-title"><a href="{getUrl('act','dispPmsIndex','complete','','duty_keyword','')}" ><i class="fa fa-bars" aria-hidden="true"></i></a> 해야할 업무 </h3>
+			  <div class="box-tools pull-right">
+			    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+				 <a class="btn btn-default <!--@if ($complete=='') -->active<!--@end-->" href="{getUrl('act','dispPmsIndex','complete','')}">전체</a>
+				 <a class="btn btn-default <!--@if ($complete=='N')-->active<!--@end-->" href="{getUrl('act','dispPmsIndex','complete','N')}">진행</a>
+				 <a class="btn btn-default <!--@if ($complete=='Y')-->active<!--@end-->" href="{getUrl('act','dispPmsIndex','complete','Y')}">완료</a>
+			    </div>
+
+			    <div class="input-group">
+				 <input type="text" class="form-control" style="width:100px; height:30px;" name="duty_keyword" id="duty_keyword" value="{$duty_keyword}" placeholder="keyword">
+				 <span class="input-group-btn">
+				  <button class="btn btn-default" type="submit" style="height:30px;"><i class="fa fa-search"></i></button>(등록일 기준)
+				 </span>
+			    </div>
+			  </div>
+			  </form>
+            </div>
+            <!-- /.box-header -->
+
+
+            <div class="box-body scrolltbody duty_box">
+              <table id="my-duty-table" class="table">
+                <thead>
+                  <tr>
+                    <th style="width:80px">접수일</th>
+                    <th style="width:80px">예정일</th>
+                    <th>업무명</th>
+		          	<th style="width:80px">요청자</th>
+                    <th colspan="2" style="width:120px">진행률</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr loop="$duty_list=>$key,$val" class="tr_{$val->project_srl}_{$val->task_srl} <!--@if($val->progress==100)-->wmc-work-complete<!--@end-->" >
+{@
+if ($val->progress ==0)
+	$tag = '';
+else if ($val->progress ==100)
+	$tag = "-blue";
+else
+	$tag = "-green";
+}
+                    <td class="text-center">{zDate($val->reg_date,'Y-m-d')}</td>
+                    <td class="text-center">{zDate($val->end_date,'Y-m-d')}</td>
+                    <td>
+                      <div class="route">
+						<a href="{getUrl('act','dispPmsCalendarView','project_srl' , $val->project_srl)}" class="btn_detail" target="_blank">
+							<span class="thisRoute">{$val->project_title}</span> <img src="images/icon_route.gif" alt=""> {$val->title}
+						</a>
+						<a href="javascript:void(0);" class="btn_modify" ><span class="icon_modify link"  data-addclose="true" data-project_srl="{$val->project_srl}" data-task_srl="{$val->task_srl}"></span></a>
+					  </div>
+
+                    </td>
+				    <td class="text-center">{$val->user_name}</td>
+                    <td>
+                      <div class="progress progress-xs">
+                        <div style="width: {$val->progress}%" class="progress-bar progress-bar{$tag}"></div>
+                      </div>
+                    </td>
+                    <td style="width:40px"><span class="progress-num badge bg{$tag}">{$val->progress}%</span></td>
+
+                  </tr>
+                </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+
+          </div>
+        </div>
+
+        <div class="col-xs-12">
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title pull-left">업무일지</h3>
+			  <a href="{getUrl('act','dispPmsWorkView')}" target="_blank"><button type="button" class="btn btn-xs btn-primary detail-btn detail-btn pull-right">나의 업무시간</button></a>
+
+<!-- 2016.09.12. 추후 적용
+			<div class="box-tools pull-right">
+				<div class="input-group">
+				 <input type="text" class="form-control" style="width:100px; height:30px;" name="report_date" id="report_date" value="{$report_date?$report_date:date('Y-m-d')}" placeholder="날짜검색">
+				 <span class="input-group-btn">
+				  <button class="btn btn-default" type="submit" style="height:30px;"><i class="fa fa-search"></i></button>
+				 </span>
+				</div>
+              </div> 
+--> 
+            </div>
+            <!-- /.box-header -->
+            <div class="">
+				<table class="table">
+					<tr>
+						<td style="width:240px;"> 
+							<!-- <div style="display:block;height:45px;"></div> -->
+							<div style="position:relative;" id="work_date"></div>
+						</td>
+						<td valign="top">
+						  <div class="table-simple-heading">
+							<span class="represh-tit">해당 업무<span class="reference-label-tworows"></span></span> <span class="reference-label pull-right">단위: 시간</span>
+						  </div>
+						  <div class="work_date_box" id="work_time_by_date">
+						    <!--#include("./_work_time_by_date.html")-->
+						  </div>
+						  <div class="table-simple-heading">
+							<span class="represh-tit">주간 업무<span class="reference-label-tworows"></span></span> <span class="reference-label pull-right">단위: 시간</span>
+						  </div>
+						  <div class="table-wrap weekly_box" id="weeklydata"></div>
+						</td>
+					</tr>
+				</table>
+            </div>
+              <!-- /.box-body -->
+            </div>
+          </div>
+
+        </section>
+      </div>
+
+    </div>
+
+
+    <div>
+    </div><!-- popup_wrapper 끝 -->
+
+    <script type="text/javascript" charset="utf-8">
+
+    var $balloon ;
+    function init() {
+      scheduler.config.multi_day = true;
+
+      scheduler.config.xml_date="%Y-%m-%d %H:%i";
+      scheduler.config.default_date ="%Y-%m-%d";
+      scheduler.config.day_date ="%D, %m_%d";
+      scheduler.config.month_date ="%F-%Y";
+      scheduler.config.calendar_date ="%F__%Y";
+      scheduler.config.cal_date ="%F-%Y";
+      scheduler.config.header_date ="%F-%Y-%d";
+      scheduler.config.item_date ="%F-%Y";
+      scheduler.config.multi_day ="%l, %d_%F_%Y";
+      //scheduler.setDateFormat("%Y-%m-%d");
+      scheduler.init('scheduler_here',new Date(),"week");
+      scheduler.load("events.xml");
+    }
+
+    function show_minical(){
+      if (scheduler.isCalendarVisible())
+      scheduler.destroyCalendar();
+      else
+      scheduler.renderCalendar({
+        position:"dhx_minical_icon",
+        date:scheduler._date,
+        navigation:true,
+        handler:function(date,calendar){
+          scheduler.setCurrentView(date);
+          scheduler.destroyCalendar()
+        }
+      });
+    }
+
+    jQuery(document).ready(function(){
+      //init();
+      //jQuery("#work-date").datepicker();
+	  var args ={};
+	      args.mid = "{$mid}";
+		  
+			wmcCalendar = new dhtmlXCalendarObject("work_date");
+			wmcCalendar.setWeekStartDay(0);
+			wmcCalendar.setPosition(null,45);
+			wmcCalendar.show();
+			
+			wmcCalendar.attachEvent('onClick',function(){
+				//$("#report_date").val( wmcCalendar.getDate(true) );
+				
+				args.report_date = wmcCalendar.getDate(true);
+				getWorkViewWeeklydata( args );
+				getWorkTimeViewByDate( args );
+			});
+			// click 하지 않은경우 이번주 통계를 보여줌. 
+			args.report_date = wmcCalendar.getDate(true); 
+			getWorkViewWeeklydata( args );
+    });
+	
+	
+/// work_view.js 에서 복사해온 것이다. js include 했으면 이부분을 삭제 해야함. 
+function getWorkViewWeeklydata(args){
+	var params = {};
+	params.act = "dispPmsCommentListWeeklyData";
+	params.report_date = args.report_date ;
+	jQuery.ajax({
+	type: "POST"
+	, url : "/"
+	, data : params
+	, success : function (data){
+		jQuery("#weeklydata").html(data);
+		sumWorkTime();
+	}
+	, dataType: "html"
+	});
+}
+// work_view.js 에서 복사해온 것이다... 
+function sumWorkTime(){
+	var total =0;
+	for( var i=1 ; i < 8 ; i++){
+		total =0;
+		$(".data .w"+i).each(function(){
+			total += parseInt( $(this).text() ) ||0 ;
+		});
+		$("#total_w"+i).text(total);
+	}
+}
+/////// 
+
+function getWorkTimeViewByDate(args){
+	var params = {};
+	params.act = "dispPmsWorkViewByDate";
+	params.report_date = args.report_date ;
+	jQuery.ajax({
+	type: "POST"
+	, url : "/"
+	, data : params
+	, success : function (data){
+		jQuery("#work_time_by_date").html(data);
+		
+	}
+	, dataType: "html"
+	});
+}
+
+    </script>
+<load target="/common/css/wizard.css" />
+<!--@if($grant->manager)-->
+<include target="_wizard.php" />
+<!--@end-->

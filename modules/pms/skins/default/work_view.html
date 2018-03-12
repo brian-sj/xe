@@ -1,0 +1,185 @@
+<style>
+#main_panel , #history_panel {margin : 20px auto; }
+.progress {margin-bottom : 0 !important ;}
+
+#work_time, #progress{width:30px;text-align:center}
+#work_time_obj, #progress_obj{display:inline-block;margin:0 0 0 10px; width:200px;}
+
+.list-group{width:100%; vertical-align:top;}
+
+.holiday { color : #cccccc;}
+
+#layout-td {width:100%}
+#layout-td .layout-td-child1{float:left; width : 25% ;}
+#layout-td .layout-td-child2{float:left; width : 70% ;}
+
+.numberCircle {
+    border-radius: 50%;
+    behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+    width: 18px;
+    height: 18px;
+    padding: 0px;
+    background: #333;
+    border: 2px solid black;
+    color: #fff;
+    text-align: center;
+    font: 14px Arial, sans-serif;
+    display: inline-block;
+}
+
+.numberCircle.over {
+    border-radius: 50%;
+    behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+    width: 18px;
+    height: 18px;
+    padding: 0px;
+    background: #ff0033;
+    border: 2px solid black;
+    color: #eee;
+    text-align: center;
+    font: 14px Arial, sans-serif;
+    display: inline-block;
+}
+
+
+</style>
+<!--#include("./header.html")-->
+<load target="/common/js/plugins/dhtmlx/dhtmlx.js" />
+<load target="/common/js/plugins/dhtmlx/skins/web/dhtmlx.css" />
+
+<div class="col-lg-12">
+<div id="main_panel" class="panel panel-primary">
+  <!-- Default panel contents -->
+  <div class="panel-heading"><h4>개인별 업무 시간 입력</h4></div>
+  <!-- Table -->
+<!-- gantt -->
+<table style="margin:0px auto;" class="table">
+<tr>
+		<td>
+			<div class="trow">
+				<div id="layout-td">
+					<div class="layout-td-child1">			
+						<select class="form-control" name="category" id="category" >
+							<option value="F">즐겨찾기</option>
+							<option value="R">일상프로젝트</option>
+							<option value="E">완료</option>
+							<option value="D">진행중</option>
+						</select>
+				</div>
+				<div class="layout-td-child2">
+					<select class="form-control" name="project_srl" id="project_srl" >
+						<option value="">업무(먼저프로젝트를 선택해주세요)</option> 
+						<option  loop="$favoriteproject_list=>$val" value="{$val->project_srl}">{$val->title}</option>
+					</select>
+				</div>
+				</div>
+			</div>
+			<div class="trow" style="padding-top:10px; clear:both;font-size:11px;">
+				
+				<div class="col-lg-4 col-md-6" loop="$bookmarklist=>$val">
+				<div class="alert alert-warning alert-dismissible" role="alert">
+				  <button type="button" class="close bookmark-close" data-project_srl="{$val->project_srl}" data-task_srl="{$val->task_srl}" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				  <strong style="cursor:pointer" onclick="bookmarkAddWorkTime({$val->task_srl} , this );">{$val->ttitle}</strong>
+				</div>
+				</div>
+
+			</div>
+			<div id="treeboxbox_tree" style='width:80%; height:80%;clear:both;'>먼저 업무를 선택해 주세요. </div>
+	</td>
+
+		<td width="400" style="vertical-align:top">
+			<ul class="list-group">
+				<li class="list-group-item">
+					<h4 id="title">업무를 선택해 주세요. </h4>
+					<div class="mdl-spinner mdl-js-spinner is-inactive" id="loading_spinner"></div>
+				</li>
+			  <li class="list-group-item">업무일 : <input id="report_date" type="text" value="{date('Y-m-d')}"/></li>
+			  <li class="list-group-item">업무 시간 : 
+				<input id="work_time" type="text" name="work_time" 
+					  data-provide="slider"
+					  data-slider-ticks="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]"
+					  data-slider-ticks-labels='[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]'
+					  data-slider-min="1"
+					  data-slider-max="12"
+					  data-slider-step="1"
+					  data-slider-value="3"
+					  data-slider-tooltip="hide"
+				>
+				<span id="work_time_obj" linkto="work_time" style="width:200px"></span>
+			  </li>
+			  <li class="list-group-item">진행률 : <input id="progress" type="text" name="progress"><span id="progress_obj" linkto="progress"></span></li>
+			  <!-- <li class="list-group-item"><input id="comment" type="text" name="comment" class="form-control" placeholder="짧은설명" /></li> -->
+			  <li class="list-group-item">	
+			  		<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-favorite">
+					  <input type="checkbox" id="switch-favorite" class="mdl-switch__input" name="favorite" value="Y" >
+					  <span class="mdl-switch__label"> 업무 바로가기에 추가 합니다. </span>
+					</label>
+			  </li>
+			  <li class="list-group-item">	
+				  <button class="btn btn-primary" id="save" onblur="hidePopup();">SAVE</button> 
+				  <button class="btn btn-primary" id="del" onblur="hidePopup();">삭제</button>
+			  </li>
+			</ul>
+	</td>
+</tr>
+</table>
+</div>
+	<div class="panel panel-success">
+	  <div class="panel-heading"><h6>통계</h6></div>
+			<table class="table" width="100%" >
+			<thead>			
+						<tr><th scope="row">업무</th>
+							<th width="30">월</th>
+							<th width="30">화</th>
+							<th width="30">수</th>
+							<th width="30">목</th>
+							<th width="30">금</th>
+							<th width="30" class="holiday">일</th>
+						</tr>
+			</thead>			
+			<tbody>
+				<!--@foreach($list as $no => $val)-->			
+						<tr scope="row" class="data">
+							<td scope="row"><span style="color:#337AB7">[{$val->project_name}]</span> {$val->task_name}</td>
+							<td ><div class="numberCircle1 w2">{$val->w2}</div></td>
+							<td ><div class="numberCircle1 w3 over">{$val->w3}</div></td>
+							<td ><div class="numberCircle1 w4">{$val->w4}</div></td>
+							<td ><div class="numberCircle1 w5">{$val->w5}</div></td>
+							<td ><div class="numberCircle1 w6">{$val->w6}</div></td>
+							<td class="holiday "><div class="numberCircle1 w1">{$val->w1}</div></td>
+						</tr>
+				<!--@end-->	
+			</tbody>
+			<tfoot>
+						<tr>
+							<th scope="row"><div class="primary">합계</div></th>
+							<th ><div id="total_w2" id="mon">0</div></th>
+							<th ><div id="total_w3" id="tue">0</div></th>
+							<th ><div id="total_w4" id="wed">0</div></th>
+							<th ><div id="total_w5" id="thu">0</div></th>
+							<th ><div id="total_w6" id="fri">0</div></th>
+							<th  class="holiday"><div id="total_w1">0</div></th>
+						</tr>
+			</tfoot>
+			</table>
+
+</div>
+</div>
+
+<!-- gantt END  -->
+
+<script type="text/javascript">
+var wmcTree ;
+var wmcPopup ;
+var responses = ['result'];
+var form_object = new FormData();
+var users_data3 ;
+var task ={};
+var ySlider_work_time ;
+var ySlider_progress ;
+task.project_srl ="{$project_srl}";
+var params ={};
+params.project_srl =1;
+</script>
+
+<load target="js/work_view.js" />

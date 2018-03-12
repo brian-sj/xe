@@ -1,0 +1,16 @@
+<filter name="image_insert" module="bookc" act="procBookcAdminInsertTitleImage" confirm_msg_code="confirm_submit">
+    <form>
+        <node target="mid" required="false" maxlength="40" filter="alpha_number" />
+        <node target="title" required="false" maxlength="4" />
+		<node target="upload" required="true" />
+		
+    </form>
+	<response callback_func="completeAdminInsertBook">
+        <tag name="error" />
+        <tag name="message" />
+        <tag name="module" />
+        <tag name="act" />
+        <tag name="page" />
+        <tag name="module_srl" />
+    </response>
+</filter>

@@ -1,0 +1,15 @@
+<query id="getMembersByGroups" action="select">
+
+<!--   Dept info  to homepage   -->
+
+    <tables>
+        <table name="member_group_member" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="site_srl" var="site_srl"  />
+		<condition operation="equal" column="group_srl" var="group_srl" notnull="notnull"  />
+    </conditions>
+</query>

@@ -1,0 +1,297 @@
+<style>
+.input-group{display:inline-block;width:auto}
+.input-group .form-control{width:160px}
+.input-group-addon, .input-group-btn{width:auto}
+.search-btn .btn {padding:6px 20px}
+.input-group-sm{display:table}
+.wrap-search{margin-bottom:0}
+.swung-dash {display:table-cell; vertical-align:middle; padding:0 3px}
+</style>
+<!--#include("./header.html")-->
+<script>
+jQuery(document).ready(function($){
+	$("#start_dt,#end_dt").datepicker(
+		{format : 'yyyy-mm-dd'
+		,todayHighlight:true
+	}
+);
+});
+</script>
+
+<div class="wrap">
+	<div class="row">
+		<div class="col-xs-12 page-title">
+			<div class="col-xs-6 pull-left"><h3>시스템 발주 기간 통계(승인일 기준)</h3></div>
+			<div class="col-xs-6 select-week">
+				<div class="box-tools">
+					<form action="/" method="post" class="wrap-search">
+						<div class="input-group-sm navbar-right">
+							<div class="input-group">
+								<input type="text" id="start_dt" name="start_date" class="form-control" placeholder="from" value="{$start_date}">
+							</div>
+							<span class="swung-dash">~</span>
+							<div class="input-group">
+								<input type="text" id="end_dt" name="end_date" class="form-control" placeholder="to" value="{$end_date}">
+								<div class="input-group-btn search-btn">
+									<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<!-- /.box-header -->
+			<div class="col-xs-6">
+				<div class="box box-info">
+					<div class="box-header with-border">
+						<h3 class="box-title">총회</h3>
+					</div>
+					<div class="box-body table-responsive no-padding">
+						<table class="table wmc-data-table table-striped" id="hdata">
+							<thead>
+								<tr>
+									<th rowspan="2" class="divi-line middle">발주품목</th>
+									<th colspan="2" class="divi-line thead-wline">구입</th>
+									<th colspan="3" class="divi-line thead-wline">보급</th>
+									<th rowspan="2" class="middle">폐기</th>
+									<th rowspan="2" class="middle">반납</th>
+									<th rowspan="2" class="middle">기증</th>
+									<th rowspan="2" class="middle">손망실</th>
+								</tr>
+								<tr>
+									<th>수량</th>
+									<th class="divi-line">금액</th>
+									<th>신품수량</th>
+									<th>신품금액</th>
+									<th class="divi-line">중고수량</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr loop="$g_kind=>$key,$val">
+									<td class="text-left divi-line title">{$val}</td>
+									<td id="{$key}-A-qtr">-</td>
+									<td id="{$key}-A-price" class="divi-line">-</td>
+									<td id="{$key}-D-qtr">-</td>
+									<td id="{$key}-D-price">-</td>
+									<td id="{$key}-E" class="divi-line">-</td>
+									<td id="{$key}-C">-</td>
+									<td id="{$key}-B">-</td>
+									<td id="{$key}-F">-</td>
+									<td id="{$key}-G">-</td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr class="total-row">
+									<td class="text-left divi-line">합계</td>
+									<td id="A-qtr-total">0</td>
+									<td id="A-price-total" class="divi-line">0</td>
+									<td id="D-qtr-total">0</td>
+									<td id="D-price-total">0</td>
+									<td id="E-total" class="divi-line">0</td>
+									<td id="C-total">0</td>
+									<td id="B-total">0</td>
+									<td id="F-total">0</td>
+									<td  id="G-total">0</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xs-6">
+				<div class="box box-success">
+					<div class="box-header with-border">
+						<h3 class="box-title">당회</h3>
+					</div>
+					<div class="box-body table-responsive no-padding">
+						<table class="table wmc-data-table table-striped" id="cdata">
+							<thead>
+								<tr>
+									<th rowspan="2" class="divi-line middle thead-line">발주품목</th>
+									<th colspan="2" class="divi-line thead-line thead-wline">구입</th>
+									<th colspan="3" class="divi-line thead-line thead-wline">보급</th>
+									<th rowspan="2" class="middle">폐기</th>
+									<th rowspan="2" class="middle">반납</th>
+									<th rowspan="2" class="middle">기증</th>
+									<th rowspan="2" class="middle">손망실</th>
+								</tr>
+								<tr>
+									<th>수량</th>
+									<th class="divi-line thead-line">금액</th>
+									<th>신품수량</th>
+									<th>신품금액</th>
+									<th class="divi-line thead-line">중고수량</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr loop="$g_kind=>$key,$val">
+									<td class="text-left title">{$val}</td>
+									<td id="{$key}-A-qtr">-</td>
+									<td id="{$key}-A-price" class="divi-line">-</td>
+									<td id="{$key}-D-qtr">-</td>
+									<td id="{$key}-D-price">-</td>
+									<td id="{$key}-E" class="divi-line">-</td>
+									<td id="{$key}-C">-</td>
+									<td id="{$key}-B">-</td>
+									<td id="{$key}-F">-</td>
+									<td id="{$key}-G">-</td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr class="total-row">
+									<td class="text-left divi-line">합계</td>
+									<td id="A-qtr-total">0</td>
+									<td id="A-price-total" class="divi-line">0</td>
+									<td id="D-qtr-total">0</td>
+									<td id="D-price-total">0</td>
+									<td id="E-total" class="divi-line">0</td>
+									<td id="C-total">0</td>
+									<td id="B-total">0</td>
+									<td id="F-total">0</td>
+									<td  id="G-total">0</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div id="hdata" style="display:hidden">
+			<span loop="$hlist=>$key,$val" data-gubun="{$val->gubun}" data-kind="{$val->kind}" data-qtr="{$val->qtr}" data-price="{$val->total_price}"/>
+		</div>
+
+		<div id="cdata" style="display:hidden">
+			<span loop="$clist=>$key,$val" data-gubun="{$val->gubun}" data-kind="{$val->kind}" data-qtr="{$val->qtr}" data-price="{$val->total_price}"/>
+		</div>
+	</div>
+</div>
+		<script>
+function formatNumber (num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+}
+		
+		
+		jQuery(document).ready( function($){
+
+			var cdata={}, hdata={};
+			cdata.a_qtr =0 ;
+			cdata.a_price=0;
+			cdata.d_qtr = 0 ;
+			cdata.d_price = 0;
+			cdata.e = 0;cdata.c=0;cdata.b=0;cdata.f=0;cdata.g=0;
+			hdata.a_qtr =0 ;
+			hdata.a_price=0;
+			hdata.d_qtr = 0 ;
+			hdata.d_price = 0;
+			hdata.e = 0;hdata.c=0;hdata.b=0;hdata.f=0;hdata.g=0;
+			jQuery("#cdata span").each(function(){
+				$this = $(this);
+				if( $this.data("gubun")=="A" || $this.data("gubun")=="D"  ){
+					jQuery("#cdata #"+$this.data("kind")+"-" + $this.data("gubun") +"-qtr" ).text( $this.data('qtr') )  ;
+					jQuery("#cdata #"+$this.data("kind")+"-" + $this.data("gubun") +"-price" ).text( $this.data('price') )  ;
+
+				}else{
+					jQuery("#cdata #"+$this.data("kind") + "-" + $this.data("gubun")  ).text( $this.data('qtr'));
+					console.log( $this.data("kind") + "-" + $this.data("gubun") ) 			;
+
+				}
+
+				switch( $this.data("gubun") ){
+					case "E":
+					cdata.e += parseInt( $this.data("qtr")) || 0 ;
+					break;
+					case "C":
+					cdata.c += parseInt( $this.data("qtr")) || 0 ;
+					break;
+					case "B":
+					cdata.b += parseInt( $this.data("qtr")) || 0 ;
+					break;
+					case "F":
+					cdata.f += parseInt( $this.data("qtr")) || 0 ;
+					break;
+					case "G":
+					cdata.g += parseInt( $this.data("qtr")) || 0 ;
+					break;
+					case "A":
+					cdata.a_qtr += parseInt( $this.data("qtr")) || 0 ;
+					cdata.a_price += parseInt( $this.data("price")) || 0 ;
+					break;
+					case "D":
+					cdata.d_qtr += parseInt( $this.data("qtr")) || 0 ;
+					cdata.d_price += parseInt( $this.data("price")) || 0 ;
+					break;
+					default:
+				}
+			});
+			jQuery("#hdata span").each(function(){
+				$this = $(this);
+				if( $this.data("gubun")=="A" || $this.data("gubun")=="D"  ){
+					jQuery("#hdata #"+$this.data("kind")+"-" + $this.data("gubun") +"-qtr" ).text( $this.data('qtr') )  ;
+					jQuery("#hdata #"+$this.data("kind")+"-" + $this.data("gubun") +"-price" ).text( $this.data('price') )  ;
+
+				}else{
+					jQuery("#hdata #"+$this.data("kind") + "-" + $this.data("gubun")  ).text( $this.data('qtr'));
+					console.log( $this.data("kind") + "-" + $this.data("gubun") ) 			;
+
+				}
+
+				switch( $this.data("gubun") ){
+					case "E":
+					hdata.e += parseInt( $this.data("qtr")) || 0 ;
+					break;
+					case "C":
+					hdata.c += parseInt( $this.data("qtr")) || 0 ;
+					break;
+					case "B":
+					hdata.b += parseInt( $this.data("qtr")) || 0 ;
+					break;
+					case "F":
+					hdata.f += parseInt( $this.data("qtr")) || 0 ;
+					break;
+					case "G":
+					hdata.g += parseInt( $this.data("qtr")) || 0 ;
+					break;
+					case "A":
+					hdata.a_qtr += parseInt( $this.data("qtr")) || 0 ;
+					hdata.a_price += parseInt( $this.data("price")) || 0 ;
+					break;
+					case "D":
+					hdata.d_qtr += parseInt( $this.data("qtr")) || 0 ;
+					hdata.d_price += parseInt( $this.data("price")) || 0 ;
+					break;
+					default:
+				}
+
+			});
+
+			/**  loop 다 돈후에 데이터를 입력해 준다. */
+			$("#hdata #A-qtr-total").text( formatNumber(hdata.a_qtr) );
+			$("#hdata #A-price-total").text( formatNumber(hdata.a_price ));
+			$("#hdata #D-qtr-total").text( hdata.d_qtr );
+			$("#hdata #D-price-total").text( formatNumber(hdata.d_price) );
+			$("#hdata #C-total").text( hdata.c );
+			$("#hdata #B-total").text( hdata.b );
+			$("#hdata #E-total").text( hdata.e );
+			$("#hdata #F-total").text( hdata.f );
+			$("#hdata #G-total").text( hdata.g );
+
+			$("#cdata #A-qtr-total").text( cdata.a_qtr );
+			$("#cdata #A-price-total").text( cdata.a_price );
+			$("#cdata #D-qtr-total").text( cdata.d_qtr );
+			$("#cdata #D-price-total").text( cdata.d_price );
+			$("#cdata #C-total").text( cdata.c );
+			$("#cdata #B-total").text( cdata.b );
+			$("#cdata #E-total").text( cdata.e );
+			$("#cdata #F-total").text( cdata.f );
+			$("#cdata #G-total").text( cdata.g );
+		});
+</script>

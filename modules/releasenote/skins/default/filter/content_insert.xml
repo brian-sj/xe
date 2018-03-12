@@ -1,0 +1,11 @@
+<filter name="code_insert" module="releasenote" act="procReleasenoteSaveCode" confirm_msg_code="confirm_submit">
+  <form>
+    <node target="code_gu2" required="true" />
+    <node target="memo" required="true" maxlength="80" />
+  </form>
+  <parameter />
+  <response callback_func="completeContentInsert">
+     <tag name="error" />
+     <tag name="message" />
+  </response>
+</filter>

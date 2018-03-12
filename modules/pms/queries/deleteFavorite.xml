@@ -1,0 +1,10 @@
+<query id="deleteFavorite" action="delete">
+    <tables>
+        <table name="pms_project_favorite" />
+    </tables>
+    <conditions>
+        <condition operation="equal" column="project_srl" var="project_srl" filter="number" notnull="notnull" />
+		<condition operation="equal" column="member_srl" var="member_srl" filter="number" notnull="notnull" pipe="and"/>
+		<condition operation="equal" column="category" var="category" default="A" pipe="and" />
+	</conditions>
+</query>

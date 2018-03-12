@@ -1,0 +1,32 @@
+<query id="getTaskMyAskList" action="select">
+    <tables>
+        <table name="pms_task"  alias="t"/>
+        <table name="pms_project" alias="p"/>     
+        <table name="member" alias="mm"/>
+    </tables>
+    <columns>
+        <column name="t.*" />
+		<column name="p.title" alias="project_title"/>
+		<column name="mm.user_name" alias="user_name"/>
+    </columns>
+    <conditions>
+		<condition operation="equal" column="p.project_srl" var="t.project_srl" />
+		<condition operation="equal" column="t.work_member_srl" notnull="notnull" var="mm.member_srl" pipe="and" /> 
+		
+		<condition operation="notequal" column="t.member_srl" notnull="notnull" default="t.work_member_srl" pipe="and" /> 
+		<condition operation="equal" column="t.member_srl" notnull="notnull" var="member_srl" pipe="and" /> 
+		<condition operation="equal" column="stt"  default="N" pipe="and" /> 
+		<condition operation="less" column="t.progress"  var="progress_p" pipe="and" /> 
+		<condition operation="equal" column="t.progress"  var="progress_c" pipe="and" />
+		
+	<group pipe="and">
+		<condition operation="like" column="p.title" var="ask_keyword" />
+		<condition operation="like" column="t.title" var="ask_keyword" pipe="or"/>
+		<condition operation="like" column="p.content" var="ask_keyword" pipe="or"/>
+		<condition operation="like" column="mm.user_name" var="ask_keyword" pipe="or"/>
+	</group>
+    </conditions>
+</query>
+<!--
+만약에 내가 나에게 요청한것이라면 보이지 않는다.   
+-->

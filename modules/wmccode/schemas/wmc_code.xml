@@ -1,0 +1,19 @@
+<table name="wmc_code">
+    <column name="code_gu" type="varchar" size="20" primary_key="primary_key"/>
+	<column name="code_gu2" type="varchar" size="20" primary_key="primary_key"/>
+	<column name="code_int_val" type="number" size="11" primary_key="primary_key" index="code_int_val_index"/>
+	
+	<column name="code_var_val" type="varchar" size="20" />  
+    <column name="memo" type="varchar" size="800" />
+    <column name="module_srl" type="number" size="11" />	
+    <column name="sort_seq" type="number" size="4" default="0" />	
+	<column name="del_yn" type="varchar" size="1" 	default="n"	/>	
+</table>
+<!-- 
+   2016년 8월 5일 
+   
+   module_srl 을 추가함. 왜냐면 같은 코드라도 모듈에 따라 다른 값을 가져오고 싶을때가 있다. 
+   예를 들어 PMS 프로젝트 구분값을 가져와야 하지만,,  전산실과 인사실은 다른 값을 사용한다는 것이다.
+   notnull 은 아니다. 
+   
+-->

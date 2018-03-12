@@ -1,0 +1,14 @@
+<query id="insertReleasenoteTester" action="insert">
+    <tables>
+        <table name="releasenote_testers" />
+    </tables>
+    <columns>
+        <column name="note_srl" var="note_srl" notnull="notnull" />
+        <column name="tester_srl" var="tester_srl" filter="number" />
+		<column name="stt" var="stt" default=""/>
+    </columns>
+</query>
+<!--
+
+
+-->

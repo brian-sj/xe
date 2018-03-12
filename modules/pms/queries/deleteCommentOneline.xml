@@ -1,0 +1,9 @@
+<query id="deleteCommentOneline" action="delete">
+    <tables>
+        <table name="pms_comment_oneline" />
+    </tables>
+    <conditions>
+        <condition operation="equal" column="oneline_srl" var="oneline_srl" filter="number" notnull="notnull" />
+        <condition operation="equal" column="member_srl" var="member_srl" filter="number" pipe="and" />
+	</conditions>
+</query>

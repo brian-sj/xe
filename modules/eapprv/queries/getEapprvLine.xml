@@ -1,0 +1,28 @@
+<query id="getEapprvLine" action="select">
+    <tables>
+        <table name="eapprv_line" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="eapprv_srl" var="eapprv_srl" filter="number" notnull="notnull"  />
+		<condition operation="equal" column="line_stt"   var="line_stt" pipe="and" />
+        <condition operation="equal" column="member_srl" var="member_srl" filter="number" pipe="and" />
+		<condition operation="equal" column="stt"      var="stt" pipe="and" />
+    </conditions>
+	<navigation>
+        <index var="sort_index" default="eapprv_srl" order="desc" />
+		<index var="sort_index3" default="line_stt" order="desc" />
+		<index var="sort_index2" default="position" order="asc" />
+        <list_count var="list_count" default="20" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>
+<!-- 
+    진행 체크 할때 사용한다. 
+    ############# 
+	
+
+-->

@@ -1,0 +1,12 @@
+<query id="updateAccPw" action="update">
+    <tables>
+        <table name="wmcdisk_club" />
+    </tables>
+    <columns>
+		<column name="smb_pw" var="acc_pw" notnull="notnull" minlength="1" maxlength="25" />
+    </columns>
+        <conditions>
+        <condition operation="equal" column="smb_ip" var="ip" notnull="notnull" />
+		<condition operation="equal" column="smb_id" var="smb_id" notnull="notnull" pipe="and" />
+    </conditions>
+</query>

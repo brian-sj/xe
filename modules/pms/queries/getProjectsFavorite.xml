@@ -1,0 +1,42 @@
+<query id="getProjectsFavorite" action="select">
+    <tables>
+        
+		<table name="pms_project_favorite" alias="f" />
+		<table name="pms_project" alias="p" type="left join" >
+			<conditions>
+				<condition operation="equal" column="p.project_srl" default="f.project_srl" pipe="and" /> 
+			</conditions>
+		</table>
+		<table name="member" alias="m" type="left join">
+			<conditions>
+				<condition operation="equal" column="p.member_srl" default="m.member_srl" pipe="and" /> 
+			</conditions>
+		</table>
+		<table name="member_group" alias="g" />
+    </tables>
+    <columns>
+        <column name="p.project_srl" />
+        <column name="p.category" />
+        <column name="p.title" />
+        <column name="p.progress" />
+        <column name="p.start_date" />
+        <column name="p.end_date" />
+        <column name="p.planed_end_date" />
+        <column name="p.planed_mh" />
+        <column name="p.mh" />
+		<column name="m.user_name" />
+		<column name="g.title" alias="dev_dept" />
+    </columns>
+	<conditions>
+		<condition operation="notequal" column="p.member_srl" var="member_srl"   />
+		<condition operation="equal" column="f.member_srl" var="member_srl" notnull="notnull" pipe="and" />
+		<condition operation="equal" column="p.dev_dept" var="g.group_srl" pipe="and" />
+	</conditions>
+	
+	<navigation>
+        <index var="sort_index" default="p.project_srl" order="desc" />
+        <list_count var="list_count" default="100" />
+        <page_count var="page_count" default="100" />
+        <page var="page" default="1" />
+    </navigation>
+</query>

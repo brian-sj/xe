@@ -1,0 +1,72 @@
+<include target="_header.html" />
+
+<script>
+
+
+</script>
+서버 리스트 입니다. 
+
+<body leftmargin='0' topmargin='0' bgcolor='#FFFCF7'>
+<table class="table table-hover" width="90%">
+<thead><tr>
+	<th><input type="checkbox" name='checkall' ></th>
+	<th>아이피</th>
+	<th>서버명</th>
+	<th>설명</th>
+	<th>삭제/수정</th>
+	</tr>
+</thead>
+<tbody>
+	<tr loop="$list => $no,$val">
+		<td><input type="checkbox"  name="fsvrs[]" value="{$val->fsvr_srl}"></td>
+		<td>{$val->ip}</td>
+		<td>{$val->svr_name}</td>
+		<td>{$val->svr_desc}</td>
+		<td><a href="{getUrl('act' ,'procWmcdiskAdminFsvrDel' ,'fsvr_srl',$val->fsvr_srl)}"> {$lang->delete}</a> / <a href="{getUrl('act' ,'dispWmcdiskAdminFsvrAdd' ,'fsvr_srl',$val->fsvr_srl)}"> {$lang->modify}</a></td>
+	</tr>
+</tbody>
+</table>
+
+<a href="{getSiteUrl('','act','dispWmcdiskAdminFsvrAdd')}"><button class="x_btn x_btn-primary">ADD</button></a>
+<hr>
+
+<form action="./" class="x_pagination x_pull-left" style="margin:0" no-error-return-url="true">
+	<input type="hidden" name="module" value="{$module}" />
+	<input type="hidden" name="act" value="{$act}" />
+	<input cond="$search_keyword" type="hidden" name="search_keyword" value="{$search_keyword}" />
+	<input cond="$search_target" type="hidden" name="search_target" value="{$search_target}" />
+	<ul>
+		<li class="x_disabled"|cond="!$page || $page == 1"><a href="{getUrl('page', '')}">&laquo; {$lang->first_page}</a></li>
+		<block cond="$page_navigation->first_page != 1 && $page_navigation->first_page + $page_navigation->page_count > $page_navigation->last_page - 1 && $page_navigation->page_count != $page_navigation->total_page">
+		{@$isGoTo = true}
+		<li>
+			<a href="#goTo" data-toggle title="{$lang->cmd_go_to_page}">&hellip;</a>
+			<span cond="$isGoTo" id="goTo" class="x_input-append">
+				<input type="number" min="1" max="{$page_navigation->last_page}" required name="page" title="{$lang->cmd_go_to_page}" />
+				<button type="submit" class="x_add-on">Go</button>
+			</span>
+		</li>
+		</block>
+
+		<!--@while($page_no = $page_navigation->getNextPage())-->
+		{@$last_page = $page_no}
+		<li class="x_active"|cond="$page_no == $page"><a  href="{getUrl('page', $page_no)}">{$page_no}</a></li>
+		<!--@end-->
+
+		<block cond="$last_page != $page_navigation->last_page && $last_page + 1 != $page_navigation->last_page">
+		{@$isGoTo = true}
+		<li>
+			<a href="#goTo" data-toggle title="{$lang->cmd_go_to_page}">&hellip;</a>
+			<span cond="$isGoTo" id="goTo" class="x_input-append">
+				<input type="number" min="1" max="{$page_navigation->last_page}" required name="page" title="{$lang->cmd_go_to_page}" />
+				<button type="submit" class="x_add-on">Go</button>
+			</span>
+		</li>
+		</block>
+		<li class="x_disabled"|cond="$page == $page_navigation->last_page"><a href="{getUrl('page', $page_navigation->last_page)}" title="{$page_navigation->last_page}">{$lang->last_page} &raquo;</a></li>
+	</ul>
+</form>
+
+
+
+

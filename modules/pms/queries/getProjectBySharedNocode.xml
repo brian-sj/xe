@@ -1,0 +1,64 @@
+<query id="getProjectBySharedNocode" action="select">
+    <tables>
+        <table name="pms_project" alias="p" />
+		<table name="member" alias="m" />
+		<table name="member_group" alias="g" />
+		<table name="wmc_share" alias="s" />
+
+    </tables>
+    <columns>
+        <column name="p.project_srl" />
+        <column name="p.member_srl" />
+        <column name="p.category" />
+        <column name="p.gu1" />
+        <column name="p.gu2" />
+
+        <column name="p.gu3" />
+        <column name="p.gu4" />
+        <column name="p.title" />
+        <column name="p.sub_title" />
+        <column name="p.request_dept" />
+        <column name="p.request_date" />
+        <column name="g.title" alias="dev_dept" />
+        <column name="p.mh" />
+		
+		<column name="datediff(now(), start_date)" alias="duration" />
+		<column name="datediff(end_date, start_date)" alias="duration_c" />
+        <column name="p.planed_mh" />
+        <column name="p.project_stt" />
+		<column name="p.progress" />
+        <column name="p.start_date" />
+        <column name="p.end_date" />
+        <column name="p.planed_start_date" />
+        <column name="p.planed_end_date" />
+        <column name="p.reg_date" />
+        <column name="m.user_id " />
+        <column name="m.user_name" />
+
+    </columns>
+	<conditions>
+		<condition operation="equal" column="p.member_srl" default="m.member_srl" pipe="and" />  
+		<condition operation="equal" column="p.dev_dept" default="g.group_srl" pipe="and" />  
+		<condition operation="equal" column="s.target_srl" default="p.project_srl" pipe="and"/>
+		<condition operation="equal" column="s.stt" default="PMS" pipe="and"/>
+		<condition operation="equal" column="p.gu3" var="gu3" pipe="and" />   
+		<condition operation="equal" column="p.category"     var="category" pipe="and" />    
+		<condition operation="equal" column="p.request_dept" var="request_dept" pipe="and" /> 
+		<condition operation="like" column="p.title" var="title" pipe="and" /> 
+		<condition operation="like" column="m.user_name" var="user_name" pipe="and" /> 
+		<condition operation="equal" column="p.gu1" var="gu1" pipe="and" /> 
+		<condition operation="equal" column="p.dev_dept" var="dev_dept" pipe="and" /> 
+		<condition operation="equal" column="s.member_srl" var="member_srl" pipe="and" />
+	</conditions>
+	
+	<navigation>
+        <index var="sort_index" default="p.project_srl" order="desc" />
+        <list_count var="list_count" default="20" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>
+<!-- 
+해당 멤버가 shared 된것만 본다.... 
+
+-->

@@ -1,0 +1,14 @@
+<query id="updateEapprvProc" action="update">
+    <tables>
+        <table name="eapprv_line" />
+    </tables>
+    <columns>
+        <column name="stt"  var="stt" notnull="notnull" />
+		<column name="regdate" default="curdate()" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="eapprv_srl" var="eapprv_srl" notnull="notnull"/>
+		<condition operation="equal" column="member_srl" var="eapprv_srl" notnull="notnull"pipe="and"/>
+		<condition operation="equal" column="line_stt"   var="line_stt" notnull="notnull" pipe="and"/>
+    </conditions>
+</query>

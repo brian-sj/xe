@@ -1,0 +1,15 @@
+<query id="getMembersByGroupSrl" action="select">
+    <tables>
+        <table name="member_group_member" alias="mgm"/>
+        <table name="member" alias="m"/>
+    </tables>
+    <columns>
+        <column name="mgm.member_srl" />
+        <column name="m.nick_name" />
+        <column name="m.user_name" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="group_srl" var="group_srl" notnull="notnull"/>
+        <condition operation="equal" column="mgm.member_srl" default="m.member_srl" pipe="and"/>
+    </conditions>
+</query>

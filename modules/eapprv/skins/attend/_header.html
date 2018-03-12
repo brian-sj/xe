@@ -1,0 +1,5 @@
+<load target="css/default.css" />
+{@
+$ip = getIpaddress();
+$module_info->out_pc = strpos( $ip , $module_info->out_ip_range)  !== false  ;
+}

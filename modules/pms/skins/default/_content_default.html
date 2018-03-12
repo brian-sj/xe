@@ -1,0 +1,84 @@
+	<div class="col-lg-12">
+	<div id="main_panel" class="panel panel-primary">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">
+	  <h5>{$data->title} ( 디폴트 스킨 주담당자 : {$data->user_name})
+		<div class="btn_add">
+			<input type="checkbox" data-customClass="favorite" onchange="onChange()" data-label="즐겨찾기" name="favorite" checked|cond="$cdata->favorite" value="F" id="favorite" class="">
+		</div>
+	  
+	  </h5></div>
+	  <!-- Table -->
+	  <table class="table">
+		<tr>
+			<th width="80">업무명</th>
+			<td colspan="3">{$data->title}</td>
+			<td colspan="2">{$data->gu1_name} > {$data->gu2_name}</td>
+			<td width="80">
+				<div class="progress">
+					<div id="planed_mh" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+						50%
+					</div>
+				</div>
+			</td>
+			<td width="80">
+				<div class="progress">
+					<div id="mh" class="progress-bar" role="progressbar" aria-valuenow="{$data->progress}" aria-valuemin="0" aria-valuemax="100" style="width: {$data->progress}%;">
+						{$data->progress}%
+					</div>
+				</div>
+			</td>
+			</td>
+		</tr>
+		<tr>
+			<th>주담당자</th>
+			<td>{$data->user_name}</td>
+			<th width="70">주무부서</th>
+			<td></td>
+			<th width="80">업무참여자</th>
+			<td colspan="3">
+			<block loop="$wmc_members=>$key,$val4">
+				<span cond="in_array( $key, $shared_members)">{$val4}</span>
+			</block>
+			<button class="btn btn-info" type="button" data-toggle="tooltip" title="해당자의 즐겨찾기에 추가됩니다. 즐겨찾기에서 뺄때는 개인이 직접 빼주셔야 합니다." id="member_edit">수정 <span class="glyphicon glyphicon-info-sign"></span></button>
+			<!--#include("./_share_member.html")-->
+			</td>
+		</tr>
+		<tr height="30">
+			<th height="30">시작일</th>
+			<td>{zDate($data->start_date, "Y-m-d")}</td>
+			<th>종료일(예정)</th>
+			<td>{zDate($data->end_date, "Y-m-d")}({zDate($data->planed_end_date, "Y-m-d")})</td>
+			<th>예산</th>
+			<td>0</td>
+			<th width="80">집행</th>
+			<td>0</td>
+		</tr>
+		<tr>
+			<th>업무내용</th>
+			<td colspan="7">{$data->content}</td>
+		</tr>
+		<tr>
+			<th>관련문서</th>
+			<td colspan="7"></td>
+		</tr>
+	  </table>
+	</div>
+
+		<a href="{getUrl('mid', 'releasenote_AtAv26', 'act', 'dispReleasenoteWrite')}" target="_blank"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>배포요청쓰기</button></a>
+		<a href="{getUrl('act', 'dispPmsProjectWrite' ,'project_srl' ,$data->project_srl )}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>수정</button></a>
+		<a href="{getUrl('act', 'dispPmsProjectListView' ,'page' , '' )}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>목록</button></a>
+
+	</div>
+	<div class="col-lg-12">
+		<!--#include("./_file_attach.html")-->		
+	</div>
+	<div class="col-lg-12">
+		<!--#include("./_comment.html")-->	
+	</div>
+	<hr>
+<!-- gantt -->
+	<div class="col-lg-12">
+		<div id="gantt_here" style='width:100%; height:100%'></div>
+	</div>
+<!-- gantt END  -->

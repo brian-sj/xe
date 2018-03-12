@@ -1,0 +1,12 @@
+<table name="eapprv_proc">
+    <column name="eapprv_proc_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+    <column name="eapprv_srl" type="number" size="11" notnull="notnull"  index="idx_eapprv_srl" />
+    <column name="member_srl" type="number" size="11" default="0" notnull="notnull" index="idx_member_srl" />
+	<column name="eapprv_user" type="varchar" size="2000" notnull="notnull" />   
+    <column name="memo" type="varchar" size="2000" notnull="notnull" />
+	<column name="stt" type="char" size="1" notnull="notnull" /> 					
+	<column name="order" type="number" size="4" notnull="notnull"   />       
+	<column name="regdate" type="date" default="curdate()"/>    
+</table>
+<!--   eapprv_user  { "name":"±èÃ¢¿î"    , "sign_img" : "images/a.jpg", "title" : "°úÀå"  }  -->
+<!--   stt                A: approved , R : reject  C : current    -->

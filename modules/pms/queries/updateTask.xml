@@ -1,0 +1,32 @@
+<query id="updateTask" action="update">
+    <tables>
+        <table name="pms_task" />
+    </tables>
+    <columns>
+			<column name="title" var="title"  />
+			<column name="work_member_srl" var="work_member_srl" />
+			<column name="parent_task_srl" var="parent_task_srl" />		
+			<column name="progress" var="progress" />
+			<column name="planed_mh" var="planed_mh"  />		
+			<column name="stt" var="stt" default="N" />				
+			<column name="mh" var="sum_mh"  />		
+			<column name="start_date" var="start_date"  />		
+			<column name="end_date" var="end_date"  />		
+			<column name="memo" var="memo" />
+			<column name="code_urgency" var="code_urgency" />
+			<column name="code_importance" var="code_importance" />					
+			<column name="sort_order" var="sort_order" />					
+			<column name="ext_vars" var="ext_vars" />					
+			<column name="memo" var="memo" />					
+			<column name="reg_date" default="curdate()" /> 
+    </columns>
+	<conditions> 
+        <condition operation="equal" column="task_srl" var="task_srl"   notnull="notnull" />   
+    </conditions>
+</query>	
+<!-- 
+
+ext_vars 는 serialize 된 값이다. 
+아직 쓰이는 곳은 없네.... 
+
+-->

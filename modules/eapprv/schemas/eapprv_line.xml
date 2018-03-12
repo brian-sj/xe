@@ -1,0 +1,23 @@
+<table name="eapprv_line">
+    <column name="eapprv_srl" type="number" size="11" primary_key="primary_key" />
+	<column name="line_stt"   type="char" size="1" primary_key="primary_key" />
+    <column name="member_srl" type="number" size="11" primary_key="primary_key" />
+	
+	
+	<column name="line_title" type="varchar" size="200" notnull="notnull" />
+
+	<column name="stt" type="char" size="1" default="1" />
+	<column name="position" type="char" size="1" default="A" /> 
+	<column name="regdate" type="date" />    
+</table>
+<!--
+
+	line_stt : 1 :  신청 결재  2, 접수 결재 , 3 실행 결재등 순서로 쓴다. 
+	stt : 1 등록     2 , 승인   0 반려   
+	      A
+	position : A 담당 (혹시 팀장이 들어갈 수 있으니 여유를 두었다.)
+	           C 과장 
+			   E 부장    
+			   F 국장  
+			   G. 총회장
+-->

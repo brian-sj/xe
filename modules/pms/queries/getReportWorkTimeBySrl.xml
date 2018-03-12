@@ -1,0 +1,16 @@
+<query id="getReportWorkTimeBySrl" action="select">
+    <tables>
+        <table name="pms_report_work_time" alias="w" />
+    </tables>
+    <columns>
+        <column name="project_srl" />
+		<column name="task_srl" />
+		<column name="report_work_srl" />
+		<column name="mh" />
+		<column name="count" />
+		<column name="title" />
+    </columns>
+	<conditions>
+		<condition operation="equal" column="report_work_srl" var="report_work_srl" notnull="notnull" />
+	</conditions>	
+</query>

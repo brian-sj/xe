@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<module>
+    <grants>
+		<grant name="list" default="guest">
+            <title xml:lang="ko">목록</title>
+        </grant>
+
+		<grant name="detail" default="guest">
+            <title xml:lang="ko">상세 내용</title>
+        </grant>
+		<grant name="team_manager" default="guest">
+            <title xml:lang="ko">팀장</title>
+        </grant>
+		<grant name="gm_manager" default="guest">
+            <title xml:lang="ko">부서장</title> 
+        </grant>
+
+	</grants>
+	<permissions>
+	</permissions>
+	<actions>
+		<action name="dispPmsIndex" type="view" />
+		<action name="dispPmsProjectListView" type="view" index="true"/>
+		<action name="dispPmsListView" type="view"  />
+		<action name="dispPmsBudgetView" type="view"  />
+		<action name="dispPmsCalendarView" type="view"  />
+		<action name="dispPmsWorkView" type="view" />
+		<action name="dispPmsWorkProgressView" type="view" />
+		<action name="dispPmsWorkProgressOperView" type="view" />
+		<action name="dispPmsProjectWrite" type="view" />
+		<action name="dispPmsWorkViewByProject" type="view" />
+		<action name="dispPmsWorkRegularView" type="view" />
+		<action name="dispPmsWinventory" type="view" />
+		<action name="dispPmsWmccode" type="view" />
+		<action name="dispPmsWmccodeWrite" type="view" />
+
+		<action name="dispPmsProjectWorkListAPI" type="view" />
+		<action name="dispPmsProjectListAPI" type="view" />
+		<action name="dispPmsTaskListAPI" type="view" />
+		<action name="dispPmsTaskListAPI" type="view" />
+		<action name="dispPmsTaskListTodo" type="view" />
+		<action name="dispPmsTaskListAsked" type="view" />
+		
+		
+		<action name="dispPmsReportWorkTimeAPI"  type="view" />
+		<action name="dispPmsBySubCodeAPI" type="view" />
+		<action name="dispPmsWeeklyReportProjectAPI" type="view" />
+		<action name="dispPmsWeeklyReportHelpAPI" type="view" />
+		<action name="dispPmsWeeklyReportRoutineProjectAPI" type="view" />
+		<action name="dispPmsWeeklyReportWorkTimeByMemberSrl" type="view" />
+		<action name="dispPmsWorkViewByDate" type="view" />
+
+
+		<!--// comment  -->
+		<action name="dispPmsWorkTimeCommentList"  type="view" />
+		<action name="dispPmsWorkTimeComment"  type="view" />
+		<action name="dispPmsCommentWorkLogDetail"  type="view" />
+		<action name="dispPmsCommentListWeeklyData"  type="view" />
+		<action name="dispPmsEditWorkInfoDiv"  type="view" />
+		<action name="dispPmsCommentWrite"  type="view" />
+		<action name="dispPmsCommentList"  type="view" />
+		<action name="procPmsCommentSave" type="controller"/>
+		<action name="procPmsCommentOnelineSave" type="controller"/>
+		<action name="procPmsCommentDelete" type="controller" />
+		<action name="procPmsCommentOnelineDelete" type="controller" />
+		<!--// comment  -->
+
+
+		<action name="procPmsTaskSave" type="controller" />
+		<action name="procPmsTaskDelete" type="controller" />
+		<action name="procPmsLinkSave" type="controller" />
+		<action name="procPmsAnalyzeReport" type="controller" method="GET|POST" />
+		<action name="procPmsAnalyzeMantisReport" type="controller" method="GET|POST" />
+		<action name="procPmsAnalyzeRoutineReport" type="controller" method="GET|POST" />
+
+		<action name="procPmsWorkTimeSave" type="controller" />
+		<action name="procPmsProjectSave" type="controller" />
+		<action name="procPmsProjectProgressSave" type="controller" />
+		<action name="procPmsProjectConfirmSave" type="controller" />
+
+		<action name="procPmsFavoriteToggle" type="controller" />
+		<action name="procPmsShareListSave" type="controller"/>
+		
+		<action name="procPmsWmccodeSave" type="controller"/>
+		<action name="procPmsEapprvProc" type="controller"/>
+
+		<!--//  파일 관련 함수   -->
+		<action name="dispPmsFileView" type="view"  />
+		<action name="procPmsFileUpload" type="controller" />
+		<action name="procPmsFileCommentUpdate" type="controller"/>
+		<action name="procPmsFileDelete" type="controller"/>
+		<action name="procPmsFileDownload" type="controller" method="GET|POST" />
+		<!--//  파일 관련 함수 끝   -->
+
+		<action name="dispPmsPersonalWorkViewTable" type="view"/>
+
+
+
+    <!--   test page -->
+        <action name="dispPmstest1" type="view" />
+    		<action name="dispPmstest2" type="view" />
+    <!--   test page -->
+	</actions>
+	<menus>
+			<menu name="pms" type="all">
+			<title xml:lang="en">PMS</title>
+			</menu>
+	</menus>
+</module>

@@ -1,0 +1,160 @@
+<style>
+/*김지민*/
+.mbBalloon{width:360px; padding-top:20px; padding-bottom:35px; border-color:rgb(0, 0, 0)}
+.title-modification {font-size:18px; font-weight:500}
+.mbBalloonClose {float:right}
+#popup_content .col-xs-5, #popup_content .col-xs-7, #popup_content .col-xs-12 {padding-right:0; padding-left:0;}
+#popup_content .btn{margin:18px 3px 0 3px}
+.control-label {font-weight:500; margin-top:6px; font-size:13px;}
+.form-group {margin-bottom:0}
+#popup_content .form-control {height:30px; margin-bottom:6px; border:1px solid #000;}
+.select-group{margin:4px 0 11px 0; color:#555;}
+#popup_content .data-memo {/*background-color:#fff; color:#555;*/ padding:6px 12px; margin-bottom:10px; border:solid 1px #000; max-height:120px;overflow-y:auto;}
+.divi-underline{margin-top:15px}
+</style>
+
+
+<!--
+###########
+이 페이지는 ajax를 통해 다른 페이지에 끼워 들어가는 페이지 이다.
+-->
+
+<div id="popup_content">
+
+<form id="frm_edit_info">
+<input type="hidden" id="project-srl" name="project_srl" value="{$project_srl}">
+<input type="hidden" id="task-srl" name="task_srl" value="{$task_srl}">
+<input type="hidden" id="error_return_url" name="error_return_url" value="">
+<input type="hidden" id="report-work-srl" name="report_work_srl" value="{$work_time->report_work_srl}">
+
+<label class="col-xs-12 control-label divi-underline" for="only-log" >{$data->title}</label>
+<block cond="$data->memo">
+	<div class="form-group">
+		<div class="col-xs-12 data-memo"> - {$data->memo}</div>
+	</div>
+</block>
+
+	<div class="form-group">
+		<label class="col-xs-5 control-label" for="progress">진행률</label>
+		<div class="col-xs-7">
+			<input type="text" id="progress" name="progress" placeholder="진행률 %" value="{$data->progress}" class="form-control mask-percentage">
+		</div>
+	</div>
+	
+	<div class="form-group">
+			<label class="col-xs-5 control-label" for="wmc-msg">긴급도/중요도</label>
+			<div class="col-xs-7 select-group">
+				<select id="code-urgency">
+					<option value="1" selected|cond="!$data->code_urgency||$data->code_urgency=='1'">★</option>
+					<option value="2" selected|cond="$data->code_urgency=='2'">★★</option>
+					<option value="3" selected|cond="$data->code_urgency=='3'">★★★</option>
+					<option value="4" selected|cond="$data->code_urgency=='4'">★★★★</option>
+					<option value="5" selected|cond="$data->code_urgency=='5'">★★★★★</option>
+				</select>
+
+				<select id="code-importance">
+					<option value="1" selected|cond="!$data->code_importance||$data->code_importance=='1'">★</option>
+					<option value="2" selected|cond="$data->code_importance=='2'">★★</option>
+					<option value="3" selected|cond="$data->code_importance=='3'">★★★</option>
+					<option value="4" selected|cond="$data->code_importance=='4'">★★★★</option>
+					<option value="5" selected|cond="$data->code_importance=='5'">★★★★★</option>
+				</select>
+  		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-xs-5 control-label" >종료 예정일</label>
+		<div class="col-xs-7">
+			<input type="text" name="end_date" id="end-date" value="{zDate($data->end_date,'Y-m-d')}" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" class="mask-date form-control">
+		</div>
+	</div>
+	
+
+
+
+<!-- 2016.08.18. 추후 적용
+	<div class="form-group">
+		<label class="col-xs-5 control-label" for="sort-order" >정렬우선순위</label>
+		<div class="col-xs-7">
+			<input type="text" name="sort_order" id="sort-order" class="form-control" value="{$data->sort_order}">
+		</div>
+	</div>
+ -->
+	<div class="form-group">
+		<label class="col-xs-5 control-label">* 업무일</label>
+		<div class="col-xs-7">
+			<input type="text" name="work_date"  value="{date('Y-m-d')}" id="work-date" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" class="mask-date form-control">
+		</div>
+	</div>
+	<!-- seperator -->
+
+	<div class="form-group">
+		<label class="col-xs-5 control-label" >* 업무시간</label>
+		<div class="col-xs-7">
+			<input type="text" name="work_time" value="{$work_time->mh}" id="work-time" placeholder="시간" class="form-control mask-work-time">
+		</div>
+  </div>
+
+	<div class="form-group">
+		<label class="col-xs-12 control-label" for="content" >* 업무내용</label>
+		<div class="col-xs-12"><textarea id="content" name="content" class="form-control" style="height:100px;" placeholder="업무내용을 입력해주세요.">{$extra_vars->title}</textarea></div>
+  </div>
+	<div class="form-group col-xs-12">
+		<input type="checkbox" name="wmc_msg" id="wmc-msg" value="Y">
+		<label class="control-label" for="wmc-msg">WMC 메신저 발송</label>
+  </div>
+  
+</form>
+
+
+
+	<div class="text-center">
+		<a id="close" class="btn btn-default customeMbBalloonClose">닫기</a><a id="save" class="btn btn-primary" onclick="edit_info_save()">저장</a>
+	</div>
+</div>
+<script>
+
+jQuery(document).ready(function($){
+console.log('mask test..');
+	$(".mask-percentage").inputmask("percentage" , {suffix:' %' , autoUnmask : true });
+	$(".mask-work-time").inputmask("numeric" , {min:0 , max:13 ,suffix:' 시간'  , autoUnmask : true   });
+	$(".mask-date").datepicker({todayHighlight:true, autoclose:true, daysOfWeekHighlighted: "0,6"});
+});
+
+function edit_info_save(){
+	var params = {};
+	//params = jQuery("#frm_edit_info").serializeArray();
+    params.project_srl = jQuery("#project-srl").val();
+    params.task_srl = jQuery("#task-srl").val();
+    params.work_time = jQuery("#work-time").val();
+    params.progress = jQuery("#progress").val();
+	params.wmc_msg  = jQuery("#wmc-msg:checked").val(); 
+	params.end_date  = jQuery("#end-date").val().replace(/\-/g,''); 
+    params.work_date = jQuery("#work-date").val();
+    params.content = jQuery("#content").val();
+	params.code_urgency = jQuery("#code-urgency").val();
+	params.code_importance = jQuery("#code-importance").val();
+	params.sort_order = jQuery("#sort-order").val();
+    params.report_work_srl = jQuery("#report-work-srl").val();
+
+
+	if( params.work_date =="" ){
+		alert("업무일을 선택해주세요.");
+		return ;
+	}else if(params.work_time =="" ){
+		alert("업무시간을 입력해주세요");
+		return ;	
+	}else if(params.content =="" ){
+		alert("업무내용을 입력해주세요");
+		return ;	
+	}
+
+	exec_json("pms.procPmsWorkTimeSave", params, function(data){
+		jQuery(".tr_"+params.project_srl +"_"+params.task_srl).find(".progress-bar").css("width",params.progress+"%")
+			.end().find(".progress-num").text(params.progress+"%");
+		 $balloon.hideBalloon();
+
+	});
+
+}
+</script>

@@ -1,0 +1,8 @@
+<query id="deleteFile" action="delete">
+    <tables>
+        <table name="pms_files" />
+    </tables>
+    <conditions>
+        <condition operation="equal" column="pms_file_srl" var="pms_file_srl" />
+	</conditions>
+</query>

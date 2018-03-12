@@ -1,0 +1,42 @@
+<table name="pms_task">
+	<column name="project_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+	<column name="task_srl" type="number" size="11" notnull="notnull"    primary_key="primary_key" />
+	<column name="parent_task_srl" type="number" size="11" />
+	<column name="member_srl" type="number" size="11"  default="0"/>
+	<column name="work_member_srl" type="number" size="11"  default="0"/>
+	<column name="progress" type="number" size="4" notnull="notnull" default="0" /> 
+	<column name="mh" type="number" size="4"  default="0" /> 
+	<column name="planed_mh" type="number" size="4" default="0" /> 
+    <column name="title" type="varchar" size="200" notnull="notnull" />
+    <column name="memo" type="varchar" size="1000" notnull="notnull" />
+    <column name="extvars" type="varchar" size="2000" notnull="notnull" />
+	<column name="stt" type="varchar" size="1" default="N"	/>  
+	<column name="start_date" type="date"  />
+	<column name="end_date" type="date"  />
+	<column name="planed_start_date" type="date" />
+	<column name="planed_end_date" type="date"  />
+	<column name="reg_date" type="date" />
+	<column name="sort_order" type="number" size="11" default="0"/>
+	<column name="code_urgency" type="varchar" size="2" default="0"/>
+	<column name="code_importance" type="varchar" size="2" default="0"/>
+</table>
+<!-- 
+0 to 100 
+N : 정상진행   W : 대기 , H : 홀딩 , C: Complete   I, 재고 , X 폐기 ,  R : routin 업무 
+
+member_srl : 쓴사람. 
+work_member_srl : 이 업무를 담당할 사람. 
+
+===> 단일 확인 업무는 나중에 리스트에 나오지 않음.... 
+
+stt : 상태... 
+memo :  메모값이 들어감. ... 
+extvars :  serialized 데이터가 들어감. 
+
+2016년 7월28일 수정함. 
+ALTER TABLE xe_pms_task
+ ADD work_member_srl BIGINT(11) AFTER member_srl,
+ ADD memo VARCHAR(1000) AFTER reg_date,
+ ADD extvars VARCHAR(2000);
+
+--> 

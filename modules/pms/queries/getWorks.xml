@@ -1,0 +1,13 @@
+<query id="getWorks" action="select">
+    <tables>
+        <table name="pms_report_work_time"/>
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="task_srl" var="task_srl" notnull="notnull" />
+		<condition operation="equal" column="member_srl" var="member_srl" notnull="notnull" pipe="and"/>
+		<condition operation="equal" column="work_date" var="work_date" notnull="notnull" pipe="and" />
+    </conditions>
+</query>

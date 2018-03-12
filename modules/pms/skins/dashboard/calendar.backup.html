@@ -1,0 +1,119 @@
+<style>
+#main_panel , #history_panel {margin : 10px }
+.progress {margin-bottom : 0 !important ;}
+.hidden-content {display:none;}
+.title-link {cursor:pointer;}
+.pagination {vertical-align: middle;}
+
+select[multiple] {height:200px !important; margin-left:20px;}
+</style>
+<!--#include("./header.html")-->
+<load target="/common/js/plugins/dhtmlx/dhtmlx.js" />
+<load target="/common/js/plugins/gantt/dhtmlxgantt.js" />
+<load target="/common/js/plugins/gantt/dhtmlxgantt.css" />
+<load target="js/calendar.js" />
+
+<script>
+var task ={};
+var params ={};
+task.project_srl ="{$project_srl}";
+params.project_srl =task.project_srl;
+//gantt.parse(tasks);
+</script>
+
+
+	<div id="main_panel" class="panel panel-primary">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading"><h4>{$cont->title} (PM : 인천권)</h4></div>
+	  <!-- Table -->
+	  <table class="table">
+		<tr><th>부제목</th><td>{$cont->sub_title}</td></tr>
+		<tr height="30"><th width="100" height="30">시작일</th><td>{zDate($cont->start_date, "Y-m-d")}</td><th  width="100">MH(E)</th><td>600MH(75MD)</td><th  width="150">진척도(계산상)</th><td>
+					<div class="progress">
+						<div id="planed_mh" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+							50%
+						</div>
+					</div>
+			</td><th  width="100">예산</th><td>34,000,000</td></tr>
+		<tr><th>종료일</th><td>{zDate($cont->end_date, "Y-m-d")}</td><th>MH(A)</th><td>300MH(38MD)</td><th>진척도(실제)</th><td>
+					<div class="progress">
+						<div id="mh" class="progress-bar" role="progressbar" aria-valuenow="{$cont->progress}" aria-valuemin="0" aria-valuemax="100" style="width: {$cont->progress}%;">
+							{$cont->progress}%
+						</div>
+					</div>	
+		</td><th>집행</th><td>30,000,000</td></tr>
+		<tr><th>프로젝트 멤버</th><td colspan="6">김복음, 나도복, 박개발  <button class="btn btn-info" type="button" id="member_edit">수정</button> 
+		
+
+			<!--#include("./_share_member.html")-->
+			
+									</td>
+								  <td><a href="{getUrl('mid', 'releasenote_AtAv26', 'act', 'dispReleasenoteWrite')}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>배포요청쓰기</button></a>
+								      <a href="{getUrl('act', 'dispPmsProjectWrite' ,'project_srl' ,$cont->project_srl )}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>수정</button></a>
+								  </td>
+		</tr>
+		<tr><th>내용</th><td colspan="7">{$cont->content}</td>
+		</tr>
+	  </table>
+	</div>
+	</td>
+
+	<div id="history_panel" class="panel panel-default">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading"><h4 style="display: inline-block;">코멘트</h4>
+		<ul class="pagination">
+			<li><a href="{getUrl('page','','comment_srl','')}" class="prevEnd"><<</a></li>
+	
+			<!--@while($page_no = $page_navigation->getNextPage())-->
+				<!--@if($page == $page_no)-->
+					<li class="active"><a href="{getUrl('page',$page_no,'comment_srl','')}">{$page_no}</a></li>
+				<!--@else-->
+					<li><a href="{getUrl('page',$page_no,'comment_srl','')}">{$page_no}</a></li>
+				<!--@end-->
+			<!--@end-->
+			<li><a href="{getUrl('page',$page_navigation->last_page,'comment_srl','')}" class="nextEnd">>></a></li>
+		</ul>
+		<div style="display: inline-block;" >
+			<input type="button" onclick="showPopup(this);" value="쓰기">
+		</div>
+	</div>
+	  <!-- Table -->
+	  <table class="table">
+		<!--@foreach($comment as $no => $val)-->	
+		<tr height="30">
+			<td><span class="title-link" onclick="showContentPopup(this);">{$val->title}<div class="hidden-content">{$val->content}</div></span></td>
+			<td width="80">{$val->user_name}</td><td width="100">{zDate($val->reg_date, "Y-m-d")}</td>
+			<td width="40" onclick="deleteComment({$val->comment_srl});"><span class="del" data-comment_srl="{$val->comment_srl}" ><a href="#"><img src="images/bt_delete.gif" ></a></span></td>
+		</tr>
+		<!--@end-->
+	  </table>
+	</div>
+	
+<!-- gantt -->
+<div id="gantt_here" style='width:100%; height:100%'></div>
+<!-- gantt END  -->
+
+
+<div id="popup_html" style="display:none;">
+<form name="frm" method="post">
+	<input type="hidden" name="act" value="procCommentSave" />
+	<input type="hidden" name="project_srl" value="{$project_srl}">
+	<!-- Table -->
+	<table class="table">
+		<tr>
+			<td>
+				<input type="text" placeholder="제목" class="form-control" id="title" name="title" / > 
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" placeholder="내용" class="form-control" id="content" name="content" / >
+			</td>
+		</tr>
+	</table>
+	<div>
+		<button class="btn btn-primary">저장</button>
+	</div>
+</form>	
+
+</div>

@@ -1,0 +1,16 @@
+<query id="updateEappConfirm" action="update">
+    <tables>
+        <table name="wmc_eapp" />
+    </tables>
+    <columns>
+		<column name="regdate" default="curdate()" />
+		<column name="stt" default="Y" />
+		
+    </columns>
+    <conditions>
+        <condition operation="equal" column="eapp_srl" var="eapp_srl" notnull="notnull" />
+		<condition operation="equal" column="member_srl" var="member_srl" notnull="notnull" pipe="and"/>
+		<condition operation="equal" column="category" var="category" notnull="notnull" pipe="and"/>
+		
+    </conditions>
+</query>

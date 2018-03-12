@@ -1,0 +1,16 @@
+<query id="updateCommentOnlyCnt" action="update">
+    <tables>
+        <table name="pms_comment" />
+    </tables>
+    <columns>
+		<column name="reply_cnt" var="reply_cnt" />
+		<column name="file_cnt" var="file_cnt" />
+    </columns>
+		<conditions> 
+        <condition operation="equal" column="comment_srl" var="comment_srl"   notnull="notnull" />   
+    </conditions>
+</query>	
+<!--
+여기서는 댓글 숫자와 
+파일 첨부된 숫자만 바꾼다.. 
+-->

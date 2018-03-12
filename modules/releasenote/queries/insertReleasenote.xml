@@ -1,0 +1,37 @@
+<query id="insertReleasenote" action="insert">
+    <tables>
+        <table name="releasenote" />
+    </tables>
+    <columns>
+        <column name="note_srl" var="note_srl" notnull="notnull" />
+		<column name="document_srl" var="document_srl" notnull="notnull" />
+        <column name="category" var="category"  notnull="notnull" />
+        <column name="program_srl" var="program_srl" filter="number" notnull="notnull" />
+        
+		<column name="request_dept" var="request_dept" maxlength="20" />
+		<column name="request_name" var="request_name" maxlength="20" />
+		<column name="worker_srl" var="worker_srl" filter="number" />
+		<column name="tester_srl" var="main_tester_srl" filter="number" />
+		<column name="manager_srl" var="manager_srl" filter="number" />
+		<column name="releaser_srl" var="releaser_srl" filter="number" />
+		<column name="t_releaser_srl" var="t_releaser_srl" filter="number" />
+		<column name="header_srl" var="header_srl" filter="number" />
+
+		<column name="title" var="title"  />
+		
+		<column name="start_date" var="start_date" />
+		<column name="end_date" var="end_date"  />
+		<column name="release_date" var="release_date"  />
+		<column name="regdate" default="curdate()" />
+		<column name="stt" default="A" />
+		<column name="lang" var="lang"  />
+		<column name="stt1" var="stt1"  />
+		<column name="stt2" var="stt2"  />
+		<column name="stt3" var="stt3"  />
+		<column name="shared_members" var="shared_members"  />
+    </columns>
+</query>
+<!--
+
+
+-->

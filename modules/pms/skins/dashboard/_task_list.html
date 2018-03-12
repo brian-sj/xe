@@ -1,0 +1,75 @@
+<div id="main_panel" class="box box-danger">
+	  <!-- Default panel contents -->
+		<div class="box-header with-border">
+		  <h3 class="box-title">{$data->title} 세부 작업목록</h3>
+
+		  <div class="box-tools pull-right">
+			<!--<span data-toggle="tooltip" title="3 New Messages" class="badge bg-light-blue">3</span>-->
+			<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+			</button>
+			<!--
+			<button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="Contacts" data-widget="chat-pane-toggle">
+			  <i class="fa fa-comments"></i></button>
+			-->
+			<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+		  </div>
+		</div>
+	  <div class="box-body">
+		<!-- <ul id="tasklist" class="nav nav-stacked">-->
+		<ul id="tasklist" class="list-group list-group-unbordered">
+			<!-- here  -->
+		</ul>
+	  </div>
+	  <div class="box-footer">
+	  			<form name="frmtask" action="/" method="post" onsubmit="return saveTask()">
+					<input type="hidden" name="act" value="procPmsTaskSave">
+					<input type="hidden" name="progress" value="0">
+					<input type="hidden" name="project_srl" value="{$project_srl}">
+					<input type="hidden" name="task_srl" id="task-srl" value="">
+					<input type="hidden" name="parent_task_srl" value="0">
+
+					<div class="input-group">
+						<input type="text" id="task-title" name="text" placeholder="추가할 업무 내용 ..." class="form-control" >
+						<span class="input-group-btn">
+						  <button type="save" class="btn btn-primary btn-flat">저장</button>
+						</span>
+					</div>
+              </form>
+	  </div>
+	  <!-- Table -->
+</div>
+
+
+<script>
+function saveTask(){
+	if(  jQuery("#task-title").val() =="" ){
+		alert("제목을 입력 하세요. ");
+		return false ;
+	}
+	params.text = jQuery("#task-title").val() ;
+	params.task_srl = jQuery("#task-srl").val();
+	exec_json("pms.procPmsTaskSave", params , function(data){
+				document.location.reload();
+			},function(data){console.log('error');console.log(data); } );
+	return false;
+}
+
+jQuery(document).ready( function($){
+	exec_json("pms.dispPmsProjectWorkListAPI",params, function(data){
+		$(data.data).each(function(){
+			$("#tasklist").append("<li class='list-group-item list-noline' data-task-srl='"+this.id+"'><a href='#'>"+this.text+"</a><span class='pull-right'><i class='fa fa-times del'></i></span></li>");
+		});
+	});
+
+	/** task 삭제 */
+	$("#tasklist").on('click', 'i.del' , function(){
+		if(confirm("정말로 삭제 하시겠습니까?")){
+			params.id = $(this).parent().parent().data('task-srl');// gantt차트 때문에 id 이다.
+			exec_json("pms.procPmsTaskDelete", params , function(data){
+				document.location.reload();
+			},function(data){console.log('error');console.log(data); } );
+		}
+
+	});
+});
+</script>

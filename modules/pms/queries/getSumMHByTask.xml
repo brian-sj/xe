@@ -1,0 +1,12 @@
+<query id="getSumMHByTask" action="select">
+    <tables>
+        <table name="pms_report_work_time" />
+    </tables>
+    <columns>
+        <column name="sum(mh)" alias="mh" />
+    </columns>
+    <conditions>
+        <condition operation="equal" column="project_srl" var="project_srl"  notnull="notnull" />   
+        <condition operation="equal" column="task_srl" var="task_srl" notnull="notnull" pipe="and"/>   
+    </conditions>
+</query>

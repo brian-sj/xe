@@ -1,0 +1,34 @@
+<query id="getWorkTimeList" action="select">
+    <tables>
+        <table name="pms_report_work_time" alias="w" />
+        <table name="pms_task" alias="t" />
+        <table name="member" alias="m" />
+    </tables>
+    <columns>
+        <column name="m.user_name" />
+        <column name="w.project_srl" />
+		<column name="w.task_srl" />
+		<column name="w.report_work_srl" />
+		<column name="w.mh" />
+		<column name="w.count" />
+		<column name="w.work_date" />
+		<column name="w.title" />
+		<column name="t.title" alias="task_title"/>
+    </columns>
+	<conditions>
+		<condition operation="equal" column="w.member_srl" default="m.member_srl" notnull="notnull" />
+		<condition operation="equal" column="w.task_srl" default="t.task_srl" notnull="notnull" pipe="and"/>
+		<condition operation="equal" column="w.project_srl" var="project_srl" notnull="notnull" pipe="and"/>
+		<condition operation="equal" column="w.task_srl" var="task_srl" pipe="and" />  
+		<condition operation="equal" column="w.work_date" var="work_date" pipe="and" />   
+		<condition operation="in"    column="w.member_srl" var="member_srls" pipe="and" />
+		<condition operation="more"  column="w.work_date" var="start_date" pipe="and" />
+		<condition operation="less"  column="w.work_date" var="end_date" pipe="and" />
+	</conditions>	
+	<navigation>
+        <index var="sort_index" default="work_date" order="desc" />
+        <list_count var="list_count" default="200" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<grants>
+		<grant name="fread" default="guest">
+			<title xml:lang="ko">파일 열기 및 다운로드</title>
+			<title xml:lang="en">Open/Download File</title>
+		</grant>
+		<grant name="fwrite" default="guest">
+			<title xml:lang="ko">파일 쓰기 및 업로드</title>
+			<title xml:lang="en">Write/Upload File</title>
+		</grant>
+		<grant name="fedit" default="guest">
+			<title xml:lang="ko">파일 편집 및 삭제</title>
+			<title xml:lang="en">Edit/Delete File</title>
+		</grant>
+		<grant name="mkdir" default="guest">
+			<title xml:lang="ko">폴더 생성</title>
+			<title xml:lang="en">Create Directory</title>
+		</grant>
+		<grant name="archive" default="guest">
+			<title xml:lang="ko">압축</title>
+			<title xml:lang="en">Create Archive</title>
+		</grant>
+		<grant name="extract" default="guest">
+			<title xml:lang="ko">압축 풀기</title>
+			<title xml:lang="en">Extract Archive</title>
+		</grant>
+	</grants>
+
+	<permissions>
+		<!--// Action 권한 설정 -->
+		<permission action="dispElfinderxeAdminInsertFileManager" target="manager" />
+		<permission action="dispElfinderxeAdminFileManagerInfo"	target="manager" />
+		<permission action="dispElfinderxeAdminGrantInfo" target="manager" />
+
+		<permission action="procElfinderxeAdminInsertFileManager" tartget="manager" />
+	</permissions>
+
+	<actions>
+		<!--// Action 정의 -->
+		<action name="dispElfinderxeAdminContent" type="view" standalone="true" admin_index="true" menu_name="elfinderxe" menu_index="true" />
+		<action name="dispElfinderxeAdminInsertFileManager" type="view" standalone="true" setup_index="true" menu_name="elfinderxe" />
+        <action name="dispElfinderxeAdminFileManagerInfo" type="view" standalone="true"  menu_name="elfinderxe" />
+		<action name="dispElfinderxeAdminGrantInfo" type="view" standalone="true" menu_name="elfinderxe" />
+		<action name="dispElfinderxeAdminDeleteFileManager" type="view" standalone="true" menu_name="elfinderxe" />
+		<action name="dispElfinderxeFileManager" type="view" index="true" menu_name="elfinderxe" />
+
+		<action name="procElfinderxeAdminInsertFileManager" type="controller" standalone="true" ruleset="insertElfinderxe" />
+		<action name="procElfinderxeAdminDeleteFileManager" type="controller" standalone="true" />
+		<action name="procElfinderxeFileManager" type="controller" method="get" />
+	</actions>
+
+	<menus>
+		<menu name="elfinderxe" type="all">
+			<title xml:lang="ko">elFinderXE 파일 관리기</title>
+			<title xml:lang="en">elFinderXE File Manager</title>
+		</menu>
+	</menus>
+
+</module>

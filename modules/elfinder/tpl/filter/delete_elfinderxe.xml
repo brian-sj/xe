@@ -1,0 +1,10 @@
+<filter name="delete_elfinderxe" module="elfinderxe" act="procElfinderxeAdminDeleteFileManager">
+    <form>
+        <node target="module_srl" required="true" />
+    </form>
+    <response callback_func="completeDeleteElfinderxe">
+        <tag name="error" />
+        <tag name="message" />
+        <tag name="page" />
+    </response>
+</filter>

@@ -1,0 +1,9 @@
+<query id="insertReleasenoteMantisId" action="insert">
+    <tables>
+        <table name="releasenote_mantis_id" />
+    </tables>
+    <columns>
+        <column name="note_srl"   var="note_srl" notnull="notnull"  />
+		<column name="mantis_id" var="mantis_id" notnull="notnull"  />
+    </columns>
+</query>

@@ -1,0 +1,10 @@
+<query id="deleteTaskLink" action="delete">
+    <tables>
+        <table name="pms_task_link" />
+    </tables>
+    <conditions>
+        <condition operation="equal" column="project_srl" var="project_srl" filter="number" notnull="notnull" />
+		<condition operation="equal" column="source_task_srl" var="source" filter="number" notnull="notnull" pipe="and"/>
+		<condition operation="equal" column="target_task_srl" var="target" filter="number" notnull="notnull" pipe="and"/>
+	</conditions>
+</query>

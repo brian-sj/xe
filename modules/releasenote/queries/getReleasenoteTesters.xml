@@ -1,0 +1,22 @@
+<query id="getReleasenoteTesters" action="select">
+    <tables>
+        <table name="releasenote_testers" alias="r" />
+		<table name="member" alias="m" />
+    </tables>
+    <columns>
+        <column name="r.tester_srl" />
+		<column name="r.regdate" />
+		<column name="m.user_name" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="m.member_srl"  var="r.tester_srl" />
+		<condition operation="equal" column="note_srl"  default="0" var="note_srl" pipe="and"/>
+    </conditions>
+</query>
+
+<!--
+<condition operation="notnull" column="worker_confirm" var="worker_confirm" pipe="and"/>
+<condition operation="notnull" column="tester_confirm" var="worker_confirm" pipe="and"/>
+<condition operation="notnull" column="manager_confirm" var="worker_confirm" pipe="and"/>
+
+-->

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<module>
+	<grants>
+		<grant name="gm_manager" default="guest">
+			<title xml:lang="ko">부서장</title> 
+		</grant>
+	</grants>
+	
+   <permissions>
+		<permission action="procReleasenoteAdminPrivAdd"  target="manager" />
+		<permission action="procReleasenoteAdminPrivDel"   target="manager" />
+    </permissions>
+    <actions>
+		<action name="dispReleasenoteAdminIndex" type="view" admin_index="true" />
+		<action name="dispReleasenoteIndex" type="view"  index="true" menu_name="releasenote"  menu_index="true"  />
+		<action name="dispReleasenoteContent" type="view"/>
+		<action name="dispReleasenoteWrite" type="view"/>   
+
+		<action name="procReleasenoteUploadFile" type="controller" />	
+		<action name="procReleasenoteWrite" type="controller" />		
+		<action name="procReleasenoteInsert" type="controller" />		
+		<action name="procReleasenoteDrop" type="controller" />		
+		
+		<action name="procReleasenoteSaveCode" type="controller" />
+		<action name="procReleasenoteDeleteCode" type="controller" />
+		<action name="procReleasenoteDeleteMantisId" type="controller"  />
+		<action name="procReleasenoteConfirmCheck" type="controller"  />
+		<action name="procReleasenoteConfirmCheckTester" type="controller"/>
+		<action name="procReleasenoteConfirmCheckSubWorker" type="controller" />
+		<action name="procReleasenoteSaveComment" type="controller"  />
+		
+		
+		
+		<action name="dispReleasenoteDeleteComment" type="view" />
+		<action name="procReleasenoteDeleteComment" type="controller" />
+		
+		
+		<action name="procReleasenoteSendMessage" type="controller" />
+		<action name="procReleasenoteRejectCheck" type="controller" />
+		<action name="procReleasenotePmsToggle" type="controller" />
+		
+	</actions>
+	<menus>
+		<menu name="releasenote" type="all">
+			<title xml:lang="en">releasenote</title>
+			<title xml:lang="ko">releasenote</title>
+			<title xml:lang="zh-CN">releasenote</title>
+			<title xml:lang="jp">releasenote</title>
+			<title xml:lang="es">releasenote</title>
+			<title xml:lang="ru">releasenote</title>
+			<title xml:lang="fr">releasenote</title>
+			<title xml:lang="zh-TW">releasenote</title>
+			<title xml:lang="vi">releasenote</title>
+			<title xml:lang="mn">releasenote</title>
+			<title xml:lang="tr">releasenote</title>
+		</menu>
+	</menus>
+</module>	

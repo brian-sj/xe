@@ -1,0 +1,159 @@
+<script>
+var report_date = "{$report_date}";
+function goWeek(week){
+  alert(week );
+}
+</script>
+<load target="/common/js/plugins/dhtmlx/dhtmlx.js" />
+<load target="/common/js/plugins/dhtmlx/skins/terrace/dhtmlx.css" />
+
+
+<script>
+jQuery(document).ready(function(){
+	wmcCalendar = new dhtmlXCalendarObject(["report_date"]);
+	var left = jQuery("#report_date").offset().left ;
+	wmcCalendar.setPosition( left -200   ,165);
+	wmcCalendar.setWeekStartDay(0);
+});
+</script>
+
+<load target="js/report.js"/>
+<!--#include("./header.html")-->
+<!-- Table -->
+<div class="wrap">
+  <div class="row">
+    <div class="col-xs-12 page-title">
+      <div class="col-xs-7">
+        <h3 class="box-title pull-left">주간 보고서</h3>
+        <a href="{getUrl('act','procPmsAnalyzeReport')}" class="pull-left"><button type="button" class="btn btn-primary" style="margin-right:3px">분석 ①</button></a>
+        <a href="{getUrl('act','procPmsAnalyzeMantisReport')}" class="pull-left"><button type="button" class="btn btn-info">분석 ②</button></a>
+        <span class="reference-label-tworows text-left">{$start_date}~{$end_date} 작업 통계 정보를 산출합니다. <br>업무진행과 업무시간을 모두 입력했는지 확인 하세요.</span>
+      </div>
+
+      <div class="col-xs-5 text-right">
+        <div class="input-group pull-right" >
+          <div class="date-search navbar-right">
+            <form action="/" method="post">
+              <input type="text"  class="form-control" style="width:100px;" name="report_date" id="report_date" value="{$report_date?$report_date:date('Y-m-d')}" placeholder="날짜검색">
+              <span class="input-group-btn">
+                <button class="btn btn-default " type="submit"><i class="fa fa-search"></i></button>
+              </span>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xs-7">
+    <div id="history_panel" class="box box-success">
+      <div class="box-header with-border"><h3 class="box-title">1. 전산기획 진행업무</h3></div>
+      <table class="table wmc-data-table wmc-center-table table-striped right-child">
+        <thead>
+          <tr><th style="width:24px">No</th><th>업무내용</th><th>주담당자</th><th>시작일</th><th>종료일</th><th>전주</th><th>금주</th><th>누적</th><th>진행(전주)</th></tr>
+        </thead>
+        <tbody id="report_table_tbody_A">
+        </tbody>
+    		<tfoot>
+      		<tr class="total-row">
+      	  	<td colspan='2'>합계</td><td></td><td></td><td></td><td id="lastweek"></td><td id="thisweek">0</td><td id="accumulate">0</td><td></td>
+      		</tr>
+    		</tfoot>
+      </table>
+    </div>
+
+    <div id="history_panel" class="box box-default">
+      <div class="box-header with-border"><h3 class="box-title">2. 개발과 진행업무</h3></div>
+      <table class="table wmc-data-table wmc-center-table table-striped right-child" >
+        <thead>
+          <tr><th style="width:24px">No</th><th>업무내용</th><th>주담당자</th><th>시작일</th><th>종료일</th><th>전주</th><th>금주</th><th>누적</th><th>진행(전주)</th></tr></thead>
+        <tbody id="report_table_tbody_D">
+        </tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan='2'>합계</td><td></td><td></td><td></td><td id="lastweek"></td><td id="thisweek">0</td><td id="accumulate">0</td><td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div id="history_panel" class="box box-default">
+      <div class="box-header with-border"><h3 class="box-title">3. 운영과 진행업무</h3></div>
+      <table class="table wmc-data-table wmc-center-table table-striped right-child" >
+        <thead>
+          <tr><th style="width:24px">No</th><th>업무내용</th><th>주담당자</th><th>시작일</th><th>종료일</th><th>전주</th><th>금주</th><th>누적</th><th>진행(전주)</th></tr>
+        </thead>
+        <tbody id="report_table_tbody_M">
+        </tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan='2'>합계</td><td></td><td></td><td></td><td id="lastweek"></td><td id="thisweek">0</td><td id="accumulate">0</td><td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+
+    </div>
+    <div class="col-xs-5">
+      <div id="history_panel" class="box box-warning">
+        <div class="box-header with-border"><h3 class="box-title">4. 맨티스 통계</h3></div>
+        <table class="table wmc-data-table wmc-center-table table-striped">
+          <thead>
+            <tr>
+              <th>구분</th>
+              <th>전주미처리</th>
+              <th>금주 신규</th>
+              <th>금주 처리</th>
+              <th>현재 미처리</th>
+            </tr>
+          </thead>
+          <tbody>
+			<!--@foreach($m_list as $no => $data)-->
+            <tr>
+              <td class="title">{$data->mantis_project_name}</td>
+              <td>{$data->carry_over}</td>
+              <td>{$data->added}</td>
+              <td>{$data->resolved}</td>
+              <td>{$data->remained}</td>
+            </tr>
+			<!--@end-->
+          </tbody>
+        </table>
+      </div>
+
+      <div id="history_panel" class="box box-default">
+        <div class="box-header with-border"><h3 class="box-title">5. 프로그램 배포현황 </h3></div>
+        <table class="table wmc-data-table wmc-center-table table-striped">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>제목</th>
+              <th>배포구분</th>
+              <th>배포일</th>
+              <th>요청부서</th>
+              <th>작업자</th>
+              <th>배포자</th>
+            </tr>
+          </thead>
+
+          <tbody>
+		  <!--@foreach($releasenote_list as $no => $data)-->
+{@$i++;}  
+            <tr>
+              <td>{$i}</td>
+              <td class="title">{$data->title}</td>
+              <td>{$data->stt1=='A'?'정기':'긴급'}</td>
+              <td>{zdate($data->releaser_confirm , 'Y-m-d')}</td>
+              <td>{$request_dept[$data->request_dept]}</td>
+              <td>{$wmc_members[$data->worker_srl]}</td>
+              <td>{$wmc_members[$data->releaser_srl]}</td>
+            </tr>
+			<!--@end-->
+          </tbody>
+
+        </table>
+      </div>
+
+    </div>
+  </div>

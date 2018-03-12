@@ -1,0 +1,4 @@
+<table name="releasenote_mantis_id">
+    <column name="note_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+    <column name="mantis_id" type="number" notnull="notnull" primary_key="primary_key" />
+</table>

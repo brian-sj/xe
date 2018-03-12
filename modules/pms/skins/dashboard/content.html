@@ -1,0 +1,423 @@
+<style>
+select[multiple] {height:300px !important; margin-left:20px}
+#tasklist .del {cursor:pointer}
+/*김지민*/
+.list-width{max-width:166px}
+.route-header {color: #3c8dbc}
+.modal-dialog {margin:80px auto; background-color:#fff}
+.modal-header {background-color:#4c7ff0; color:#fff; border-bottom-color: #0275d8; padding:0 0 0 15px}
+.modal-header .close{padding:15px}
+.modal-header .modal-title {padding-top:13px}
+.modal-footer {border-bottom:solid 1px #d2d6de; background-color:#e8e8e8}
+.modal-footer .select-box {padding-top:7px}
+.modal-content {box-shadow:none}
+.modal-con th {font-size:14px; width:90px; font-weight:normal; vertical-align:top; padding-top:14px}
+.modal-con td {padding:6px 0}
+
+.down-list {padding:10px 0 0 0; margin-bottom:0}
+.down-list li {cursor:pointer; color:#9e9e9e; font-size:12px}
+.down-file {color:#333; padding-left:5px}
+.down-list li:hover .down-file {text-decoration:underline}
+.down-list .glyphicon-save {color:#9e9e9e;padding-right:5px}
+.file-close {color:#BFBFBF; padding-left:5px;}
+
+.modal-con .form-comment{display:inline-block; width:420px; margin-right:8px}
+.modal-con .comment-list {line-height:22px; margin-top:20px; overflow:auto; height:120px; padding-left:0}
+.modal-con .comment-list li {color:#333; font-size:13px; margin:2px 0}
+.modal-con .comment-name{color:#4c7ff0; width:60px; display:table-cell}
+.modal-con .con-comment{display:table-cell}
+.modal-con .badge-danger{background-color:#ff4868} 
+
+.modal-con .reading-list {padding:10px 0 0 0; margin:10px 0 0 0; overflow:auto; height:80px}
+.modal-con .reading-list li {color:#333; font-size:13px}
+.modal-con .reading-date {color:#9e9e9e; padding-right:10px}
+.modal-con .glyphicon-ok {color:#9e9e9e; padding-right:10px}
+.modal-con .reading-none {color:#ff4868}
+
+
+/**   _comment_table  , _comment_worklog 에서 사용한다. **/
+.refer-box {border:none}
+.refer-box .box-title{color:#3c8dbc}
+.pagination{margin:0 0 40px 0}
+
+.box-header.width-border {border-bottom:1px solid #9fa3a5}
+
+.refer-table>tbody>tr>td{border-top:none}
+.refer-table th, .refer-table td{border-top:1px solid #efefef}
+.refer-table tr:last-child td{border-bottom:1px solid #9fa3a5}
+.refer-table .divi-line{border-right:1px solid #e0e1e2}
+.box-header.width-border{border-bottom:none}
+.grid,.grid2 {position:relative; overflow:auto; height:200 !important; text-align:center; margin-bottom:20px;}
+
+.list_frame .cld_thead {display:table; overflow:hidden; width:100%; height:29px; padding-left:14px; border-top:1px solid #dadada; border-bottom:1px solid #f1f1f1; background:#f8f8f8; margin-bottom:0; padding-left:0; text-align:center}
+.list_frame .cld_thead li {display:table-cell; padding-top:3px; font-size:12px; color:#777; text-indent:12px; text-indent:0}
+
+.list_frame_history .date {width:90px}
+.list_frame_history .user_name {width:70px}
+.list_frame_history .user_title {width:150px; padding-left:10px}
+.list_frame_history .memo {padding-left:10px}
+.list_frame_history .time {width:70px}
+
+.list_frame_memo .date {width:120px}
+.list_frame_memo .user_name {width:70px}
+.list_frame_memo .user_divi {width:80px}
+.list_frame_memo .user_title {padding-left:10px}
+.list_frame_memo .task_title {width:120px;padding-left:10px}
+.user_title a{padding-right:6px}
+
+.list_area {clear:both; padding-left:0; margin:0; display:table; width:100%; color:#222}
+.list_area li {border-bottom:1px solid #f1f1f1; border-left:1px solid #f1f1f1; line-height:20px; padding:6px 0; display:table-cell; vertical-align:middle}
+.list_area li:first-child {border-left:none}
+
+/* gantt차트에서 invalid day index 에러 나오는것을 숨긴다. */
+.gantt_message_area {display:none}
+.memo-close {color:#ff4868; padding-right:6px;}
+
+#line2_node,#line3_node{display:none;}
+.modal-dialog {width:900px !important;}
+
+</style>
+<!--#include("./header.html")-->
+<load target="/common/js/plugins/toastr/toastr.js" />
+<load target="/common/js/plugins/toastr/toastr.css" />
+<load target="/common/js/plugins/isotope/isotope.pkgd.min.js" />
+<load target="js/content.js" />
+<script>
+var eapprv_title = "업무관리 결재";
+var msg_title = "{$data->title}";
+
+var mid ="{$mid}"
+	, opts =[]
+	, task ={}
+	, params ={}
+	, _obj ={};
+	task.project_srl ="{$project_srl}";
+	params.project_srl ="{$project_srl}";
+	params.prefix ="[NON]";
+var work_time_mh = "{$work_time->mh}";
+var project_sum_mh =0;
+var __TYPE_DAILY__ ="{__PMS_COMMENT_TYPE_DAILY_REPORT__}" ,
+    __TYPE_DIRECT__ ="{__PMS_COMMENT_TYPE_DIRECT_WRITE__}",
+	__TYPE_LOG__ = "{__PMS_COMMENT_TYPE_LINK_LOG__}";
+var $grid_isotope_h
+	, $grid_isotope_m ;
+	
+</script>
+<script>
+// radering javascript
+	<!--@foreach($wmc_members as $key=>$val)-->
+	_obj = {}; _obj.key ={$key} ;_obj.label ="{$val}" ;opts.push(_obj);
+	<!--@end-->
+
+	
+
+</script>
+<script>
+</script>
+
+<script>
+jQuery(document).ready(function($){
+	/** 첨부 파일 삭제 */
+	$(".wmc-btn-delete").bind('click',function(){
+		deleteFile( $(this).data('filesrl')  );
+	});
+
+	/**  라디오 박스 바꾸기 */
+/**  2016.10.06. 결재 메시지 전송시 내용 변경되지 않는 문제로 주석처리함 */
+//	$("input:radio").iCheck({radioClass:'iradio_flat-green' });
+//	$("#float-div-share input:checkbox").iCheck({checkboxClass:'icheckbox_flat-green'});
+
+//	$("input:radio[name='scales']").on('ifClicked',function(){zoom_tasks(this);});
+
+	/** 체크박스 바꾸고,  즐겨 찾기 저장 */
+	$('#favorite').bootstrapToggle().change( function(){ onChange();});
+	//$("#float-div-share input:checkbox").bootstrapToggle();
+
+	/**  업로드 타입 라디오 박스 클릭시 접두어 붙임.  */
+	$("#radiobox input[type=radio]").bind('click',function(){
+		params.prefix = $(this).val();
+	});
+
+	/**  페이지 링크 */
+	$(document).on('click',"#comment_history .pagination a",function(e){
+		e.preventDefault();
+		getWorkTimeCommentList( "" , $(this).data('page') , "#comment_history" ,task.project_srl ,"" );
+	});
+	$(document).on('click',"#comment_log .pagination a",function(e){
+		e.preventDefault();
+		getCommentList( __TYPE_LOG__ , $(this).data('page') , "#comment_log" , null);
+	});
+
+	$(document).on('click',"#comment_com .pagination a",function(e){
+		e.preventDefault();
+		getCommentList( __TYPE_DIRECT__ , $(this).data('page') , "#comment_com" , null );
+	});
+	
+	
+	$(document).on('click',"#comment-memo-box-search" ,function(e){
+		e.preventDefault();
+		var cparams = {};
+
+		cparams.type = jQuery("#comment-memo-box .type").val();
+		cparams.keyword = jQuery("#comment-memo-box .keyword").val();
+console.log( cparams );
+		getCommentList( cparams.type , $(this).data('page') , "#comment_com" , cparams );
+	});
+	
+	//getCommentList( __TYPE_DAILY__    , 1 , "#comment_history" );
+	getCommentList( ""  , 1 , "#comment_com" , null );
+
+	// 2016년 8월 18일  일단 숨긴다.
+	// getCommentList( __TYPE_LOG__       , 1 , "#comment_log" );
+	getWorkTimeCommentList(  "" , 1 , "#comment_history" , task.project_srl , "" );
+
+	$(document).on("click", ".comment-memo-box .comment-memo-add", function(){
+		viewMemoComment( $(this).data("comment-srl") , "edit") ;
+	} )
+	$(document).on("click", ".comment-memo-box .comment-memo-view", function(){
+		viewMemoComment( $(this).data("comment-srl") , "view") ;
+	} );
+	
+	
+	// $grid_isotope_h , m은 좀 각 페이지 로딩 이후에 붙인다....
+	// 1. getCommentList() ;
+	// 2. getWorkTimeCommentList(); 
+});
+	function filterIsotope( filterValue){
+		$grid_isotope_h.isotope({ filter: filterValue });
+		$grid_isotope_m.isotope({ filter: filterValue });
+	} 
+	
+	function clearLogFilter(e){
+		$grid_isotope_h.isotope({ filter: "" });
+		$grid_isotope_m.isotope({ filter: "" });
+	}
+</script>
+<div class="wrap">
+	<div class="row">
+		<div class="col-xs-12 page-title">
+			<div class="col-xs-12">
+				<!--@if ($category != 'R')   -->
+				<div id="eapprv_panel" class="box box-widget">{$eapp}</div>
+				<!--@end--> 
+				<p class="breadcrumbs">{$data->gu1_name} > {$data->gu2_name}  </p>
+				<h3 class="box-title"><span class="label label-primary">{$g_category[$data->category]}</span> {$data->title}</h3>
+				<!--@if ($data->category == 'P') -->
+				<button type="button" class="btn btn-danger" cond="$grant->gm_manager" onclick="insert_confirm()">완료 처리</button>
+				<!--@end -->
+
+				<div class="pull-right btn-group">
+				<input type="checkbox" id="favorite" data-toggle="toggle" data-on="<i class='fa fa-star' aria-hidden='true'></i> 즐겨찾기 등록 " data-off="<i class='fa fa-star' aria-hidden='true'></i> 즐겨찾기해제" checked|cond="$favorite=='Y'"  value="F">
+				 
+				 <block cond="($data->category !=__PMS_CATEGORY_IN_CLOSE__ && $logged_info->member_srl==$data->member_srl)|| $grant->gm_manager">
+					<a href="{getUrl('act', 'dispPmsProjectWrite' ,'project_srl' ,$data->project_srl )}"><button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 수정</button></a>
+					<!-- <a href="{getUrl('mid', 'releasenote_AtAv26', 'act', 'dispReleasenoteWrite')}" target="_blank"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 배포요청</button></a> -->
+					<a href="{getUrl('act', 'dispPmsProjectWrite' ,'project_srl' ,$data->project_srl )}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 완료신청</button></a>
+				 </block>	
+					<a href="{getUrl('act', 'dispPmsProjectListView')}"><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> 목록</button></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!--div class="col-xs-12">
+	<div class="col-xs-3">
+		<div class="box box-primary">
+			<div class="box-header with-border"><h3 class="box-title">프로젝트 정보</h3></div>
+			<div class="box-body">
+				<div class="pmsInfo">
+					<div class="allProg">23%</div><span class="">경과일 20</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-9">
+	</div>
+</div-->
+
+	<div class="col-xs-12">
+		<div class="box box-danger list-group">
+			<ul class="col-xs-3 wrap-list list-height-line">
+				<li class="list-content">
+					주담당자<span class="list-value">{$data->user_name}</span>
+				</li>
+				<li class="list-content">
+					주무부서<span class="list-value">{$wmc_devdepts[$data->dev_dept]}</span>
+				</li>
+				<li class="list-content">
+					업무기간<span class="list-value">{$data->start_date} ~ {$data->end_date} (종료예정:{$data->planed_end_date})</span>
+				</li>
+				<li class="list-content">
+ 					업무 참여자
+					<span class="list-value list-width">
+						<!--@foreach($shared_members as $key=>$val4)-->
+							<span cond="isset($wmc_members[$key])">{$wmc_members[$val4]}/ </span>
+						<!--@end-->
+					</span>
+				</li>
+				<li class="btn-worker">
+					<button class="btn btn-warning btn-xs" type="button" data-toggle="tooltip" title="해당자의 즐겨찾기에 추가됩니다. 즐겨찾기에서 뺄때는 개인이 직접 빼주셔야 합니다." id="member_edit"><i class="glyphicon glyphicon-info-sign"></i> 업무 참여자 변경</button>
+					{@ $normal_members = $wmc_members;}
+					
+					<!--#include("./_share_member.html")-->
+				</li>
+				<li class="list-content">
+					업무 공유자 (준비중)
+				</li>
+			</ul>
+			
+			<!--@if ($category != 'R')   -->
+			<ul class="col-xs-3 wrap-list list-height-line">
+				<li class="list-content">
+					<div class="wrap-progress">
+						진행률 {@ $calc_progress = round($work_time->mh*100 / $data->planed_mh) } (계산 : <span id="cal_progress">{$calc_progress}</span> %)
+						<div class="wrap-percentage">
+							<div class="percentage"><span>{$data->progress}</span> %</div>
+							<button type="button" class="btn btn-warning btn-xs pull-right" data-toggle="modal" data-target="#edit-progress"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i> 진행률 변경</button>
+						</div>
+						<div class="progress">
+							<div class="progress-bar" style="width: {$data->progress}%"></div>
+						</div>
+					</div>
+				</li>
+<!--
+				<li class="list-content">
+					<div class="wrap-progress">
+						계산 진행률
+						<div class="wrap-percentage">
+							{@ $calc_progress = round($work_time->mh*100 / $data->planed_mh) }
+							<div class="percentage expect-percentage"><span id="cal_progress">{$calc_progress}</span> %</div>
+						</div>
+						<div class="progress expect-bar">
+							<div class="progress-bar" style="width: {$calc_progress}%" id="cal_progress_bar"></div>
+						</div>
+					</div>
+				</li> -->
+				<li class="list-content">
+					예정시간(PM)<span class="list-value">{$data->planed_mh} 시간</span>
+				</li>
+				<li class="list-content">
+					예정시간(작업합계)<span class="list-value"><span id="project-sum-mh"></span> 시간</span>
+				</li>
+				<li class="list-content">
+					투입시간<span class="list-value">{$work_time->mh} 시간</span>
+				</li>
+			</ul>
+			<!--@end-->
+
+			<ul class="col-xs-3  wrap-list list-height-line">
+				<li class="list-content">
+					총예산<span class="list-value"> 만원</span>
+				</li>
+				<li class="list-content">
+					- 직접비<span class="list-value"> 만원</span>
+				</li>
+				<li class="list-content">
+					- 간접비<span class="list-value">{$data->planed_mh*__TIME_MONEY__ } 만원</span>
+				</li>
+				<li class="list-content">
+					총지출<span class="list-value"> 만원</span>
+				</li>
+				<li class="list-content">
+					- 직접비<span class="list-value"> 만원</span>
+				</li>
+				<li class="list-content">
+					- 간접비<span class="list-value">{$work_time->mh*__TIME_MONEY__} 만원</span>
+				</li>
+			</ul>
+
+			<ul class="col-xs-3 wrap-list">
+				<li class="list-content">업무내용 (준비중)</li>
+			</ul>
+
+		</div>
+	</div>
+
+	<div class="col-xs-12">
+		<!-- gantt -->
+		<!--#include("./_calendar.html")-->
+		<!-- gantt END  -->
+	</div>
+
+<div class="col-xs-12">
+	<div class="row">
+		<div id="comment_history" class="col-xs-6"></div>
+
+		<div id="comment_com" class="col-xs-6"><!--#include()--></div>
+	</div>
+</div>
+
+	<div class="col-xs-6">
+		<div class="box box-success collapsed-box">
+			  <!-- Default panel contents -->
+			  <div class="box-header with-border">
+          <h3 class="box-title">업무내용</h3>
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div>
+        </div>
+			<div class="box-body">{$oDocument->getContent(false);}</div>
+		</div>
+	</div>
+
+	<div class="col-xs-6"><!--#include("./_file_attach.html")--></div>
+	<!--  <div id="comment_log" class="col-xs-3"></div> -->
+
+	<div class="row" >
+		<div class="col-xs-12">
+			<div class="col-xs-6" id="comment_com">
+			<!--#include()-->
+			</div>
+		</div>
+	</div>
+	<!--   progress edit modal   -->
+	<div class="modal fade modal-warning" id="edit-progress">
+		<div class="modal-dialog" id="modal-comment-view">
+			<form name="frmProgress" action="/" method="post">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span></button>
+						<h4 class="modal-title">진행률 변경</h4>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" name="act" value="procPmsProjectProgressSave">
+						<input type="hidden" name="project_srl" value="{$project_srl}">
+						<input type="hidden" name="comment_srl" id="comment-srl" value="">
+						<input type="hidden" name="type" value="A">
+						<div class="input-group" style="width:100%">
+							<label>진행률</label>
+							<input type="text" id="project-progress" name="progress" placeholder="%" class="form-control" value="{$data->progress}">
+						</div>
+						<div class="form-group">
+							<label>예상 총 작업시간</label>
+							<input type="text" class="form-control" name="planed_mh" placeholder="시간" value="{$data->planed_mh}">
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline pull-left" data-dismiss="modal">닫기</button>
+						<button type="submit" class="btn btn-outline">저장</button>
+					</div>
+				</div>..
+			</form>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+<!--   history edit modal   -->
+	<div class="modal fade" id="history">
+		<div class="modal-dialog" id="modal-comment-view">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span></button>
+						<h4 class="modal-title">메모 추가</h4>
+					</div>
+				</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+</div>

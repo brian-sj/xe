@@ -1,0 +1,87 @@
+
+<load target="/common/js/jquery.validate.min.js" />
+<include target="_header.html" />
+
+
+
+
+add Club,.. 
+<script>
+jQuery(document).ready(function(){
+	jQuery("#myfrm").validate(
+	{
+		submitHandler : function(form) {
+			alert("---");
+			alert( $("select").val()  ); 
+		}
+	}
+	);
+});
+
+</script>
+
+<form id='myfrm' method='post' action="/index.php">
+			<input type="hidden" name="club_srl" value="{$view->club_srl}">
+			<input type="hidden" name="act" value="procWmcdiskAdminClubAdd" >
+
+				<table border='0' cellspacing='0' cellpadding='0'>
+					<tr><td colspan='2' height='1' bgcolor='#ff8120'></td></tr>
+					
+					<input type=hidden name='uori' value="ins" />
+					<tr>
+					<td width='350' class='title_bg alcen' height='32'>공유 여부 </td>
+					<td width='500'>&nbsp;&nbsp; 개인용<input type='radio' id='personal' name='personal' size='20' class='required' checked|cond="$view->personal=='Y'" value="Y" />
+					&nbsp;&nbsp;공유용  <input type='radio' id='personal' name='personal' size='20' class='required' checked|cond="$view->personal=='N'" value="N" />
+					</td>
+					<tr><td colspan='2' height='1' bgcolor='#ffd9be'></td></tr>
+					
+					</tr>
+					<tr>
+					<td width='350' class='title_bg alcen' height='32'>아 이 피</td>
+					<td width='500'>&nbsp;&nbsp;
+						<select name="smb_ip">
+							<option  loop="$fsrv_list=>$no,$val" value="{$val->ip}" > {$val->svr_name}({str_replace('172.17','xx',$val->ip)}) </option>
+						</select >
+						
+					
+					</td>
+					</tr>
+					<tr><td colspan='2' height='1' bgcolor='#ffd9be'></td></tr>
+					
+					<tr>
+					<td class='title_bg alcen' height='32'>삼바계정</td>
+					<td >&nbsp;&nbsp;<input type='text' id='smb_id' name='smb_id' size='20' class='required' minlength='7' value="{$view->smb_id}"  /></td>
+					</tr>
+					<tr><td colspan='2' height='1' bgcolor='#ffd9be'></td></tr>
+					
+					
+					<tr>
+					<td class='title_bg alcen' height='32'>삼바비번</td>
+					<td >&nbsp;&nbsp;<input type='password' id='smb_pw' name='smb_pw' size='20' class='required' minlength='3'  value="{$view->smb_pw}" /></td>
+					</tr>
+					<tr><td colspan='2' height='1' bgcolor='#ffd9be'></td></tr>
+					
+					<tr>
+					<td class='title_bg alcen' height='32'>폴 &nbsp;더 &nbsp;명</td>
+					<td >&nbsp;&nbsp;<input type='text' id='folder' name='folder' size='20' class='required'  value="{$view->folder}" /></td>
+					</tr>
+					<tr><td colspan='2' height='1' bgcolor='#ffd9be'></td></tr>
+					
+					<tr>
+					<td class='title_bg alcen' height='32'>클럽명칭</td>
+					<td >&nbsp;&nbsp;<input type='text' id='club_name' name='club_name' size='20' class='required' value="{$view->club_name}" /></td>
+					</tr>
+					<tr><td colspan='2' height='1' bgcolor='#ffd9be'></td></tr>
+					
+					<tr>
+					<td class='title_bg alcen' height='32'>시&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 삽</td>
+					<td >&nbsp;&nbsp;<input type='text' id='sysop' name='sysop' size='20' class='required' minlength='2' value="{$view->sysop}" /></td>
+					</tr>
+					<tr><td colspan='2' height='1' bgcolor='#ffd9be'></td></tr>
+																	
+					<tr>
+					<td colspan='2' align='center'><input class="submit" type="submit" value="입력하기"/></td>
+					</tr>
+					<tr><td colspan='2' height='1' bgcolor='#ff8120'></td></tr>
+				</table>
+			</form>

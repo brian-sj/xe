@@ -1,0 +1,59 @@
+
+<script>
+var report_date = "{$report_date}";
+</script>
+<load target="/common/js/plugins/dhtmlx/dhtmlx.js" />
+<load target="/common/js/plugins/dhtmlx/skins/terrace/dhtmlx.css" />
+<load target="js/report_routine.js"/>
+
+
+<script>
+jQuery(document).ready(function(){
+	wmcCalendar = new dhtmlXCalendarObject(["report_date"]);
+console.log( jQuery("#report_date").position());
+	var left = jQuery("#report_date").offset().left ;
+	wmcCalendar.setPosition( left -200   ,165);
+	wmcCalendar.setWeekStartDay(0);
+});
+
+</script>
+
+<!--#include("./header.html")-->
+<!-- Table -->
+<div class="wrap">
+<div class="row">
+  <div class="col-xs-12 page-title">
+    <div class="col-xs-7">
+      <h3 class="pull-left">일상 주간보고서</h3>
+      <a href="{getUrl('act','procPmsAnalyzeRoutineReport')}" class="pull-left"><button type="button" class="btn btn-primary">분석</button></a>
+      <span class="reference-label-tworows text-left">{$start_date}~{$end_date} 작업 통계 정보를 산출합니다. <br>업무진행과 업무시간을 모두 입력했는지 확인 하세요.</span>
+    </div>
+
+    <div class="col-xs-5 text-right">
+      <div class="input-group pull-right" >
+        <div class="date-search navbar-right">
+          <form action="/" method="post">
+            <input type="text"  class="form-control" style="width:100px;" name="report_date" id="report_date" value="{$report_date?$report_date:date('Y-m-d')}" placeholder="날짜검색">
+            <span class="input-group-btn">
+              <button class="btn btn-default " type="submit"><i class="fa fa-search"></i></button>
+            </span>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-xs-7">
+  <div id="history_panel" class="box box-success">
+    <div class="box-header with-border"><h3 class="box-title">1. 일상업무</h3></div>
+    <table class="table wmc-data-table wmc-center-table">
+      <thead><tr><th style="width:24px">No</th><th>업무내용</th><th>전주시간</th><th>전주건수</th><th>금주시간</th><th>금주건수</th></tr></thead>
+      <tbody id="report_table_tbody">
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+</div>

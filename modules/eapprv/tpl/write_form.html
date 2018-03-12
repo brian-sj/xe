@@ -1,0 +1,176 @@
+﻿<load target="css/brian.css" />
+
+<load target="js/jquery.imgareaselect.pack.js"/>
+<load target="css/imgareaselect-default.css"/>
+
+
+
+<!--%import("filter/admin_insert.xml")-->
+
+<div>
+</div>
+
+<form action="./" method="post"  enctype="multipart/form-data" name="formf">
+<input type='hidden' name='content' value="{$document_info->content}"/>
+<input type="hidden" name="module_srl" value="{$module_srl}">
+
+<input type="hidden" name="act" value="procBookcAdminInsertTitleImage">
+<input type="hidden" name="title_img" value="{$module_info->title_img}">
+<input type="hidden" name="success_return_url" value="/index.php?module=admin&act=dispBookcAdminInsert&user_yn=Y&document_srl={$document_info->document_srl}">
+
+	<div class='section'>
+		<h1> 제목  </h1>
+
+	<div class="write_header">
+		<div>
+		<span class="input_title">책 분류 </span> <select name="category_srl" >
+			<option value="">{$lang->category}</option>
+			<option loop="$category_list => $val" value="{$val->module_category_srl}" selected="selected"|cond="$val->grant&&$val->selected||$val->module_category_srl==$module_info->module_category_srl">
+				{str_repeat("&nbsp;&nbsp;",$val->depth)} {$val->title} ({$val->document_count})
+			</option>
+		</select> 
+		</div>
+		<span>
+		<span class="input_title">{$lang->module_kind}</span> <input type="text" name="key"             value="{$module_info->mid}"  size="10" maxlength="20"> (영문, 숫자만 가능합니다.)
+		</span>
+		<span>
+		<span class="input_title">책제목</span>   <input type="text" name="browser_title" value="{$module_info->browser_title}"  size="80" maxlength="80"> (한글가능)
+		</span>
+		<br>
+	</div>
+
+
+	<h1> 표지사진 </h1>
+		<span class="input_title">{$lang->cover_image} </span> <input type="file" name='upload'> <img id="b_photo" src="{$module_info->title_img}" />   <!--  <div id="imgCrop" style="width:64px;  height:64px ; overflow:hidden ; margin-left:5px;"><img id="preview"  src="{$module_info->title_img}" /> </div>  -->
+
+	<div class="x_clearfix btnArea">
+			<button type="button" id="cropSave" class="x_btn x_btn-primary">이미지 잘라내기</button> <button type="submit" class="x_btn x_btn-primary">저장</button>  <div class="space"></div>  <button type="button" id="next" class="x_btn x_btn-primary">>>> 다음(내용입력)으로 >>></button>
+	</div>
+
+
+</form>
+
+	</div>
+
+	
+
+
+<script>
+
+function onSubmit() {
+	if( document.formd.title =="" ) {
+		alert("제목을 입력 하세요");
+		return false ;
+	}
+	
+	//alert('dddd' + document.formd.method );
+	
+	//alert('adfad');
+	
+	document.formd.method = "post";
+	document.formd.submit();
+}
+
+function completeAdminInsertBook(ret_obj) {
+    var error = ret_obj['error'];
+    var message = ret_obj['message'];
+    var page = ret_obj['page'];
+    var module_srl = ret_obj['module_srl'];
+	alert(message);
+    var url = current_url.setQuery('act','dispBookcAdminInfo').setQuery('module_srl', module_srl);
+    if(page) url.setQuery('page',page);
+    location.href = url;
+}
+
+
+var ias ;
+var sel_coor = {};
+
+var i = 1 ;
+jQuery( function ($){
+
+	jQuery('#b_photo').imgAreaSelect({ aspectRatio: '1:1'
+	, x1 : 10
+	, y1 : 10 
+	, x2 : 74 
+	, y2 : 74
+	, onSelectChange: function (img , c ){ showPreview( img , c);  } 
+	, onSelectStart     : function(){  window.scrollTo(0,0);  }
+	, onSelectEnd      : function( img , c ){
+									sel_coor.x = c.x1 ;
+									sel_coor.y = c.y1 ;
+									sel_coor.w 	= c.width ;
+									sel_coor.h 	= c.height ;
+									window.scrollTo( 0,0);
+									jQuery("#log").html(    ":"+ sel_coor.x +":"+ sel_coor.y  + ":"+ sel_coor.w +":" + sel_coor.h  ) ; 
+								}
+	}); 
+
+
+} );
+
+function showCoords(c){
+	sel_coor.x    = c.x ;
+	sel_coor.y     = c.y ;
+	sel_coor.w 	= c.w ;
+	sel_coor.h 	= c.h ;
+	showPreview(c);
+}
+function showPreview(img , c){
+	var rx =  64/c.width  ;
+	var ry =  64/c.height   ;
+		jQuery("#log").html(    ":"+ c.x1 +":"+ c.y1  + ":"+ c.width +":" + c.height  ) ; 
+	jQuery('#preview').css({
+		width:    Math.round(rx * 370) + 'px',
+		height:  Math.round(ry * 370) + 'px',
+		marginLeft: '-' + Math.round(rx * c.x1) + 'px',
+		marginTop: '-' + Math.round(ry * c.y1) + 'px'
+	});
+}
+
+/*
+
+jQuery("img#b_photo").load( function () {  
+	alert("aaa");
+
+    ias = jQuery('img#b_photo').imgAreaSelect({
+        handles: true,
+		//aspectRatio : '1:1',
+        onSelectEnd: function( img , selection ){
+			sel_coor.x = selection.x1 ;
+			sel_coor.y = selection.y1 ;
+			sel_coor.width = selection.width ;
+			sel_coor.height = selection.height ;
+		}
+    });
+
+}) ;
+*/
+
+
+jQuery("#cropSave").bind( 'click', function () {
+	//alert (  sel_coor.x +":"+ sel_coor .y  +  ":" + sel_coor.w +  ":"+ sel_coor.h ) ;
+	if(sel_coor.w == undefined || sel_coor.w == 0) alert('영역을 지정해 주세요!');
+	else{
+		sel_coor.act="procBookcCropImage";
+		sel_coor.module="admin";
+		sel_coor.module_srl = "{$module_srl}";
+		sel_coor.user_yn= "{$user_yn}";
+		sel_coor.src ="{$module_info->title_img}";
+		document.location.href="index.php?"+ jQuery.param( sel_coor) ;
+	}
+});
+
+
+jQuery("#next").bind("click", function() {
+	var 	 args = {};
+	args.act = "dispBookcAdminInsertStep2";
+	args.module = "admin";
+	args.module_srl="{$module_srl}";
+	document.location.href="index.php?"+ jQuery.param( args);
+
+
+});
+
+</script>
+

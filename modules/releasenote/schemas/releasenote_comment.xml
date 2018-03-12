@@ -1,0 +1,19 @@
+<table name="releasenote_comment">
+    <column name="note_comment_srl" type="number" size="11" notnull="notnull" />
+	<column name="note_srl" type="number" size="11" notnull="notnull" />
+	<column name="title" type="varchar" size="100" />
+    <column name="content" type="varchar" size="4000" />
+	<column name="regdate" type="date" default="curdate()" />
+	<column name="stt" type="char"  size="1" default="W" />
+</table>
+<!--
+category  w 웹 , c 프로그램
+program_srl  프로그램 혹은 사이트 이름. 
+
+request_name 요청자
+worker  담당자
+tester  테스터
+manager 담당과장 
+
+stt W 작업중 A 테스트대기 B 결재대기 C 배포대기 D 배포완료 X 미결재 배포 
+ -->

@@ -1,0 +1,15 @@
+<query id="getTaskDetail" action="select">
+    <tables>
+        <table name="pms_task" alias="t"/>
+        <table name="pms_project" alias="p"/>
+    </tables>
+    <columns>
+        <column name="t.*" />
+        <column name="p.category" />
+        <column name="p.title" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="task_srl" notnull="notnull" var="task_srl" /> 
+		<condition operation="equal" column="t.project_srl" default="p.project_srl" pipe="and"/> 
+    </conditions>
+</query>

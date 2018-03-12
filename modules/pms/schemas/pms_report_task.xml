@@ -1,0 +1,21 @@
+<table name="pms_report_task">
+	
+	<column name="project_srl" type="number" size="11" notnull="notnull"  primary_key="primary_key"/>
+	<column name="task_srl" type="number" size="11" notnull="notnull"  primary_key="primary_key"/>
+	<column name="member_srl" type="number" size="11" notnull="notnull" primary_key="primary_key"/>
+	<column name="report_work_srl" type="number" size="11" notnull="notnull" primary_key="primary_key"/>
+	
+	<column name="work_date" type="date" notnull="notnull" />
+	<column name="work_time" type="number" size="1" notnull="notnull" />
+	
+	<column name="reg_date" type="date" notnull="notnull" />
+</table>
+<!-- 
+
+0 to 100 
+누가 어떤 업무에대해서 
+몇일날 
+몇시간 일을 했더니.
+( 진행률이 몇 퍼센트로 바뀌었다.  이건 이 테이블이 아님.  )
+
+-->

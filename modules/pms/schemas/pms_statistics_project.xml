@@ -1,0 +1,14 @@
+<table name="pms_statistics_project">
+	<column name="week_srl" type="number" size="11" notnull="notnull"  auto_increment="auto_increment" primary_key="primary_key" />
+	<column name="weekday" type="varchar" size="10" notnull="notnull" />
+	<column name="week" type="number" size="4" notnull="notnull" />
+	<column name="project_srl" type="number" size="11" notnull="notnull" />
+	<column name="project_name" type="varchar" size="200" />
+
+	<column name="work_hour" type="number" size="6" default="0"  notnull="notnull" />
+	<column name="accumulation" type="number" size="6" default="0" notnull="notnull" />
+	<column name="progress" type="number" size="6"  default="0" notnull="notnull" />
+	<column name="int_val1" type="number" size="6" default="0" notnull="notnull" />
+	
+	<column name="stt" type="varchar" size="6" notnull="notnull" />
+</table>

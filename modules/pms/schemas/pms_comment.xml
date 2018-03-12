@@ -1,0 +1,37 @@
+<table name="pms_comment">
+    <column name="project_srl" type="number" size="11" notnull="notnull"  />
+	<column name="task_srl" type="number" size="11" notnull="notnull"  />
+	<column name="report_work_srl" type="number" size="11" notnull="notnull"  /> 
+	<column name="comment_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+
+	<column name="member_srl" type="number" size="11" notnull="notnull" default="0"/>
+	<column name="type" type="varchar" size="1" default="N"	/>  
+    <column name="title" type="varchar" size="200" notnull="notnull"    />
+	<column name="content" type="varchar" size="4000" notnull="notnull"    />
+	
+	<column name="is_private" type="varchar" size="1" default="N" />
+	
+	<column name="reply_cnt" type="number" size="11" default="0" />
+	<column name="file_cnt" type="number" size="11" default="0"	/>
+
+	<column name="extra_vars" type="varchar" size="1000" />
+	<column name="reg_date" type="date" notnull="notnull" />
+	
+</table>
+<!--
+A,B 만 변경이 가능하다... 
+A : 직접입력 -> 업무메모 (2016.08.23. 수정)
+B : 일일 업무 보고 
+
+E : 회의록
+I : 이슈
+W : 업무지시
+C : 체크리스트
+Z : 기타
+
+--- 이하는 로그 
+M : 예산 직접 입력 삭제 
+D : Task 입력 변경 삭제 
+L : Link 입력 변경 삭제 
+R : 업무 시간 입력 변경 삭제 
+-->

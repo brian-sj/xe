@@ -1,0 +1,117 @@
+
+<style>
+/* 이사 시킴... */
+</style>
+	<div class="box comment-memo-box" id="comment-memo-box" >
+		<div class="box-header width-border">
+			<h3 class="box-title pull-left" id="history-title">
+			<a href="javascript:clearLogFilter('{__PMS_COMMENT_TYPE_LINK_LOG__}')"><i class="fa fa-bars" aria-hidden="true"></i></a> {$title}</h3>
+			<div class="box-tools pull-right">
+				<select class="type" name="type" onchange="getElementById('comment-memo-box-search').click()" >
+					<option value="" selected|cond="">선택</option>
+					<!--@foreach($g_type as $key=> $val)-->
+					<option value="{$key}" selected|cond="$key==$type">{$val}</option>
+					<!--@end-->
+				</select>
+				<input type="text" class="keyword" id="keyword_memo"  placeholder="메모 검색" name="keyword" value="{$keyword}" />
+				<button id="comment-memo-box-search" class="btn btn-default" type="button" ><i class="fa fa-search"></i></button>
+				<button type="button" style="margin-left:3px" class="btn btn-primary btn-sm pull-right comment-memo-add" data-comment-srl="0">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>메모 추가
+				</button>
+            </div>
+
+		</div>
+
+
+	 <div class="list_frame list_frame_memo">
+		<ul class="cld_thead">
+			<li class="date">일자</li>
+			<li class="user_name">작성자</li>
+			<li class="user_divi">구분</li>
+			<li class="task_title">업무명</li>
+			<li class="user_title">제목</li>
+			<!--@if( $type != __PMS_COMMENT_TYPE_LINK_LOG__) --><!--@end-->
+			<!-- <li class="memo">메모</li> -->
+		</ul>
+		<div class="grid"> 
+			<!--@foreach($comment as $no => $val)-->
+{@debugPrint($val);}			
+			<ul class="element-item task-{$val->task_srl} list_area">
+				<li class="date">{zDate($val->reg_date,'Y-m-d H:i')}</li>
+				<li class="user_name">{$val->user_name}</li>
+				<li class="user_divi">{$g_type[$val->type]}</li>
+				<li class="task_title text-left task_srl" data-task-srl="{$val->task_srl}"></li>
+				<li class="user_title text-left"><a href="javascript:void(0)" aria-hidden="true"  class="comment-memo-view" data-comment-srl="{$val->comment_srl}" >{$val->title}</a>
+					<!--@if($val->member_srl==$logged_info->member_srl) -->
+					<a href="javascript:void(0);" onclick="deleteComment({$val->comment_srl})"> <i class="fa fa-times" aria-hidden="true"></i></a>
+					<a href="javascript:void(0);" class="comment-memo-add" data-comment-srl="{$val->comment_srl}" >	<i class="fa fa-edit" aria-hidden="true"  ></i></a>
+					<!--@end-->
+					
+					
+					<!--//  data-target="#history" data-toggle="modal" -->
+					<block cond="$val->reply_cnt">
+					<a href="javascript:void(0);" style="color:#a30;" > <i class="fa fa-comment-o" aria-hidden="true"  data-target="#history" ></i><span> {$val->reply_cnt}</span></a>
+					</block>
+				</li>
+				<!--@if( $type != __PMS_COMMENT_TYPE_LINK_LOG__) -->
+				<!--@end-->
+				<!-- <li class="memo text-left">{nl2br($val->content)}</li> -->
+			</ul>
+			<!--@end-->
+		</div>
+	</div>
+		<!-- END timeline item -->
+		<div class="text-center">
+			<ul class="pagination pagination-sm">
+				<li><a href="#" data-page="1"  data-type="{$type}" class="prevEnd">«</a></li>
+				<!--@while($page_no = $page_navigation->getNextPage())-->
+				<!--@if($page == $page_no)-->
+				<li class="active"><a href="#" data-page="{$page_no}" data-type="{$type}" class="active">{$page_no}</a></li>
+				<!--@else-->
+				<li><a data-page="{$page_no}" data-type="{$type}" href="#">{$page_no}</a></li>
+				<!--@end-->
+				<!--@end-->
+				<li><a data-page="{$page_navigation->last_page}" data-type="{$type}"  href="#"  class="nextEnd">»</a></li>
+			</ul>
+		</div>
+	</div>
+<script>
+/*
+var $grid = jQuery('.grid').isotope({});
+function clearLogFilter(e){
+	$grid.isotope({ filter: "" });
+}
+
+#################   메모 추가 버튼의 기능은 content.html 에 구현되어 있다.
+*/
+document.getElementById("keyword_memo")
+    .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode == 13) {
+        document.getElementById("comment-memo-box-search").click();
+    }
+});
+
+function deleteComment(comment_srl){
+	params.comment_srl = comment_srl;
+	if(confirm("삭제하시겠습니까?")){
+		exec_json("pms.procPmsCommentDelete",params, function(data){
+				location.reload();
+
+				},function(error){ console.log(error);}
+			);
+   }
+}
+
+Array.prototype.filterObjects = function(key, value) {
+    return this.filter(function(x) { return x[key] === value; })
+}
+
+jQuery(document).ready(function($){
+	$("li.task_srl").each(function(){
+		var a = project_data.data.filterObjects("id" , $(this).data("task-srl"));
+		if( a.length > 0 )
+			$(this).text(a[0].text);
+	});
+});
+</script>

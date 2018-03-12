@@ -1,0 +1,14 @@
+		<!--@foreach($list as $no => $val)-->
+		 {@ $elements =   imap_mime_header_decode($val->Subject)}
+				<!--@foreach($elements as $i =>$decode)-->
+					{@ $text = iconv (  $decode->charset   , 'utf-8' , $decode->text    )}  
+				    {$text}
+				<!--@end-->
+		 
+		<br>
+
+	
+		<!--@end-->
+		
+				
+		index2.html

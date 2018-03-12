@@ -1,0 +1,13 @@
+<query id="updateReportWork" action="update">
+    <tables>
+        <table name="pms_report_work_time" />
+    </tables>
+    <columns>
+		<column name="mh" var="work_time" notnull="notnull" />
+		<column name="title" var="title"/>  
+		<column name="count" var="count" />
+    </columns>  
+    <conditions> 
+        <condition operation="equal" column="report_work_srl" var="report_work_srl"   notnull="notnull" />   
+    </conditions>
+</query>

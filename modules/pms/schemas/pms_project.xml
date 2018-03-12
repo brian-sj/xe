@@ -1,0 +1,58 @@
+<table name="pms_project">
+    <column name="project_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+	<column name="module_srl" type="number" size="11" notnull="notnull" />
+	<column name="document_srl" type="number" size="11" notnull="notnull" />
+	<column name="member_srl" type="number" size="11" notnull="notnull" />
+	<column name="category" type="varchar" size="1" notnull="notnull"    />
+	<column name="gu1" type="varchar" size="12" notnull="notnull"    />
+	<column name="gu2" type="varchar" size="12" notnull="notnull"    />
+	<column name="gu3" type="varchar" size="12" notnull="notnull"    />
+	<column name="gu4" type="varchar" size="12" notnull="notnull"    />
+	<column name="title" type="varchar" size="200" notnull="notnull"    />
+	
+	<column name="memo" type="varchar" size="400" />
+	<column name="sub_title" type="varchar" size="200" />
+	<column name="shared_members" type="varchar" size="4000" />
+	<column name="content" type="varchar" size="300" />
+	
+	<column name="request_dept" type="varchar" size="20" notnull="notnull"    />
+	<column name="request_date" type="date"    />
+	<column name="request_person" type="varchar" size="20" />
+	<column name="dev_dept" type="varchar" size="30" notnull="notnull"    />
+	
+	<column name="mh" type="number" size="4" notnull="notnull" default="0" /> 
+	<column name="planed_mh" type="number" size="4" notnull="notnull" default="0" /> 
+	<column name="progress" type="number" size="4" notnull="notnull" default="0" /> 
+	<column name="project_stt" type="varchar" size="1" default="N"	/>  
+	<column name="start_date" type="date" notnull="notnull" />
+	<column name="end_date" type="date" notnull="notnull" />
+	<column name="planed_start_date" type="date" notnull="notnull" />
+	<column name="planed_end_date" type="date" notnull="notnull" />
+	<column name="reg_date" type="date" notnull="notnull" />
+</table>
+ <!-- 
+ N : 정상진행   R : 대기 , H : 홀딩 , C: Complete   I, 재고 , X 폐기 , R 일상
+ 
+ category : 
+ A 접수 
+ B 예정
+ C 대기 
+ D 진행 
+ E 완료
+ F 보류
+ X 폐기
+ R 일상 
+               
+ gu -> version
+ gu1 -> N 신규,  R 기능 개선 , M 유지 보수 , E 기타 
+ gu2 -> 
+ gu3 -> 
+ gu4->    SWCODE   xe_wmc_code 테이블에 있음. 
+ 
+ 
+ project_stt : 
+ 'N' 일반 
+ 'P' 공개 -> 모든 사용자가 다 볼 수 있다. 
+ 
+ 
+ -->

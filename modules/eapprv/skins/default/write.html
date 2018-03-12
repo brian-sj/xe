@@ -1,0 +1,453 @@
+﻿<load target="/common/css/prettyCheckable.css"/>
+<load target="/common/js/prettyCheckable.min.js"/>
+
+<style>
+ .write_editor {width:80%;}
+ .tit{min-width:180px;}
+ .well {float:left ;} 
+ .w300{width:190px !important;}
+ .w50{width:145px !important;}
+ .w30{width :70px !important;}
+ .wp-md-sel { width : 180px !important; display:inline-block !important;}
+ .wp-sm-sel { width : 130px !important; display:inline-block !important;}
+ .space-30 {margin-right : 150px;}
+.checkbox label { padding-left : 0 !important ;}
+.form-control {margin: 0 -1px;} 
+.input-group {width:100%;}
+</style>
+    
+<form action="./" method="post" name="frm1_board" onsubmit="return insert()" class="board_write">	
+	<input type="hidden" name="mid" value="{$mid}" />
+	<input type="hidden" name="act" value="procEapprvWrite" />
+	<input type="hidden" id="content" name="content" value="{$oDocument->getContentText()}" />
+	<input type="hidden" id="memo_xml" name="memo_xml" value="" />
+	<input type="hidden" name="document_srl" value="{$document_srl}" />
+	<input type="hidden" name="eapprv_srl" value="{$eapprv_srl}" />
+	
+	<div class="write_editor">
+		<div class="panel panel-success">
+		<div class="panel-heading"><h3>{$browser_title}</h3></div>
+		<div class="panel-body">
+		<ul class="list-group">
+			<li class="list-group-item list-group-item-info">		  
+		  		<div class="input-group" id="work-options">
+				{$memo_xml->work_gb_a1}
+					<input type="radio"  name="work_gb_a1" class="work_gb_a1" data-label="연월차" value="A1"  <!--@if($memo_xml->work_gb_a1=='A1')--> checked <!--@end-->  />
+					<input type="radio"  name="work_gb_a1" class="work_gb_a1" data-label="오전반차" value="A8"  <!--@if($memo_xml->work_gb_a1=='A8')--> checked <!--@end-->  />
+					<input type="radio"  name="work_gb_a1" class="work_gb_a1" data-label="오후반차" value="A9"  <!--@if($memo_xml->work_gb_a1=='A9')--> checked <!--@end-->  />
+					<input type="radio"  name="work_gb_a1" class="work_gb_a1" data-label="출장보고" value="B2"  <!--@if($memo_xml->work_gb_a1=='B2')--> checked <!--@end--> />
+					<!--
+					<input type="checkbox"  name="work_gb_a2" id="work_gb_a2" data-label="구매신청" value="A2"  checked  />
+					<input type="checkbox"  name="work_gb_a3" id="work_gb_a3" data-label="정책결정" value="A3"  checked  />
+					<input type="checkbox"  name="work_gb_a4" id="work_gb_a4" data-label="보고서" value="A3"  checked  />
+					<input type="checkbox"  name="work_gb_b1" id="work_gb_b1" data-label="{$lang->eapprv_document_kind['B1']}" value="B1" checked />
+
+					<input type="checkbox"  name="work_gb_b2" id="work_gb_b2" data-label="문서보안" value="B2" checked|cond="$memo_xml->work_gb_b2=='B2'" />
+					<input type="checkbox"  name="work_gb_b3" id="work_gb_b3" data-label="보안USB, 외장하드" value="B3" checked|cond="$memo_xml->work_gb_b3=='B3'" /><br/>
+					<input type="checkbox"  name="work_gb_c"  id="work_gb_c" data-label="서버" value="C" checked|cond="$memo_xml->work_gb_c=='C'" />
+					<input type="checkbox"  name="work_gb_c2" id="work_gb_c2" data-label="도메인 신청" value="C2" checked|cond="$memo_xml->work_gb_c2=='C2'" />
+					<input type="checkbox"  name="work_gb_c3" id="work_gb_c3" data-label="사이트 신청" value="C3" checked|cond="$memo_xml->work_gb_c3=='C3'" />
+					<input type="checkbox"  name="work_gb_d"  id="work_gb_d" data-label="PC 사무기기 관련 " value="D" checked|cond="$memo_xml->work_gb_d=='D'" />
+					<input type="checkbox"  name="work_gb_r"  id="work_gb_r" data-label="라이선스 " value="R" checked|cond="$memo_xml->work_gb_r=='R'" />
+					<input type="checkbox"  name="work_gb_u"  id="work_gb_u" data-label="업데이트안내 " value="U" checked|cond="$memo_xml->work_gb_u=='U'" /><br/>
+					<input type="checkbox"  class="only-db" name="work_gb_db1" id="work_gb_db1" data-label="DDL 반영" value="DB1" checked|cond="$memo_xml->work_gb_db1=='DB1'" />
+					<input type="checkbox"  class="only-db"  name="work_gb_db2" id="work_gb_db2" data-label="자료이관(개발/리얼)" value="DB2" checked|cond="$memo_xml->work_gb_db2=='DB2'" />
+					<input type="checkbox"  class="only-db"  name="work_gb_db3" id="work_gb_db3" data-label="운영DB자료(SQL)" value="DB3" checked|cond="$memo_xml->work_gb_db3=='DB3'" />
+					<input type="checkbox"  class="only-db"  name="work_gb_db4" id="work_gb_db4" data-label="자료처리(등록/수정/삭제)" value="DB4" checked|cond="$memo_xml->work_gb_db4=='DB4'" />
+					<input type="checkbox"  class="only-db"  name="work_gb_db5" id="work_gb_db5" data-label="개발DB작업요청" value="DB5" checked|cond="$memo_xml->work_gb_db5=='DB5'" />
+					<input type="checkbox"  name="work_gb_e"  id="work_gb_e" data-label="프로그램 권한 신청" value="E" checked|cond="$memo_xml->work_gb_e=='E'" /><br/>
+					<input type="checkbox"  name="work_gb_cs"  id="work_gb_cs" data-label="CS개발과" value="CS" checked|cond="$memo_xml->work_gb_cs=='CS'" />
+					<input type="checkbox"  name="work_gb_web"  id="work_gb_web" data-label="WEB개발과" value="WEB" checked|cond="$memo_xml->work_gb_web=='WEB'" />
+					<input type="checkbox"  name="work_gb_ds"  id="work_gb_ds" data-label="디자인" value="DS" checked|cond="$memo_xml->work_gb_ds=='DS'" />
+					<input type="checkbox"  name="work_gb_x"  id="work_gb_x" data-label="기타" value="X" checked|cond="$memo_xml->work_gb_x=='X'" />
+				    -->
+				</div>
+		  </li>
+		  
+		  <li class="list-group-item list-group-item-warning">	 신청결재라인 </a>  
+					<select name="app_line" id="app_line" class="wp-md-sel form-control space-30">
+					<option value="0">직접선택</option>
+
+						<!--@foreach($line_group_list as $key => $val)-->
+						<option loop="$line_group_list=>$val" value="{$val->eapprv_line_pre_srl}" <!--@if($val->eapprv_line_pre_srl==$data->exec_line)--> selected <!--@end-->>{$val->line_title}</option>
+						<!--@end-->
+						
+					</select>
+
+					<select name="line1_1" id="line1_1" class="wp-sm-sel form-control ">
+						<option value="0"> -- </option>
+						
+						<!--@foreach($wmc_members as $key => $val)-->
+						<option <!--@if( $line_member_list['line_1'.__LINE1_CODE__]==$key)-->selected<!--@end--> value="{$key}">{$val}</option>
+						<!--@end-->
+					</select>
+					<select name="line1_2" id="line1_2" class="wp-sm-sel form-control ">
+						<option value="0"> -- </option>
+
+						<!--@foreach($pm_members as $key => $val)-->
+						<option <!--@if( $line_member_list['line_1'.__LINE2_CODE__]==$key)-->selected<!--@end--> value="{$key}">{$val}</option>
+						<!--@end-->						
+					</select>
+					<select name="line1_3" id="line1_3" class="wp-sm-sel form-control ">
+						<option value="0"> -- </option>
+						<!--@foreach($gm_members as $key => $val)-->
+						<option <!--@if( $line_member_list['line_1'.__LINE3_CODE__]==$key)-->selected<!--@end--> value="{$key}">{$val}</option>
+						<!--@end-->	
+					</select>
+					<select name="line1_4" id="line1_4" class="wp-sm-sel form-control ">
+						<option value="0">--</option>
+						<!--@foreach($ceo as $key => $val)-->
+						<option <!--@if( $line_member_list['line_1'.__LINE4_CODE__]==$key)-->selected<!--@end--> value="{$key}">{$val}</option>
+						<!--@end-->	
+					</select>
+		  </li>  
+
+		  <li class="list-group-item list-group-item-default">
+			<div class="row">
+			  <div class="col-lg-12">
+				<div class="input-group">
+				  <span class="input-group-addon w300">
+					{$lang->title}
+				  </span>
+				    <!--@if($oDocument->getTitleText())-->
+					<input  type="text" readonly="readonly" id="title" name="title" class="form-control" title="{$lang->title}" value="{htmlspecialchars($oDocument->getTitleText())}" required />
+					<!--@else-->
+				    <input  type="text" readonly="readonly" id="title" name="title" class="form-control" title="{$lang->title}" required />
+					<!--@end-->
+				</div><!-- /input-group -->
+			  </div><!-- /.col-lg-6 -->
+			</div><!-- /.row -->
+		  </li>
+ <li class="list-group-item list-group-item-default">
+			<div class="row">
+			  <div class="col-lg-12">
+				<div class="input-group">
+				  <span class="input-group-addon w300">
+					시작일 ~ 만료일 (당일이면 시작일만 입력)
+				  </span>
+				  
+				 <span class="input-group-addon w300">
+					<input  type="text" name="extra_vars1" id="ext_plan_start"  class="form-control" title="시작일" value="{$oDocument->getExtraEidValue('ext_plan_start')}" />
+
+				  </span>
+				  
+				<span class="input-group-addon w300">
+					만료일 (당일이면 시작일만 입력)
+				  </span>
+				    
+				  <span class="input-group-addon w300">
+					<input  type="text" name="extra_vars2" id="ext_plan_end" class="form-control" title="만료일" value="{$oDocument->getExtraEidValue('ext_plan_end')}" />
+				  </span>
+				</div><!-- /input-group -->
+			  </div><!-- /.col-lg-6 -->
+			</div><!-- /.row -->
+		  </li>	  
+
+		  
+		<!--
+		  <li class="list-group-item list-group-item-default">
+			<div class="row">
+			  <div class="col-lg-8">
+				<div class="input-group">
+				  <span class="input-group-addon w300">
+					업무내용
+				  </span>
+				    <input type="text" name="work" id="work" value="{$memo_xml->work}" placeholder="업무내용" class="form-control" />
+
+				</div>
+			  </div>
+			</div>
+		  </li>
+
+		  <li class="list-group-item list-group-item-default">
+			<div class="row">
+			  <div class="col-lg-12">
+				<div class="input-group">
+				  <span class="input-group-addon w300">
+					요청사항
+				  </span>
+				    <input type="text" name="whattodo" id="whattodo" value="{$memo_xml->whattodo}" placeholder="요청사항" class="form-control" title="{$lang->memo2}"  required />
+
+				</div>
+			  </div>
+			</div>
+		  </li>
+		  -->
+		  
+		  <li class="list-group-item list-group-item-default"> 
+			{$oDocument->getEditor()}
+		  </li>
+		  
+		  <li class="list-group-item list-group-item-success">	 접수확인  
+				<select name="exec_line" id="exec_line" class="wp-md-sel form-control space-30">
+						<option value="0">직접선택</option>
+						<!--@foreach($line_group_list as $key => $val)-->
+						<option loop="$line_group_list=>$val" value="{$val->eapprv_line_pre_srl}" selected|cond="$val->eapprv_line_pre_srl==$data->exec_line">{$val->line_title}</option>
+						<!--@end-->
+				</select>
+				
+				<select name="line2_1" id="line2_1" class="wp-sm-sel form-control ">
+					<option value="0"> -- </option>
+					<!--@foreach($wmc_members as $key => $val)-->
+					<option loop="$wmc_members=>$key,$val" <!--@if($line_member_list['line_2'.__LINE1_CODE__]==$key)--> selected <!--@end--> value="{$key}">{$val}</option>
+					<!--@end-->
+				</select>
+				<select name="line2_2" id="line2_2" class="wp-sm-sel form-control ">
+					<option value="0"> -- </option>
+					<!--@foreach($pm_members as $key => $val)-->
+					<option loop="$pm_members=>$key,$val" <!--@if($line_member_list['line_2'.__LINE2_CODE__]==$key)--> selected <!--@end--> value="{$key}">{$val}</option>
+					<!--@end-->
+				</select>
+				
+				<select name="line2_3" id="line2_3" class="wp-sm-sel form-control ">
+					<option value="0"> -- </option>
+					<!--@foreach($gm_members as $key => $val)-->
+					<option loop="$gm_members=>$key,$val" <!--@if($line_member_list['line_2'.__LINE3_CODE__]==$key)--> selected <!--@end--> value="{$key}">{$val}</option>
+					<!--@end-->
+				</select>
+		  </li>
+<!--
+		  <li class="list-group-item list-group-item-warning">작업처리확인  
+				<select name="work_line" id="work_line" class="wp-md-sel form-control space-30">
+						<option value="0">직접선택</option>
+						<!--@foreach($line_group_list as $key => $val)-->
+						<option loop="$line_group_list=>$val" value="{$val->eapprv_line_pre_srl}" selected|cond="$val->eapprv_line_pre_srl==$data->exec_line">{$val->line_title}</option>
+						<!--@end-->
+				</select>
+				
+				<select name="line3_1" id="line3_1" class="wp-sm-sel form-control ">
+					<option value="0"> -- </option>
+					<!--@foreach($wmc_members as $key => $val)-->
+					<option loop="$wmc_members=>$key,$val" <!--@if($line_member_list['line_3'.__LINE1_CODE__]==$key)--> selected <!--@end--> value="{$key}">{$val}</option>
+					<!--@end-->
+				</select>
+				<select name="line3_2" id="line3_2" class="wp-sm-sel form-control ">
+					<option value="0"> -- </option>
+					<!--@foreach($wmc_members as $key => $val)-->
+					<option loop="$pm_members=>$key,$val" <!--@if($line_member_list['line_3'.__LINE2_CODE__]==$key)--> selected <!--@end--> value="{$key}">{$val}</option>
+					<!--@end-->
+				</select>
+		  </li>
+-->		  
+		  <li class="list-group-item list-group-item-info">
+			<div class="input-group">
+			  <span class="input-group-addon w300">공유	</span>
+				<select name="shared_line" class="form-control wp-md-sel" id="shared_line">
+						<option value="0">선택안함 </option>
+						<!--@foreach($shared_group_list as $key => $val)-->
+						<option loop="$shared_group_list=>$val" value="{$val->eapprv_share_pre_srl}" <!--@if($val->eapprv_line_pre_srl==$data->exec_line)--> selected <!--@end-->>{$val->shared_title}</option>
+						<!--@end-->
+				</select>
+			</div><!-- /input-group -->
+
+				<div class="checkbox" id="shared_checkbox" >
+					
+					<!--@foreach($wmc_members as $key => $val)-->
+					<input type="checkbox" class="checkbox-shared-list"  name="eapprv_share[]" <!--@if(in_array($key ,$shared_list))-->checked<!--@end-->  value="{$key}" data-color="green" data-label="{$val}" >
+					
+					<!--@end-->
+				</div>
+		  </li>
+		  
+		</ul>
+		</div>
+		<div class="panel-footer">
+			<button class="btn btn-success">저장</button>
+			<a href="{getUrl('mid', $mid, 'act','dispEapprvList','eapprv_srl','')}" class="btn">목록</a>
+		</div>
+	</div>
+
+	</div>
+</form>	
+
+<script>
+var SHARE_ACT = 'dispEapprvSharedByPreAPI';
+var MODULE    = 'eapprv';
+var LINE_ACT  = 'dispEapprvLineByPreAPI';
+
+var document_user_name="{$oDocument->get('nick_name')}";
+if( document_user_name =="")
+	document_user_name = "{$logged_info->nick_name}";
+
+
+var LINE_SRL_DB_EXEC = 100 ;
+var LINE_SRL_DEVDB_EXEC = 110;
+var LINE_SRL_APP_EXEC = 120 ;
+var LINE_SRL_NW_EXEC = 200  ;
+var LINE_SRL_SVR_EXEC = 300 ;
+var LINE_SRL_PC_EXEC = 400  ;
+var LINE_SRL_PUR_EXEC = 500 ;
+var LINE_SRL_SEC_EXEC = 600 ;
+var LINE_SRL_UP_EXEC =  800  ;
+var LINE_SRL_HEAD_EXEC =  1000  ;
+var LINE_SRL_CS_EXEC =  810  ;
+var LINE_SRL_WEB_EXEC =  820  ;
+var LINE_SRL_DS_EXEC =  700  ;
+
+jQuery(document).ready( function($){
+	$("#app_line").bind('change' , function(){ getLineMembers( $(this).val() , 'line1'    ) ;  } );
+	$("#exec_line").bind('change' , function(){ getLineMembers( $(this).val() , 'line2'    ) ;  } );
+	$("#work_line").bind('change' , function(){ getLineMembers( $(this).val() , 'line3'    ) ;  } );
+	$("#shared_line").bind('change' , function(){ getSharedMembers( $(this).val()    ) ;  } );
+
+	$("#ext_plan_start, #ext_plan_end").datepicker({dateFormat:"yymmdd"});
+	
+	$(".work_gb_a1").bind('change', function(){
+		if($(this).val() =='A1' ){
+			$("#title").val( document_user_name+ " 연차");
+		}else if( $(this).val()=='A8' ){ 
+			$("#title").val(document_user_name+ " 오전반차");
+		}else if( $(this).val()=='A9' ){ 
+			$("#title").val(document_user_name+ " 오후반차");
+		}
+		else if( $(this).val()=='B2' ){ 
+			$("#title").val(document_user_name+ " 출장");
+		}
+console.log("9999");		
+	});
+/*	
+	$("#work_gb_b2").bind('change', function(){
+		if($(this).is(':checked') ){
+			$("#title").val(document_user_name+"출장");
+		}
+		else {
+			$("#title").val("");
+		}
+	});
+*/	
+	$("#work-options .only-db").bind('change', function(){
+		if($("#work-options .only-db:checked").length > 0 )
+		{
+			$("#only-db").slideDown();
+		}
+		else {
+			$("#only-db").slideUp();
+		}
+	});
+	
+	////  나머지 DB 작업 요청 ==>  본인 담당과장 , 555=>666 =>7777 , 555=>666
+	$("#work_gb_db1, #work_gb_db2, #work_gb_db3, #work_gb_db4").bind('change', function(){
+		if($(this).is(':checked') ){
+			getLineMembers( LINE_SRL_DB_EXEC , 'line2');
+			getLineMembers( LINE_SRL_DB_EXEC , 'line3');
+		}else{
+		
+		}
+	});	
+	
+	$("input:checkbox").each(function(){
+		$(this).prettyCheckable();
+	});  
+	
+	$("input:radio").each(function(){
+		$(this).prettyCheckable();
+	});  
+} );
+
+
+function insert() {
+	var editor_data = CKEDITOR.instances.editor1.getData();
+	var doctype = jQuery(":radio[name='work_gb_a1']:checked").val();
+	try{
+		var xml = jQuery(jQuery.parseXML("<root />"));
+		
+		jQuery('root' , xml).append( jQuery('<work_gb_a1 />').text(    doctype      ));
+		//jQuery('root' , xml).append( jQuery('<work_gb_b4 />').text(    jQuery("#work_gb_b4:checked").val()      ));
+		//jQuery('root' , xml).append( jQuery('<work_gb_b5 />').text(    jQuery("#work_gb_b5:checked").val()      ));
+
+		document.frm1_board.memo_xml.value = (new XMLSerializer()).serializeToString(xml.context);
+	
+	}catch(e){ document.write (e.message);}
+	
+	document.frm1_board.content.value = editor_data ;
+	
+	
+	
+	if( jQuery("#ext_plan_start").val() =="" ){
+		alert("휴가 또는 출장 날짜를 입력해 주십시오");
+		return false;
+	}
+	
+	if(  doctype == "" )
+	{
+		alert("문서 종류를 선택해주십시오");
+		return false;
+	}
+	
+	if( editor_data =="") {
+		alert("문서 내용을 입력해주십시오");
+		return false;
+	}
+	
+	if( jQuery("#line1_1").val() =="0") {
+		alert("신청결재라인 첫번째(담당자)는 자기자신으로 선택해주십시오");
+		return false;
+	}
+	
+	var title ="";
+
+
+	
+	if(  doctype=="A1") {
+		title = document_user_name + " 연차";
+	}else if(  doctype=="B2"){
+		title = document_user_name + " 출장";
+	}else if(  doctype=="A8"){
+		title = document_user_name + " 오전반차";
+	}else if(  doctype=="A9"){
+		title = document_user_name + " 오후반차";
+	}
+	
+	if( jQuery("#ext_plan_end").val() == ""){
+		jQuery("#title").val(  title  + " [" + jQuery("#ext_plan_start"). val() +" 일]");
+	}else{
+		jQuery("#title").val(  title  + " [" + jQuery("#ext_plan_start"). val()+" ~ " +jQuery("#ext_plan_end"). val() +" 일]");
+	}
+	return true ;
+
+}
+
+function completeDocumentInserted(){
+	alert('정상 저장 되었습니다.');
+}
+
+function getSharedMembers( srl ){
+   // dispEapprvLineByPreAPI
+   // 
+   	var responses =['items'];
+	var form_object = {};
+	var params = {};
+	params.eapprv_share_pre_srl = srl ;
+	exec_xml(  MODULE , SHARE_ACT , params , function(ret_obj){
+	try{
+		//jQuery("checkbox .checkbox-shared-list").prettyCheckable('uncheck') ;
+		jQuery("#shared_checkbox input:checkbox").each(function(){
+			jQuery(this).prettyCheckable('uncheck');
+		}); 
+		jQuery(ret_obj['items'].item ).each(function( index , value ){
+			//jQuery(".checkbox-shared-list[value="+value+"]").attr('checked',true);     
+			jQuery(".checkbox-shared-list[value="+value+"]").prettyCheckable('check');
+		});
+	}catch(e){ console.log(e);}
+		
+	} ,  responses, params, form_object ); 
+}
+
+function getLineMembers( srl ,lineth ){
+	// dispEapprvLineByPreAPI
+	
+	var responses =['items'];
+	var form_object = {};
+	var params = {};
+	params.eapprv_line_pre_srl = srl ;
+	exec_xml(  MODULE , LINE_ACT , params , function(ret_obj){
+console.log(ret_obj);	
+	try{
+		jQuery("#"+lineth+"_1").val( ret_obj['items'].item[0] ).attr('selected','selected');  
+		jQuery("#"+lineth+"_2").val( ret_obj['items'].item[1] ).attr('selected','selected');  
+		jQuery("#"+lineth+"_3").val( ret_obj['items'].item[2] ).attr('selected','selected'); 
+	}catch(e){ console.log(e);}
+	} ,  responses, params, form_object ); 
+}
+
+</script>

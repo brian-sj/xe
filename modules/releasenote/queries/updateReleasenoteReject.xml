@@ -1,0 +1,16 @@
+<query id="updateReleasenoteReject" action="update">
+    <tables>
+        <table name="releasenote" />
+    </tables>
+    <columns>
+		<column name="worker_confirm" default="" />
+		<column name="tester_confirm" default="" />
+		<column name="manager_confirm" default="" />
+		<column name="header_confirm" default="" />
+		<column name="t_releaser_confirm" default="" />
+		<column name="stt" default="A" />
+    </columns>
+        <conditions>
+        <condition operation="equal" column="note_srl" var="note_srl" notnull="notnull" />
+    </conditions>
+</query>

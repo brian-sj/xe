@@ -1,0 +1,144 @@
+<style>
+.side-margin{margin:0}
+.table > tbody + tbody {border-top:none}
+.table>tbody>tr>td{vertical-align:middle}
+
+.table {margin-bottom:0}
+.table .title {width:300px}
+.table .middle{vertical-align:middle}
+.table th, .table td{border-top:1px solid #efefef; border-right:1px solid #efefef; text-align:center;font-size:13px}
+.table>thead {background-color:#f5f5f6}
+.table>thead>tr>th {border-bottom:1px solid #ccc; border-right:1px solid #e0e1e2; font-weight:600; vertical-align:middle}
+.table>thead>tr>th.thead-wline{border-bottom:1px solid #e0e1e2}
+.table>thead .divi-line{border-right:1px solid #e0e1e2}
+.table tfoot tr{background-color:#e9f6fb}
+.table tfoot td{border-bottom:none; border-right:1px solid #dee9f1; font-weight:600}
+.table>tfoot>tr>td {border-top:1px solid #d4dfe6}
+.table>tfoot>tr>td:first-child {border-right:1px solid #d4dfe6}
+.table>tfoot .divi-line{border-right:1px solid #d4dfe6}
+.table tr td:last-child, .table tr th:last-child{border-right:none}
+.table tr.sub-total-line td, .table tr.sub-total-line th{border-bottom:1px solid #9fa3a5}
+.table .text-right{text-align:right}
+
+.navbar-default {background-color:#fff; border-color:#e0e0e0;}
+</style>
+<script>
+var gu2 ="{$gu2}";
+
+</script>
+
+
+<!--#include("./header.html")-->
+<div class="wrap">
+  <div class="row index-row">
+    <div class="col-xs-12 page-title">
+      <div class="col-xs-7 pull-left"><h3>프로젝트 리스트</h3></div>
+      <div class="col-xs-5 select-week pull-right">
+        <a href="{getUrl('act','dispPmsProjectWrite','project_srl','')}"><button type="button" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 프로젝트 신청</button></a>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="col-xs-12">
+
+      <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a href="{getUrl('category','','gu1','','gu2','','gu3','','page','' ,  'dev_dept' , '' , 'request_dept' ,'' , 'user_name','','title','')}" class="navbar-brand">진행 구분</a>
+          </div>
+          <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"|cond="$category==__PMS_CATEGORY_IN_ACCEPT__"><a href="{getUrl('category',__PMS_CATEGORY_IN_ACCEPT__,'page','' , 'dev_dept' , '' , 'request_dept' ,''  )}">접수</a></li>
+              <li class="active"|cond="$category==__PMS_CATEGORY_IN_PLAN__"><a href="{getUrl('category',__PMS_CATEGORY_IN_PLAN__,'page','', 'dev_dept' , '' , 'request_dept' ,'')}">예정</a></li>
+              <!--<li class="active"|cond="$category=='C'"><a href="{getUrl('category','C')}">대기</a></li>-->
+              <li class="active"|cond="$category==__PMS_CATEGORY_IN_ING__"><a href="{getUrl('category',__PMS_CATEGORY_IN_ING__,'page','', 'dev_dept' , '' , 'request_dept' ,'')}">진행</a></li>
+              <li class="active"|cond="$category==__PMS_CATEGORY_IN_APPLYCLOSE__"><a href="{getUrl('category',__PMS_CATEGORY_IN_APPLYCLOSE__,'page','', 'dev_dept' , '' , 'request_dept' ,'')}">완료신청</a></li>
+              <li class="active"|cond="$category==__PMS_CATEGORY_IN_CLOSE__"><a href="{getUrl('category',__PMS_CATEGORY_IN_CLOSE__,'page','', 'dev_dept' , '' , 'request_dept' ,'')}">완료</a></li>
+              <li class="active"|cond="$category==__PMS_CATEGORY_IN_HOLDING__"><a href="{getUrl('category',__PMS_CATEGORY_IN_HOLDING__,'page','', 'dev_dept' , '' , 'request_dept' ,'')}">보류</a></li>
+              <li class="active"|cond="$category==__PMS_CATEGORY_IN_DROP__"><a href="{getUrl('category',__PMS_CATEGORY_IN_DROP__,'page','', 'dev_dept' , '' , 'request_dept' ,'')}">폐기</a></li>
+              <li class="active"|cond="$category==__PMS_CATEGORY_IN_REGULAR__"><a href="{getUrl('category', __PMS_CATEGORY_IN_REGULAR__ ,'page','', 'dev_dept' , '' , 'request_dept' ,'')}">일상</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+			<!-- 
+			  <li><a href="{getUrl('gu1','','gu2','','gu3','','page','' ,  'dev_dept' , '' , 'request_dept' ,'' , 'user_name','','title','')}"> 전체</a> </li>
+			  <li class=""><a href="#"> 참여업무 </a></li>
+			  <li class=""><a href="#"> 공유업무 </a></li> 
+			  <li class=""><a href="#"> 즐겨찾기 </a></li> 
+			  -->
+              <!-- <li class="active"|cond="$gu3=='A'"><a href="{getUrl('gu3','A')}"> 기획</a> </li>
+              <li class="active"|cond="$gu3=='D'"><a href="{getUrl('gu3','D')}"> 개발</a> </li>
+              <li class="active"|cond="$gu3=='M'"><a href="{getUrl('gu3','M')}"> 운영</a> </li> -->
+            </ul>
+          </div>
+        </div>
+      </nav>
+<!-- 
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand navbar-color" href="{getUrl('gu1' ,'','page','' ,  'dev_dept' , '' , 'request_dept' ,'' , 'user_name','','title','')}">전체</a>
+          </div>
+          <div class="collapse navbar-collapse pull-left">
+            <ul class="nav navbar-nav"> -->
+<!--            <!--#include("./_project_class.html")-->
+           </ul>
+          </div> -->
+          <!--button type="button" class="btn btn-success pull-right">나의 업무</button>-->
+        <!--</div>
+      </nav>
+
+
+ -->
+
+  <div id="main_panel" class="box box-primary">
+    <!-- Default panel contents --> 
+
+
+    <form method="get" name="searchfrm" id="searchfrm" class="side-margin" no-error-return-url="true">
+      <input type="hidden" name="category" value="{$category}"  >
+<!--       <input type="hidden" name="gu1" value="{$gu1}"  >
+      <input type="hidden" name="gu3" value="{$gu3}"  > -->
+      <button type="submit" id="search_filter" class="hidden">검색</button>
+      <!-- Table -->
+      <!--@if($category == __REGULAR_WORK_CODE__ )-->
+      <!--#include("./_index_list_routine.html")-->
+      <!--@else-->
+      <!--#include("./_index_list.html")-->
+      <!--@end-->
+    </form>
+
+    <!-- 페이지 네비게이션 -->
+  	<div class="panel-footer">
+  		<ul class="pagination">
+  			<li><a href="{getUrl('page','','project_srl','')}" class="prevEnd">{$lang->first_page}</a></li>
+  			<!--@while($page_no = $page_navigation->getNextPage())-->
+  				<!--@if($page == $page_no)-->
+  					<li class="active"><a href="{getUrl('page',$page_no,'project_srl','')}">{$page_no}</a></li>
+  				<!--@else-->
+  					<li><a href="{getUrl('page',$page_no,'project_srl','')}">{$page_no}</a></li>
+  				<!--@end-->
+  			<!--@end-->
+  			<li><a href="{getUrl('page',$page_navigation->last_page,'project_srl','')}" class="nextEnd">{$lang->last_page}</a></li>
+  		</ul>
+  	</div>
+
+    </div>
+  </div>
+</div>
+
+
+  <script>
+  function  doToggleFavoriteProject( project_srl ){
+	// favorite 추가를 해 봅시다.
+	// 이거 할라면 쿼리를 바꾸어 야함.
+	exec_json("pms.procPmsFavoriteToggle", params, function(data){
+							jQuery("#progress").val( data.progress) ;
+							if(data.work_time=="") data.work_time = 0 ;
+							jQuery("#work_time").val(data.work_time);
+
+						});
+  }
+  </script>

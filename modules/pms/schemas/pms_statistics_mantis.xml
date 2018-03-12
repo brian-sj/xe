@@ -1,0 +1,12 @@
+<table name="pms_statistics_mantis">
+	<column name="week_srl" type="number" size="11" notnull="notnull"  auto_increment="auto_increment" primary_key="primary_key" />
+	<column name="weekday" type="varchar" size="10" notnull="notnull" />
+	<column name="week" type="number" size="4" notnull="notnull" />
+	<column name="mantis_project_id" type="number" size="11" notnull="notnull" />
+	<column name="mantis_project_name" type="varchar" size="200" />
+	<column name="added" type="number" size="6"  default="0" notnull="notnull" />
+	<column name="resolved" type="number" size="6" default="0" notnull="notnull" />
+	<column name="remained" type="number" size="6" default="0"  notnull="notnull" /> 
+	<column name="carry_over" type="number" size="6" default="0" notnull="notnull" /> 
+	<column name="stt" type="varchar" size="6" notnull="notnull" />
+</table>

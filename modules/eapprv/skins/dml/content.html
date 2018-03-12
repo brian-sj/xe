@@ -1,0 +1,504 @@
+﻿
+<include target="_header.html" />
+<style>
+.main-panel {width : 1250px;}
+
+.outer-cell0 {width : 130px; float:left ; margin-right:40px;}
+.outer-cell1 {width : 130px; float:left ; margin-right:40px;}
+.outer-cell2 {width : 260px; float:left ; margin-right:40px;}
+.outer-cell3 {width : 390px; float:left ; margin-right:40px;}
+.outer-cell4 {width : 490px; float:left ; margin-right:40px;}
+.outer-cell5 {width : 590px; float:left ; margin-right:40px;}
+.name {height: 40px;}
+.main-content {clear:both;}
+.cell {width : 110px ;text-align:center}
+.tit{text-align:center}
+
+.grid-cell {border-left : 0.5px dotted #dddddd; margin:0 auto;}
+.case1 .btn{margin:0 3px;padding:0 7px !important}
+.case3 .space-30{margin:0 20px 0 0}
+.case3 select{margin:0 5px 0 0;float:left;}
+.case3 .con{height:100px;padding:10px 10px;display:table}
+.case3 .btn{float:left}
+
+.dropdown-menu {overflow:auto; height:300px;}
+.float-div { width : 400px  ; float:left ; position : absolute; z-index:1000 ; display:none; } 
+.float-checkbox {display:inline-block ; width : 75px;}
+
+.approved{display:inline-block;color:#526bbe;background:#eee;padding:4px;letter-spacing:-1px}
+.rejected{display:inline-block;color:orange;background:#f8f2e7;padding:4px;letter-spacing:-1px}
+
+.read_footer {
+	overflow: hidden;
+}
+.read_footer .fileList {
+	margin: 15px 0;
+	display: inline;
+	float: left;
+}
+.read_footer .toggleFile {
+	border: 0;
+	background: url(icoSet.gif) no-repeat 0 2px;
+	cursor: pointer;
+	overflow: visible;
+	padding: 0 0 0 15px;
+	color: #4b4b4b;
+}
+.read_footer .files {
+	display: none;
+	list-style: none;
+	margin: 15px 0;
+	padding: 0;
+	line-height: 16px;
+}
+.read_footer .files li {
+	background: url(icoSet.gif) no-repeat 0 -28px;
+	padding: 0 0 0 15px;
+}
+.read_footer .files a {
+	color: #4b4b4b;
+	position: relative;
+	text-decoration: none;
+}
+.read_footer .files a .fileSize {
+	visibility: block;
+	position: absolute;
+	padding: 1px 4px;
+	left: 100%;
+	top: -4px;
+	border: 1px solid #ddd;
+	font: 11px Tahoma, Geneva, sans-serif;
+	background: #fff;
+	white-space: nowrap;
+}
+.read_footer .files a:hover .fileSize,
+.read_footer .files a:active .fileSize,
+.read_footer .files a:focus .fileSize {
+	visibility: visible;
+}
+.read_footer .tns {
+	float: right;
+	margin: 15px 0;
+}
+.read_footer .tns a:hover,
+.read_footer .tns a:active,
+.read_footer .tns a:focus {
+	text-decoration: underline;
+}
+.read_footer .tags {
+	display: inline-block;
+	height: 16px;
+	font-size: 11px;
+	color: #666;
+	vertical-align: top;
+	padding: 0 15px 0 32px;
+	line-height: 16px;
+	background: url(icoSet.gif) no-repeat 0 -58px;
+
+}
+
+.table h5 { float:left; margin-left:5px;}
+.table th { width:200px;} 
+
+.cmt_editor{margin-bottom:32px;padding:12px 16px 40px;background:#FCFCFC;border:1px solid #DDD;border-bottom-color:#CCC;border-radius:8px;box-shadow:0 1px 3px -1px rgba(0,0,0,.1);*zoom:1}
+.cmt_editor_tl,.editor_select{position:relative;margin-bottom:10px}
+.cmt_editor_tl em{position:absolute;bottom:-1px;left:5px;font:700 17px sans-serif;opacity:.8}
+.cmt_editor_tl strong{padding-left:24px}
+
+
+.fr{float:right}
+
+</style>
+
+
+
+
+
+<script>
+var MODULE    = 'eapprv';
+//var DROP_ACT  = 'procEapprvDrop';
+var LINE_ACT  = 'dispEapprvLineByPreAPI';
+
+jQuery(document).ready(function($){
+		jQuery(".sub-worker").click(function(){  console.log("aaa");  jQuery(this).siblings(".float-div").toggle("slow"); });
+		$("#app_line").bind('change' , function(){ getLineMembers( $(this).val() , 'line2'    ) ;  } );
+		$("#exec_line").bind('change' , function(){ getLineMembers( $(this).val() , 'line3'    ) ;  } );
+		
+	});
+	
+function dropDocument( eapprv_srl ){
+	//exec_xml();
+	
+	if(  confirm('문서가 영구폐기 됩니다. 정말 삭제 하겠습니까?') ) {
+		//jQuery("#dropform_eapprv_srl").val(eapprv_srl);
+		jQuery("#dropform").submit();
+	}
+}	
+function getLineMembers( srl ,lineth ){
+	// dispEapprvLineByPreAPI
+console.log(srl +":"+ lineth );	
+	var responses =['items'];
+	var form_object = {};
+	var params = {};
+	params.eapprv_line_pre_srl = srl ;
+	exec_xml(  MODULE , LINE_ACT , params , function(ret_obj){
+console.log( ret_obj );	
+	try{
+		jQuery("#"+lineth+"_1").val( ret_obj['items'].item[0] ).attr('selected','selected');  
+		jQuery("#"+lineth+"_2").val( ret_obj['items'].item[1] ).attr('selected','selected');  
+		jQuery("#"+lineth+"_3").val( ret_obj['items'].item[2] ).attr('selected','selected'); 
+	}catch(e){ console.log(e);}
+	} ,  responses, params, form_object ); 
+}
+
+</script>	
+
+<div class="panel panel-success main-panel">
+  <div class="panel-heading"><h3>{$browser_title}</h3></div>
+  <div class="panel-body">
+
+
+<!-- 결재판 1   -->
+<div class="panel panel-default  outer-cell{count($line_list1)} case1">
+<div class="panel-heading tit">사용 승인 결재</div>
+
+	<table class="table" style="height:100px" >
+		<tr>
+			<td loop="$line_list1 => $key,$val" class="grid-cell">
+				<div class='cell'>
+				<div>{$val->line_title}</div><div class="name">{$wmc_members[$val->member_srl]}</div><div>
+				
+				<!--@if( ($val->stt == __STT_ACCEPT__  ) && $val->member_srl == $member_srl )-->
+					<table><tr><td>
+						<form action="./" method="post"> <input type="hidden" name="act" value="procEapprvProc">
+						  <input type="hidden" name="eapprv_srl" value="{$data->eapprv_srl}">
+						  <input type="hidden" name="line_stt" value="{__LINE_STT_1__}">
+						  <input type="hidden" name="stt" value="{__STT_OK__}">
+						<button class="btn btn-success">결재</button>
+					</form>
+					</td><td>
+						<!--@if($val->position != __LINE1_CODE__ )-->
+						<form action="./" method="post"> <input type="hidden" name="act" value="procEapprvProc">
+						 <input type="hidden" name="eapprv_srl" value="{$data->eapprv_srl}">
+						 <input type="hidden" name="line_stt" value="{__LINE_STT_1__}">
+						 <input type="hidden" name="stt" value="{__STT_REJECT__}">
+							<button class="btn btn-danger">반려</button>
+						</form>
+						<!--@end-->
+					</td></tr>
+					</table>
+				<!--@else if( $val->stt == __STT_OK__    )-->
+					<span class="approved">{zDate($val->regdate,'Y-m-d H:i:s')} <b>승인</b></span>
+				<!--@else if($val->stt == __STT_REJECT__ )-->
+					<span class="rejected">{zDate($val->regdate,'Y-m-d H:i:s')} <b>반려</b></span>
+				<!--@end-->
+				</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+<!-- 결재판 1 끝    -->
+
+<!-- 결재판 1   -->
+<div cond="$line_list2" class="panel panel-default  outer-cell{count($line_list2)}">
+<div class="panel-heading tit">접수확인</div>
+
+	<table class="table" style="height:100px">
+		<tr>
+			<td loop="$line_list2 => $key,$val" class="grid-cell">
+			<div class='cell'>
+			<div>{$val->line_title}</div><div class="name">{$wmc_members[$val->member_srl]}</div><div>
+				
+				<!--@if($val->stt == __STT_ACCEPT__ && $val->member_srl == $member_srl && $data->stt1 == __STT_OK__  )-->
+				<table><tr><td>
+					<form action="./" method="post"> <input type="hidden" name="act" value="procEapprvProc">
+						  <input type="hidden" name="eapprv_srl" value="{$data->eapprv_srl}">
+						  <input type="hidden" name="line_stt" value="{__LINE_STT_2__}">
+						  <input type="hidden" name="stt" value="{__STT_OK__}">
+						<button class="btn btn-success">접수</button>
+					</form>
+				</td><td>
+					<form action="./" method="post"> <input type="hidden" name="act" value="procEapprvProc">
+						 <input type="hidden" name="eapprv_srl" value="{$data->eapprv_srl}">
+						 <input type="hidden" name="line_stt" value="{__LINE_STT_2__}">
+						 <input type="hidden" name="stt" value="{__STT_REJECT__}">
+							<button class="btn btn-danger">반려</button>
+					</form>
+				</td></tr>
+				</table>		
+				<!--@else if( $val->stt == __STT_OK__    )-->
+					<span class="approved">{zDate($val->regdate,'Y-m-d H:i:s')} <b>승인</b></span>
+				<!--@else if($val->stt == __STT_REJECT__ )-->
+					<span class="rejected">{zDate($val->regdate,'Y-m-d H:i:s')} <b>반려</b></span>
+				<!--@end-->
+			</div>
+			</div>
+			</td>
+		</tr>
+	</table>
+</div>
+<!-- 결재판 1 끝    	-->
+
+<!-- 결재판 3   		-->
+<div cond="$line_list3" class="panel panel-default  outer-cell{count($line_list3)}">
+<div class="panel-heading tit">작업확인</div>
+
+	<table class="table" style="height:100px" >
+		<tr>
+			<td loop="$line_list3 => $key,$val" class="grid-cell"><div class='cell'><div>{$val->line_title}</div><div class="name">{$wmc_members[$val->member_srl]}</div><div>
+			<!--@if($val->stt == __STT_ACCEPT__ && $val->member_srl == $member_srl && $data->stt1 == __STT_OK__ && $data->stt2 == __STT_OK__ )-->
+			
+					<form action="./" method="post"> <input type="hidden" name="act" value="procEapprvProc">
+						  <input type="hidden" name="eapprv_srl" value="{$data->eapprv_srl}">
+						  <input type="hidden" name="line_stt" value="{__LINE_STT_3__}">
+						  <input type="hidden" name="stt" value="{__STT_OK__}">
+						<button class="btn btn-success">작업확인</button>
+					</form>
+					
+			<!--@else if( $val->stt == __STT_OK__    )-->
+				<span class="approved">{zDate($val->regdate,'Y-m-d H:i:s')} <b>확인</b></span>
+			<!--@end-->
+			</div></div></td>
+		</tr>
+	</table>
+</div>
+<!-- 결재판 끝    -->
+
+<!-- 결재 교체     -->
+
+
+<div style="clear:both;" ></div>
+
+<!--@if(  ($pm_members[$member_srl] ||$gm_members[$member_srl] ) && $data->stt2 != __STT_OK__    )-->
+<div class="panel panel-default  outer-cell5 case3">
+
+<div class="panel-heading tit">접수확인 교체 </div>
+<form name="changeform" action="./" method="post" class="con">
+<input type="hidden" name="act" value="procEapprvLineGmChange">
+<input type="hidden" name="eapprv_srl" value="{$eapprv_srl}">
+<input type="hidden" name="line_stt" value="{__LINE_STT_2__}">
+
+					<select name="app_line" id="app_line" class="wp-md-sel form-control space-30" style="width:120px; float:left;">
+					<option value="0">직접선택</option>
+							<option loop="$line_group_list=>$val" value="{$val->eapprv_line_pre_srl}" selected|cond="$val->eapprv_line_pre_srl==$data->app_line">{$val->line_title}</option>
+					</select> 
+					<select name="line2_1" id="line2_1" class="wp-sm-sel form-control " style="width:99px; float:left" required>
+						<option value="0"> -- </option>
+						<option loop="$wmc_members=>$key,$val" selected|cond="$line_member_list['line_1'.__LINE1_CODE__]==$key" value="{$key}">{$val}</option>
+					</select> 
+					<select name="line2_2" id="line2_2" class="wp-sm-sel form-control " style="width:99px;" >
+						<option value="0"> -- </option>
+						<option loop="$pm_members=>$key,$val" selected|cond="$line_member_list['line_1'.__LINE2_CODE__]==$key" value="{$key}">{$val}</option>
+					</select>
+					<select name="line2_3" id="line2_3" class="wp-sm-sel form-control " style="width:99px;" >
+						<option value="0"> -- </option>
+						<option loop="$gm_members=>$key,$val" selected|cond="$line_member_list['line_1'.__LINE3_CODE__]==$key" value="{$key}">{$val}</option>
+					</select>
+					
+<button class="form-control btn-danger" style="width:80px;float:left;">저장</button>
+<hr width="50%">
+<h5><span class="label label-danger"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span>과장,부서장만 재 지정 가능합니다.</span></h5>
+</form>					
+
+</div>
+<!--@end-->
+
+
+<!--@if( ($pm_members[$member_srl] ||$gm_members[$member_srl] ) && $data->stt3 != __STT_OK__  )-->
+<div class="panel panel-default  outer-cell4 case3">
+
+<div class="panel-heading tit">작업확인 교체 </div>
+<form name="changeform" action="./" method="post" class="con">
+<input type="hidden" name="act" value="procEapprvLineGmChange">
+<input type="hidden" name="eapprv_srl" value="{$eapprv_srl}">
+<input type="hidden" name="line_stt" value="{__LINE_STT_3__}">
+
+					<select name="app_line" id="exec_line" class="wp-md-sel form-control space-30" style="width:120px; float:left;">
+					<option value="0">직접선택</option>
+							<option loop="$line_group_list=>$val" value="{$val->eapprv_line_pre_srl}" selected|cond="$val->eapprv_line_pre_srl==$data->app_line">{$val->line_title}</option>
+					</select> 
+					<select name="line3_1" id="line3_1" class="wp-sm-sel form-control " style="width:99px; float:left" required>
+						<option value="0"> -- </option>
+						<option loop="$wmc_members=>$key,$val" selected|cond="$line_member_list['line_1'.__LINE1_CODE__]==$key" value="{$key}">{$val}</option>
+					</select> 
+					<select name="line3_2" id="line3_2" class="wp-sm-sel form-control " style="width:99px;" >
+						<option value="0"> -- </option>
+						<option loop="$pm_members=>$key,$val" selected|cond="$line_member_list['line_1'.__LINE2_CODE__]==$key" value="{$key}">{$val}</option>
+					</select>
+					
+<button class="form-control btn-danger" style="width:80px;float:left;">저장</button>
+<hr width="50%">
+<h5><span class="label label-danger"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span>과장,부서장만 재 지정 가능합니다.</span></h5>
+</form>					
+
+</div>
+<!--@end-->
+
+
+<!--  교체 화면 끝-->		  
+
+<!-- 본 내용 -->
+<div class="panel panel-default main-content">
+<div class="panel-heading">  
+	{$oDocument->getTitleText()}
+	
+</div>
+
+	<table class="table">
+		<tr>
+			<th>문서종류</th>
+			<td>
+			<!--@if ($memo_xml->work_gb_a1=='A1') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 네트워크 </span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_a2=='A2') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 네트워크 정책 </span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_a3=='A3') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> IP신청서 </span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_a4=='A4') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> SSLVPN </span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_b1=='B1') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> SEP</span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_b2=='B2') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 문서보안</span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_b3=='B3') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 보안체크 신청서</span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_b4=='B4') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 바이러스 처리 신청서</span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_b5=='B5') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 윈도우패치(WSUS) 신청서</span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_c=='C') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 서버</span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_d=='D') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> PC관련</span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_db1=='DB1') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> DML 반영</span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_db2=='DB2') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 자료이관(개발/리얼)</span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_db3=='DB3') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 운영DB자료(SQL)</span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_db4=='DB4') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 자료처리(등록/수정/삭제)</span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_db5=='DB5') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 개발DB작업요청</span></h5><!--@end-->
+			<!--@if ($memo_xml->work_gb_e=='E') --><h5><span class="label label-danger"> <span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 프로그램 권한 신청</span></h5><!--@end-->
+			
+			</td>
+		</tr>
+		<tr>
+			<th>신청부서</th>
+			<td style="width:300px">{$memo_xml->request_dept}</td>
+			<th>신청자</th>
+			<td>{$memo_xml->request_person}</td>
+		</tr>
+		<tr>
+			<th>요청사항</th>
+			<td colspan="3">{$memo_xml->whattodo}</td>
+		</tr>
+		<tr>
+			<th>사유</th>
+			<td colspan="3">{$memo_xml->reason}</td>
+		</tr>
+		<tr>
+			<th>기간</th>
+			<td colspan="3">{$memo_xml->period}</td>
+		</tr>
+		<tr <block cond="$memo_xml->work_gb_a2!='A2'"> style="display:none;" </block>>
+			<th>출발지</th>
+			<td>{$memo_xml->origin}</td>
+			<th>목적지</th>
+			<td>{$memo_xml->goal}</td>
+		</tr>
+		<tr <block cond="$memo_xml->work_gb_a2!='A2'"> style="display:none;" </block>>
+			<th>포트</th>
+			<td>{$memo_xml->port}</td>
+			<th>차단/허용</th>
+			<!--@if ($memo_xml->access =='Y') --><td>접속허용</td><!--@else--><td>접속차단</td><!--@end-->
+		</tr>
+		<tr <block cond="$memo_xml->work_gb_db1!='DB1'&&$memo_xml->work_gb_db2!='DB2'&&$memo_xml->work_gb_db3!='DB3'&&$memo_xml->work_gb_db4!='DB4'&&$memo_xml->work_gb_db5!='DB5'"> style="display:none;" </block>>
+			<th>DB 구분</th>
+			<td colspan="3" style="color:#2773FF;">
+			<!--@if ($memo_xml->db_gubun1=='6383')--><span class="glyphicon glyphicon-check" aria-hidden="true"></span>서무회계(81번)<!--@end-->
+			<!--@if ($memo_xml->db_gubun2=='6384')--><span class="glyphicon glyphicon-check" aria-hidden="true"></span>총회업무(83번)<!--@end-->
+			<!--@if ($memo_xml->db_gubun3=='6385')--><span class="glyphicon glyphicon-check" aria-hidden="true"></span>중국(204번)<!--@end-->
+			<!--@if ($memo_xml->db_gubun4=='6386')--><span class="glyphicon glyphicon-check" aria-hidden="true"></span>메신져(125번)<!--@end-->
+			<!--@if ($memo_xml->db_gubun5=='6387')--><span class="glyphicon glyphicon-check" aria-hidden="true"></span>웹 WATV(113번)<!--@end-->
+			<!--@if ($memo_xml->db_gubun6=='6388')--><span class="glyphicon glyphicon-check" aria-hidden="true"></span>웹 교역자(114번)<!--@end-->
+			<!--@if ($memo_xml->db_gubun7=='6389')--><span class="glyphicon glyphicon-check" aria-hidden="true"></span>사외 IWF<!--@end-->
+			<!--@if ($memo_xml->db_gubun8=='6390')--><span class="glyphicon glyphicon-check" aria-hidden="true"></span>사외 대자연<!--@end-->
+			</td>
+		</tr>
+		<tr>
+			<th>업무내용</th>
+			<td colspan="3">
+			{$oDocument->getContent(false)}
+			<hr>[첨부 파일]
+				<div class="read_footer_">
+				<ul class="files">
+					<li loop="$oDocument->getUploadedFiles()=>$key,$file"><a href="{getUrl('')}{$file->download_url}">{$file->source_filename} <span class="fileSize">[File Size:{FileHandler::filesize($file->file_size)}/Download:{number_format($file->download_count)}]</span></a></li>
+				</ul>
+				</div>			
+			</td>
+		</tr>
+		<tr>
+			<td id="bd_{$module_srl}_{$oDocument->document_srl}" colspan="4" style="padding-left:40px;padding-right:40px;">
+			<include target="_comment.html" />
+			</td>
+		</tr>
+		
+	</table>
+
+
+<!-- 본 내용    -->
+
+
+  <div class="panel-footer">
+	<!--@if($member_srl == $data->member_srl || $pm_members[$member_srl] || $gm_members[$member_srl] )-->
+ 		<form method="post" action="/index.php">
+		<input type="hidden" name="act" value="procEapprvShareListSave" >
+		<input type="hidden" name="mid" value="{$mid}" >
+		<input type="hidden" name="eapprv_srl" value="{$data->eapprv_srl}" >
+
+			<div class="sub-worker">
+			<button aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button"> 공유자 변경 <span class="caret"></span></button>
+			문서를 공유받은 사람 : <block loop="$shared_members=>$key,$val"> <span class="member">{$wmc_members[$val]}</span></block> <span cond="!$shared_members">없음</span>
+			</div>
+			
+			<div class="float-div" >
+					<div class="panel panel-warning" style="margin:5px 3px 0 5px ;">
+						<div class="panel-heading">공유자를 선택하세요. </div>
+						<div class="panel-body">
+							<block loop="$wmc_members=>$key,$val4">
+							<div class="float-checkbox"><input type="checkbox"  name="shared_members[]" checked|cond="in_array( $key, $shared_members)" value="{$key}"> {$val4} </div>
+							</block>
+						</div>
+						<div class="panel-footer">
+						<button class="btn btn-success">저장</button>			
+						</div>
+					</div>
+			</div>
+			
+		</form>
+	<!--@end-->	
+	
+	<hr>	
+	<!--@if( $member_srl == $data->member_srl  && $data->stt ==""  )-->
+		<a href="{getUrl( 'mid', $mid ,'act' ,'dispEapprvWrite' , 'eapprv_srl' , $data->eapprv_srl  )}" cond="$data->stt1==__STT_READY__ || $data->stt1 == __STT_ACCEPT__ "><button class="btn btn-success">{$lang->cmd_modify}</button></a>
+		<!--@if($data->stt1 != __STT_OK__ )--><a href="#" onclick="dropDocument({$data->eapprv_srl})" ><button class="btn btn-danger">폐기</button></a><!--@end-->
+		&nbsp;
+    <!--@end-->
+		<a href="{getUrl( 'mid', $mid ,'act','dispEapprvList','eapprv_srl','' , 'type' , $type, 'page', $page)}"><button class="btn btn-default">{$lang->cmd_list}</button></a>
+  </div> 
+  
+</div>
+
+<!--if($gm_members[$member_srl])-->
+<!-- 2015.11.17 주석처리
+<div class="panel panel-default">
+	<div class="panel-heading">부서장 코멘트</div>
+	<div class="panel-body">
+		<form method="post" action="/index.php">
+		<input type="hidden" name="act" value="procEapprvMemoSave" >
+		<input type="hidden" name="mid" value="{$mid}" >
+		<input type="hidden" name="eapprv_srl" value="{$data->eapprv_srl}" >
+		
+		<textarea name="memo_comment" rows="4" cols="50" style="height:46px;width:90%" ></textarea> -->
+		<!--<button class="btn btn-default">등록</button>-->
+<!--		<input type="image" src="images/btn_comment.gif" />
+		</form>
+	</div>
+</div> -->
+<!--end-->
+
+<form method="post" name="dropform" id="dropform" action="/index.php">
+		<input type="hidden" name="act" value="procEapprvDrop" >
+		<input type="hidden" name="mid" value="{$mid}" >
+		<input type="hidden" name="eapprv_srl" id="dropform_eapprv_srl" value="{$data->eapprv_srl}" >
+</form>
+
+<include target="_comment_write.html" />
+

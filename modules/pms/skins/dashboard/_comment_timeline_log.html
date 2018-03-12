@@ -1,0 +1,44 @@
+<h2 class="timeline-title">작업 로그</h2>
+<ul class="timeline">
+	{@
+		$timelabel="";
+	}
+	<!--@foreach($comment_log as $no => $val)-->
+	<!--@if($timelabel  != zDate($val->reg_date, "Y-m-d") )-->
+	{@$timelabel =zDate($val->reg_date, "Y-m-d");}
+	<li class="time-label">
+		<span class="bg-red">
+			{$timelabel?$timelabel:zDate($val->reg_date, "Y-m-d")}
+		</span>
+	</li>
+	<!--@end-->
+	<li>
+		<!-- timeline icon -->
+		<i class="fa fa-envelope bg-blue"></i>
+		<div class="timeline-item">
+			<span class="time"><i class="fa fa-clock-o"></i> {zDate($val->reg_date, "h:i:s")}</span>
+
+			<h3 class="timeline-header"><a href="#">{$val->user_name}...</a>{$val->title}</h3>
+
+			<div class="timeline-body">{$val->content}</div>
+			<!--@if($logged_info->member_srl == $val->member_srl || $is_admin=='Y' )-->
+			<div class="timeline-footer">
+				<a class="btn btn-primary btn-xs comment-delete" data-comment_srl="{$val->comment_srl}" ><i class="fa fa-fw fa-remove"></i></a>
+			</div>
+			<!--@end-->
+		</div>
+	</li>
+	<!--@end-->
+	<!-- END timeline item -->
+</ul>
+<ul class="pagination">
+	<li><a href="{getUrl('page','','comment_srl','')}" class="prevEnd"><<</a></li>
+	<!--@while($page_no = $page_navigation_log->getNextPage())-->
+	<!--@if($page == $page_no)-->
+	<li class="active"><a href="{getUrl('page',$page_no,'comment_srl','')}">{$page_no}</a></li>
+	<!--@else-->
+	<li><a href="{getUrl('page',$page_no,'comment_srl','')}">{$page_no}</a></li>
+	<!--@end-->
+	<!--@end-->
+	<li><a href="{getUrl('page',$page_navigation->last_page,'comment_srl','')}" class="nextEnd">>></a></li>
+</ul>

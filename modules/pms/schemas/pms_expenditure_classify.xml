@@ -1,0 +1,16 @@
+<table name="pms_expenditure_classify">
+	<column name="expenditure_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+	<column name="expenditure_classify_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+    <column name="title" type="varchar" size="200" notnull="notnull"    />
+	<column name="code" 	type="number" size="4" notnull="notnull"    />
+	<column name="code_val" type="number" size="4" notnull="notnull"    />
+	<column name="stt" type="char" size="1" default="N"	/>
+	<column name="type" type="char" size="1" default="E"	/>
+	<column name="regdate" type="date" notnull="notnull" default="curdate()" />
+</table>
+<!--
+code 값은 WMC_CODE에서 설명을 얻을 수 있다. 
+code_val 값을 볼 수 있다. 
+stt =>  상태 값을 통해서 분류 확인에 대한 정보를 저장 할 수 있다.  일괄 처리시 N 개별 확인시 Y :    N -> Y -> N -> Y등으로 
+Type => E : expenditure , B:Budget 
+-->

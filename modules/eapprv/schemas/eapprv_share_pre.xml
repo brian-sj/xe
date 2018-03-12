@@ -1,0 +1,18 @@
+<table name="eapprv_share_pre">
+	
+	<column name="eapprv_share_pre_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+	<column name="member_srl" type="number" size="11" default="0" notnull="notnull" index="share_pre_index" />
+	
+	<column name="shared_title" type="varchar" size="200" notnull="notnull" />
+	<column name="shared_members" type="varchar" size="200" notnull="notnull" />
+	<column name="stt" type="varchar" size="2" default="NN" />
+	
+	<column name="regdate" type="date" />    
+</table>
+<!-- 
+
+member_srl = 0 이면 모든 사람이 볼 수 있는 것이다. 
+
+shared_members 는   1,2,100  comma seperated value 로 입력 한다. 
+
+-->

@@ -1,0 +1,19 @@
+<query id="getEappByEappSrl" action="select">
+    <tables>
+        <table name="wmc_eapp" alias="e"/>
+		<table name="member" alias="m" />
+    </tables>
+    <columns>
+        <column name="e.member_srl" />
+		<column name="m.user_name" />
+		<column name="e.regdate" />
+		<column name="e.stt" />
+		<column name="e.title" />
+		<column name="e.category" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="m.member_srl"  var="e.member_srl" />
+        <condition operation="equal" column="eapp_srl" var="eapp_srl" notnull="notnull" pipe="and"/>
+    </conditions>
+
+</query>

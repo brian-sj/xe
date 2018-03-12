@@ -1,0 +1,35 @@
+<query id="getComment" action="select">
+    <tables>
+        <table name="pms_comment" alias="c"/>
+        <table name="pms_project" alias="p"/>
+        <table name="member" alias="m"/>
+    </tables>
+    <columns>
+        <column name="c.*" />
+        <column name="m.user_name" />
+        <column name="p.title" />
+    </columns>
+	<conditions>
+		<condition operation="equal" column="m.member_srl" default="c.member_srl" />
+		<condition operation="equal" column="p.project_srl" default="c.project_srl" pipe="and" />
+		<condition operation="equal" column="c.project_srl" var="project_srl" pipe="and"/>
+		<condition operation="equal" column="task_srl" var="task_srl" pipe="and" />
+		<condition operation="in" column="type" var="type" pipe="and"/>
+		<condition operation="equal" column="c.member_srl" var="member_srl" pipe="and"/> 
+		<condition operation="equal" column="reg_date" var="reg_date" pipe="and"/> 
+		<group pipe="and">
+			<condition operation="like" column="c.title" var="keyword" /> 
+			<condition operation="like" column="c.content" var="keyword" pipe="or"/> 
+		</group>
+	</conditions>
+	<navigation>
+        <index var="sort_index" default="comment_srl" order="desc" />
+        <list_count var="list_count" default="20" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>
+<!-- 
+type :B 
+regdate 오늘인거 하면 하루 간단 일지를 꺼낼 수 있다.
+-->

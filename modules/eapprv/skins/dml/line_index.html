@@ -1,0 +1,253 @@
+<include target="header.html"  />
+
+
+<load target="js/jquery.smart_autocomplete.js"  />
+<load target="js/jquery.selectize.js"  />
+<load target="css/default.css"  />
+<load target="css/selectize.css"  />
+
+
+<script>
+console.log('-----');
+
+var jazz_musicians = [
+          "과장",
+          "부장",
+          "Duke Ellington",
+          "Louis Armstrong",
+          "Earl Hines",
+          "Fats Waller",
+          "Count Basie",
+          "Benny Goodman",
+          "Sun Ra",
+          "Thelonious Monk",
+          "Dizzy Gillespie",
+          "Charlie Parker",
+          "Dave Brubeck",
+          "Charles Mingus",
+          "Oscar Peterson",
+          "Miles Davis",
+          "John Coltrane",
+          "Chet Baker",
+          "Ornette Coleman",
+          "Wynton Marsalis",
+          "Billie Holiday",
+          "Ella Fitzgerald",
+          "Sarah Vaughan"
+        ];
+
+jQuery(document).ready( function( $){
+	jQuery("#user").smartAutoComplete({   source : "modules/eapprv/skins/default/jazz.json"   });
+
+	jQuery("#plus").bind('click', function(){
+		t  = jQuery("#title") .val()  ; 
+		u = jQuery("#select-to").val() ;
+		n = jQuery("span.name:first").text();
+		i  = jQuery("img.btn_del:first").clone();
+		jQuery("div.data").append( jQuery("<div class='item' />").append( jQuery('<h1 />').text(t).append(i)).append( jQuery('<h3 />' ).text(n ) ).append( jQuery('<h8 />').text(u) )     ) ;
+	});
+	
+	
+	jQuery.ajax({
+		type: "POST",
+		contentType: "application/json; charset=utf-8",
+		url: "/",
+		data: {module:"eapprv", act:"dispEapprvUsers"},
+		dataType: "json",
+		success:function(msg) {
+
+				console.log(msg);
+				jQuery("div.seperator").text(msg.krn) ;
+				var json = jQuery.parseJSON(msg);
+				console.log(json);
+			},
+		error: function(req, textStatus, errorThrown) { 
+					 console.log("Status: " + textStatus + "Error: " + errorThrown); 
+					 console.log( req.resultText );
+			} 
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*               시작              */
+	
+   console.log('start');
+
+		jQuery('#select-to').selectize({
+			persist: false,
+			maxItems: 1,
+			valueField: 'member_srl',
+			labelField: 'name',
+			searchField: ['name', 'email'],
+			addPrecedence :false  ,
+			/*
+			options: [
+				{email: '강명희'	 				, name: '강명희' , dept : 'SO'},
+				{email: '김지민'    				, name: '김지민' },
+				{email: 'nikola@tesla.com'    , name: '김은정'},
+				{email: 'nikola@tesla.com'    , name: '이현숙'},
+				{email: 'nikola@tesla.com'    , name: '이혁재'},
+				{email: 'someone@gmail.com'}
+			],
+			*/
+			//options : "/modules/eapprv/skins/default/users.json" ,
+			render: {
+				item: function(item, escape) {		
+					console.log(  item   );			
+					return '<div>' + 
+						(item.name ? '<span class="name">' + escape(item.name) + '</span>' : '') +
+						(item.email ? '<span class="email">(' + escape(item.email) + ')</span>' : '') +
+					'</div>';
+				},
+				option: function(item, escape) {
+				
+					//var label = item.name || item.email;
+					//var caption = item.title ? item.title : null;
+					return '<div>' +
+						'<img src="' + escape(item.user ) + '" alt="">' +
+						'<span class="label">' + escape(item.name) +  '</span>' +
+						 '<span class="caption">(' + escape(item.email) + ')</span>' +
+					'</div>';
+				}
+			}
+			, load: function(query, callback) {
+						
+							console.log('----load--' + query.length );
+							console.log(query);
+							console.log(callback);
+							
+							if (!query.length) return callback();
+								jQuery.ajax({
+									type: "POST",
+									contentType: "application/json; charset=utf-8",
+									url: "/",
+									data: {module:"eapprv", act:"dispEapprvUsers"},
+									dataType: "json",
+									success:function(msg) {
+											console.log("송공입니다.");
+											console.log(msg.items );
+											var json = jQuery.parseJSON(msg);
+											//console.log(json.items );
+											callback(msg.items);
+										},
+									error: function(req, textStatus, errorThrown) { 
+												 console.log("Status: " + textStatus + "Error: " + errorThrown); 
+												 console.log( req.resultText );
+										} 
+								});
+
+			}
+			, onLoad : function ( query , callback ){
+				console.log(' ON __load ---');
+			}
+
+				
+			/*
+			,create: function(input) {
+				if ((new RegExp('^' + REGEX_EMAIL + '$', 'i')).test(input)) {
+					return {email: input};
+				}
+				var match = input.match(new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i'));
+				if (match) {
+					return {
+						email : match[2],
+						name  : $.trim(match[1])
+					};
+				}
+				alert('Invalid email address.');
+				return false;
+			}
+			*/
+		}).on('option_add' , function(){
+				console.log('option added ');
+			}).on('item_add', function(){
+				console.log('item added ');
+			});
+		
+	
+	/*               끝       */
+	
+
+	
+	
+	
+}  );
+
+
+function callbackSelectize( results ){
+	jQuery('#select-to').selectize({ options : results });
+	console.log('--- callbacked ');
+	console.log( results );
+}
+function check (){
+	data = [];
+	jQuery("div.data .item").each(function(){
+			t=jQuery(this).find("h1").text() ;
+			u=jQuery(this).find("h3").text() ;
+			s=jQuery(this).find("h8").text() ;
+			data.push( { 'title' : t , 'user' : u , 'member_srl' : s  });
+		});
+	
+	console.log(   data );
+	console.log (JSON.stringify( data ));
+	document.frm1.line_content.value =  JSON.stringify( data ) ;
+	
+	return true ;
+	
+}
+</script>
+
+<!--@foreach( $list as $val )  -->
+<div class="line">
+		<h1>{$val->line_title}</h1>
+		<div class="item_tmpl"><h1>담당 <img src="images/del.jpg" class="btn_del"/></h1><h3>강명희</h3></div>
+	   {@
+			debugPrint( $val );
+			$line = json_decode(	$val->line_content ) ;
+		    debugPrint($line );
+		}
+			<!--@foreach( $line as $key1 => $val1 )  -->
+					<div class="item_tmpl"><h1>{$val1->title} <img src="images/del.jpg" class="btn_del"/></h1><h3>{$val1->user}</h3></div>
+			<!--@end-->
+	
+</div>
+<!--@end-->
+
+<div class="line data">
+	<div class="item_tmpl"><h1>담당 <img src="images/del.jpg" class="btn_del"/></h1><h3>강명희</h3></div>
+</div>
+
+<div class="seperator"></div>
+
+<form onsubmit="return check();" action="./" method="post" name="frm1">
+<input type="hidden" name="act" value="procEapprvLineInsert" >
+<input type="hidden" name="line_content" />
+   결재선 이름.   <input type="text" name="line_title" /><br>
+
+
+
+결재자 직급 <input type="text" name="title" id="title"  />  : 결재자 <div style="width : 300px; display : inline-block;"><select id="select-to" name="user" ></select></div>
+<input type="button" value="+" id="plus" />
+
+<input type="submit" value="저장" />
+</form>

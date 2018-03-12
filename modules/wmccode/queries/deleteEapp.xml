@@ -1,0 +1,8 @@
+<query id="deleteEapp" action="delete">
+    <tables>
+        <table name="wmc_eapp" />
+    </tables>
+    <conditions>
+        <condition operation="equal" column="eapp_srl" var="eapp_srl" filter="number" notnull="notnull" />
+    </conditions>
+</query>

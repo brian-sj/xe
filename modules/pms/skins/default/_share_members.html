@@ -1,0 +1,36 @@
+<load target="/common/css/prettyCheckable.css"/>
+<load target="/common/js/prettyCheckable.min.js" />
+<style>
+.dropdown-menu {overflow:auto; height:300px;}
+.float-div { width : 600px  ; float:left ; position : absolute; z-index:1000 ; display:none; } 
+.float-checkbox {display:inline-block ; width : 105px;}
+</style>
+<script>
+jQuery(document).ready(function($){
+		$("#member_edit").click(function(){ $(this).siblings(".float-div").toggle("slow"); });
+		$("input:checkbox").each(function(){
+			$(this).prettyCheckable();
+		}); 
+	});
+
+</script>
+
+<div class="float-div" id="float-div-share" >
+	<form method="post" action="/index.php">
+	<input type="hidden" name="act" value="procPmsShareListSave" >
+	<input type="hidden" name="mid" value="{$mid}" >
+	<input type="hidden" name="project_srl" value="{$data->project_srl}" >			
+		<div class="panel panel-info" style="margin:5px 3px 0 5px ;">
+			<div class="panel-heading">공유자를 선택하세요.</div>
+			<div class="panel-body">
+				<block loop="$wmc_members=>$key,$val4">
+				<div class="float-checkbox"><input type="checkbox"  name="shared_members[]" checked|cond="in_array( $key, $shared_members)" data-label="{$val4}" value="{$key}"> </div>
+				</block>
+			</div>
+			<div class="panel-footer">
+			<button class="btn btn-success">저장</button>			
+			</div>
+		</div>
+
+	</form>
+</div>

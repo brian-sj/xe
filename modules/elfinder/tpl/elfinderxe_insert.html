@@ -1,0 +1,230 @@
+<load target="js/elfinderxe_insert.js" />
+<include target="header.html" />
+
+<div cond="$XE_VALIDATOR_MESSAGE" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<p>{$XE_VALIDATOR_MESSAGE}</p>
+</div>
+
+<form ruleset="insertElfinderxe" class="form" action="./" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="module" value="elfinderxe" />
+	<input type="hidden" name="act" value="procElfinderxeAdminInsertFileManager" />
+	<input type="hidden" name="page" value="{$page}" />
+	<input type="hidden" name="module_srl" value="{$module_info->module_srl}" />
+	<input cond="$mid || $module_srl" type="hidden" name="success_return_url" value="{getRequestUriByServerEnviroment()}" />
+	<input cond="$logged_info->is_admin != 'Y'" type="hidden" name="elfinderxe_name" value="{$module_info->mid}" />
+
+	<input type="hidden" name="driver" value="LocalFileSystem" />
+
+	<h2 class="h2">{$lang->default_setup}</h2>
+	<p>{$lang->about_default_setup}</p>
+	<ul>
+		<!--// mid -->
+		<li cond="$logged_info->is_admin == 'Y'">
+			<p class="q"><label for="elfinderxe_name">{$lang->mid}</label></p>
+			<p class="a"><input type="text" name="elfinderxe_name" id="elfinderxe_name" value="{$module_info->mid}" />
+			<p class="desc">{$lang->about_mid}</p>
+		</li>
+		<!--// 모듈 카테고리 -->
+		<li>
+			<p class="q"><label for="module_category_srl">{$lang->module_category}</label></p>
+			<p class="a">
+				<select name="module_category_srl" id="module_category_srl">
+					<option value="0">{$lang->notuse}</option>
+					<option loop="$module_category => $key, $val" value="{$key}" selected="selected"|cond="$module_info->module_category_srl == $key">{$val->title}</option>
+				</select>
+			</p>
+			<p class="desc">{$lang->about_module_category}</p>
+		</li>
+		<!--// 브라우저 제목 -->
+		<li>
+			<p class="q"><label for="browser_title">{$lang->browser_title}</label></p>
+			<p class="a multiLangEdit">
+				{@$use_multilang = true}
+				<input type="hidden" name="browser_title" value="<!--@if(strpos($module_info->browser_title, '$user_lang->') === false)-->{$module_info->browser_title}<!--@else-->{htmlspecialchars($module_info->browser_title)}<!--@end-->" class="vLang" />
+				<input type="text" id="browser_title" value="{$module_info->browser_title}" class="vLang" />
+				<span class="desc"><a href="#langEdit" class="editUserLang tgAnchor">{$lang->cmd_set_multilingual}</a></span>
+			</p>
+			<p class="desc">{$lang->about_browser_title}</p>
+		</li>
+		<!--// 레이아웃 -->
+		<li>
+			<p class="q"><label for="layout_srl">{$lang->layout}</label></p>
+			<p class="a">
+				<select name="layout_srl" id="layout_srl">
+					<option value="0">{$lang->notuse}</option>
+					<option loop="$layout_list => $key, $val" value="{$val->layout_srl}" selected="selected"|cond="$module_info->layout_srl== $val->layout_srl">{$val->title} ({$val->layout})</option>
+				</select>
+			</p>
+			<p class="desc">{$lang->about_layout}</p>
+		</li>
+		<!--// 모바일 뷰 -->
+		<li>
+			<p class="q">{$lang->mobile_view}</p>
+			<p class="a">
+				<input type="checkbox" name="use_mobile" id="use_mobile" value="Y" checked="checked"|cond="$module_info->use_mobile=='Y'" /> <label for="use_mobile">{$lang->about_mobile_view}</label>
+			</p>
+		</li>
+		<!--// 모바일 레이아웃 -->
+		<li>
+			<p class="q"><label for="mlayout_srl">{$lang->mobile_layout}</label></p>
+			<p class="a">
+				<select name="mlayout_srl" id="layout_srl">
+					<option value="0">{$lang->notuse}</option>
+					<option loop="$mlayout_list => $key, $val" value="{$val->layout_srl}" selected="selected"|cond="$module_info->mlayout_srl== $val->layout_srl">{$val->title} ({$val->layout})</option>
+				</select>
+			</p>
+			<p class="desc">{$lang->about_layout}</p>
+		</li>
+	</ul>
+
+	<div class="btnArea">
+		<span class="btn"><input type="submit" value="{$lang->cmd_registration}" /></span>
+	</div>
+
+	<h2 class="h2">{$lang->advanced_setup}</h2>
+	<p>{$lang->about_advanced_setup}</p>
+	<ul>
+		<!--// 루트 디렉토리 경로 -->
+		<li>
+			<p class="q"><label for="root_path">{$lang->root_path}<label></p>
+			<p class="a"><input type="text" name="root_path" id="root_path" value="{$module_info->root_path?$module_info->root_path:_XE_PATH_}" /></p>
+			<p class="desc">{$lang->about_root_path}</p>
+		</li>
+		<!--// 루트 디렉토리 URL -->
+		<li>
+			<p class="q"><label for="root_url">{$lang->root_url}<label></p>
+			<p class="a"><input type="text" name="root_url" id="root_url" value="{$module_info->root_url?$module_info->root_url:getFullUrl('')}" /></p>
+			<p class="desc">{$lang->about_root_url}</p>
+		</li>
+		<!--// 루트 디렉토리 이름 -->
+		<li>
+			<p class="q"><label for="root_alias">{$lang->root_alias}<label></p>
+			<p class="a">
+				<input type="text" name="root_alias" id="root_alias" value="{$module_info->root_alias?$module_info->root_alias:'Root'}" />
+			</p>
+			<p class="desc">{$lang->about_root_alias}</p>
+		</li>
+		<!--// 확장자 필터 -->
+		<li>
+			<p class="q">{$lang->extension}</p>
+			<p class="a">
+				<select name="extension_mode">
+					<option value="disable" selected="selected"|cond="$module_info->extension_mode=='disable'">{$lang->extension_disable}</option>
+					<option value="allow" selected="selected"|cond="$module_info->extension_mode=='allow'">{$lang->extension_allow}</option>
+					<option value="deny" selected="selected"|cond="$module_info->extension_mode=='deny'">{$lang->extension_deny}</option>
+				</select>
+				<input type="text" name="extension_list" id="extension_list" value="{$module_info->extension_list}" />
+			</p>
+			<p class="desc">{$lang->about_extension}</p>
+		</li>
+
+		<!--// 썸네일 크기 -->
+		<!--// 삭제 : 적용 안 됨
+		<li>
+			<p class="q"><label for="tmb_size">{$lang->tmb_size}<label></p>
+			<p class="a"><input type="text" name="tmb_size" id="tmb_size" value="{$module_info->tmb_size?$module_info->tmb_size:'48'}" /></p>
+			<p class="desc">{$lang->about_tmb_size}</p>
+		</li>
+		-->
+		<input type="hidden" name="tmb_size" value="{$module_info->tmb_size?$module_info->tmb_size:'48'}" />
+
+		<!--// 썸네일 생성 방식 -->
+		<li>
+			<p class="q">{$lang->tmb_crop}</p>
+			<p class="a">
+				<input type="radio" name="tmb_crop" id="tmb_crop_t" value="CROP" checked="checked"|cond="$module_info->tmb_crop!='SCALE'" />
+				<label for="tmb_crop_t">{$lang->tmb_crop_t}</label>
+				&nbsp;&nbsp;&nbsp;
+				<input type="radio" name="tmb_crop" id="tmb_crop_f" value="SCALE" checked="checked"|cond="$module_info->tmb_crop=='SCALE'" />
+				<label for="tmb_crop_f">{$lang->tmb_crop_f}</label>
+			</p>
+			<p class="desc">{$lang->about_tmb_crop}</p>
+		</li>
+		<!--// 파일 목록 표시 형식 -->
+		<li>
+			<p class="q"><label for="default_view">{$lang->default_view}<label></p>
+			<p class="a">
+				<input type="radio" name="default_view" id="default_view_icons" value="icons" checked="checked"|cond="$module_info->default_view!='list'" />
+				<label for="default_view_icons">{$lang->default_view_icons}</label>
+				&nbsp;&nbsp;&nbsp;
+				<input type="radio" name="default_view" id="default_view_list" value="list" checked="checked"|cond="$module_info->default_view=='list'" />
+				<label for="default_view_list">{$lang->default_view_list}</label>
+			</p>
+			<p class="desc">{$lang->about_default_view}</p>
+		</li>
+		<!--// 파일 브라우저 가로 크기 -->
+		<li>
+			<p class="q"><label for="elfinderxe_width">{$lang->elfinderxe_width}<label></p>
+			<p class="a"><input type="text" name="elfinderxe_width" id="elfinderxe_width" value="{$module_info->elfinderxe_width?$module_info->elfinderxe_width:'500'}" disabled="disabled"|cond="$module_info->elfinderxe_width_auto!='N'" />&nbsp;&nbsp;&nbsp;<input type="checkbox" name="elfinderxe_width_auto" id="elfinderxe_width_auto" value="Y" checked="checked"|cond="$module_info->elfinderxe_width_auto!='N'" /><label for="elfinderxe_width_auto">&nbsp;{$lang->elfinderxe_width_auto}</label></p>
+			<p class="desc">{$lang->about_elfinderxe_width}</p>
+		</li>
+		<!--// 파일 브라우저 세로 크기 -->
+		<li>
+			<p class="q"><label for="elfinderxe_height">{$lang->elfinderxe_height}<label></p>
+			<p class="a"><input type="text" name="elfinderxe_height" id="elfinderxe_height" value="{$module_info->elfinderxe_height?$module_info->elfinderxe_height:'400'}" />
+			<p class="desc">{$lang->about_elfinderxe_height}</p>
+		</li>
+		<!--// 날짜 표시 형식 -->
+		<li>
+			<p class="q"><label for="date_format">{$lang->date_format}<label></p>
+			<p class="a">
+				<select name="date_format" id="date_format">
+					<option value="Y-m-d H:i:s" selected="selected"|cond="$module_info->date_format=='Y-m-d H:i:s'">YYYY-MM-DD HH:MM:SS</option>
+					<option value="m-d-Y H:i:s" selected="selected"|cond="$module_info->date_format=='m-d-Y H:i:s'">MM-DD-YYYY HH:MM:SS</option>
+				</select>
+			</p>
+			<p class="desc">{$lang->about_date_format}</p>
+		</li>
+		<!--// 화면 구성 요소 -->
+		<li>
+			<p class="q">{$lang->elfinderxe_ui}</p>
+			<p class="a">
+				<input type="checkbox" name="elfinderxe_ui[]" id="ui_toolbar" value="toolbar"  checked="checked"|cond="@in_array('toolbar', $module_info->elfinderxe_ui) || !$module_srl" />&nbsp;<label for="ui_toolbar">{$lang->ui_toolbar}</label>&nbsp;&nbsp;&nbsp;<input type="checkbox" name="elfinderxe_ui[]" id="ui_places" value="places"  checked="checked"|cond="@in_array('places', $module_info->elfinderxe_ui) || !$module_srl" />&nbsp;<label for="ui_places">{$lang->ui_places}</label>&nbsp;&nbsp;&nbsp;<input type="checkbox" name="elfinderxe_ui[]" id="ui_tree" value="tree"  checked="checked"|cond="@in_array('tree', $module_info->elfinderxe_ui) || !$module_srl" />&nbsp;<label for="ui_tree">{$lang->ui_tree}</label>&nbsp;&nbsp;&nbsp;<input type="checkbox" name="elfinderxe_ui[]" id="ui_path" value="path"  checked="checked"|cond="@in_array('path', $module_info->elfinderxe_ui) || !$module_srl" />&nbsp;<label for="ui_path">{$lang->ui_path}</label>&nbsp;&nbsp;&nbsp;<input type="checkbox" name="elfinderxe_ui[]" id="ui_stat" value="stat"  checked="checked"|cond="@in_array('stat', $module_info->elfinderxe_ui) || !$module_srl" />&nbsp;
+				<label for="ui_stat">{$lang->ui_stat}</label>
+			</p>
+			<p class="desc">{$lang->about_elfinderxe_ui}</p>
+		</li>
+	</ul>
+
+	<div class="btnArea">
+		<span class="btn"><input type="submit" value="{$lang->cmd_registration}" /></span>
+	</div>
+
+	<h2 class="h2">{$lang->additional_setup}</h2>
+	<p>{$lang->about_additional_setup}</p>
+	<ul>
+		<!--// 관리용 설명 -->
+		<li>
+			<p class="q"><label for="description">{$lang->description}</label></p>
+			<p class="a"><textarea name="description" id="description" rows="3" cols="300">{htmlspecialchars($module_info->description)}</textarea></p>
+			<p class="desc">{$lang->about_description}</p>
+		</li>
+		<!--// 상단 내용 -->
+		<li>
+			<p class="q"><label for="header_text">{$lang->header_text}</label></p>
+			<p class="a multiLangEdit">
+				{@$use_multilang_textarea = true}
+				<input type="hidden" name="header_text" value="{htmlspecialchars($module_info->header_text)}" class="vLang" />
+				<textarea id="header_text" class="vLang" rows="5" cols="300">{$module_info->header_text}</textarea>
+				<span class="desc"><a href="#langEditTextarea" class="editUserLang tgAnchor">{$lang->cmd_set_multilingual}</a></span>
+			</p>
+			<p class="desc">{$lang->about_header_text}</p>
+		</li>
+		<!--// 하단 내용 -->
+		<li>
+			<p class="q"><label for="footer_text">{$lang->footer_text}</label></p>
+			<p class="a multiLangEdit">
+				<input type="hidden" name="footer_text" value="{htmlspecialchars($module_info->footer_text)}" class="vLang" />
+				<textarea id="footer_text" class="vLang" rows="5" cols="300">{$module_info->footer_text}</textarea>
+				<span class="desc"><a href="#langEditTextarea" class="editUserLang tgAnchor">{$lang->cmd_set_multilingual}</a></span>
+			</p>
+			<p class="desc">{$lang->about_footer_text}</p>
+		</li>
+	</ul>
+
+	<div class="btnArea">
+		<span class="btn"><input type="submit" value="{$lang->cmd_registration}" /></span>
+	</div>
+	<include target="../../module/tpl/include.multilang.html" />
+	<include target="../../module/tpl/include.multilang.textarea.html" />
+</form>

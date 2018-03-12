@@ -1,0 +1,15 @@
+<query id="insertReportWork" action="insert">
+    <tables>
+        <table name="pms_report_work_time" />
+    </tables>
+    <columns>
+		<column name="project_srl" var="project_srl" notnull="notnull"/>
+		<column name="task_srl" var="task_srl" notnull="notnull" />
+		<column name="member_srl" var="member_srl" />					
+		<column name="report_work_srl" var="report_work_srl"  notnull="notnull"/>				
+		<column name="work_date" var="work_date" notnull="notnull" /> 
+		<column name="mh" var="work_time" notnull="notnull" /> 
+		<column name="count" var="count" default="0" /> 
+		<column name="title" var="title"/>  
+    </columns>
+</query>	

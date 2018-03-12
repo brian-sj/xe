@@ -1,0 +1,109 @@
+<div class="timeline-title">
+	<!--@if($type == __PMS_COMMENT_TYPE_DIRECT_WRITE__ )-->
+	<h3 class="pull-left">작업기록</h3>
+	<button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#history" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 기록추가</button>
+	<!--@else if($type == __PMS_COMMENT_TYPE_DAILY_REPORT__) -->
+	<h3 class="pull-left">작업처리내역</h3>
+	<!--@else-->
+	<h3 class="pull-left">작업로그</h3>
+	<!--@end-->
+</div>
+<ul class="timeline">
+	{@
+		$timelabel="";
+	}
+	<!--@foreach($comment as $no => $val)-->
+	{@$extra_vars = unserialize( $val->extra_vars );}
+	<!--@if($timelabel  != zDate($val->reg_date, "Y-m-d") )-->
+	{@
+		$timelabel =zDate($val->reg_date, "Y-m-d");
+	}
+	<!--li class="time-label">
+		<span class="bg-red">{$timelabel?$timelabel:zDate($val->reg_date, "Y-m-d")}</span>
+	</li-->
+	<!--@end-->
+	<li>
+		<!-- timeline icon -->
+		<i class="fa fa-envelope bg-purple"></i>
+
+		<div class="timeline-item">
+			<span class="time"><i class="fa fa-clock-o"></i>
+			<!--@if($val->type== __PMS_COMMENT_TYPE_DAILY_REPORT__ )-->{zDate($val->reg_date, "Y-m-d")}<!--@else-->{zDate($val->reg_date, "Y-m-d H:i:s")}<!--@end-->
+			</span>
+			<h3 class="timeline-header"><span class="timeline-name">{$val->user_name}</span>
+				<!--@if($type == __PMS_COMMENT_TYPE_DIRECT_WRITE__ )-->
+					{$val->title}
+				<!--@end-->
+			</h3>
+			<!--@if($type == __PMS_COMMENT_TYPE_DAILY_REPORT__ )-->
+			<div class="timeline-body">
+				<table class="table table-timeline">
+					<thead>
+					<tr>
+						<td colspan="4" class="timeline-explain">{nl2br($val->content)}</td>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>예상시간</th>
+							<th>투입시간(누적)</th>
+							<th class="middle-line">계산진행률</th>
+							<th>실제진행률</th>
+						</tr>
+						<tr>
+							<td>{$extra_vars->pmh}시간</td>
+							<td>{$extra_vars->amh}시간({$extra_vars->mh})</td>
+							<td class="middle-line">{round( $extra_vars->mh*100/$extra_vars->pmh )}%</td>
+							<td>{$extra_vars->p}%</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!--@else-->
+			<div class="timeline-explain">{nl2br($val->content)}</div>
+			<!--@end-->
+
+			<!--@if( ($logged_info->member_srl == $val->member_srl && $type == __PMS_COMMENT_TYPE_DAILY_REPORT__  )|| $is_admin=='Y' )-->
+			<div class="timeline-footer">
+				<a class="btn btn-primary btn-xs comment-edit" data-comment_srl="{$val->comment_srl}" ><i class="fa fa-fw fa-edit"></i></a>
+				<a class="btn btn-primary btn-xs comment-delete" data-comment_srl="{$val->comment_srl}" ><i class="fa fa-fw fa-remove"></i></a>
+			</div>
+			<!--@end-->
+		</div>
+	</li>
+	<!--@end-->
+	<!-- END timeline item -->
+</ul>
+
+<div class="text-center">
+	<ul class="pagination pagination-sm">
+		<li><a href="#" data-page="1"  data-type="{$type}" class="prevEnd">«</a></li>
+		<!--@while($page_no = $page_navigation->getNextPage())-->
+		<!--@if($page == $page_no)-->
+		<li class="active"><a href="#" data-page="{$page_no}" data-type="{$type}" class="active">{$page_no}</a></li>
+		<!--@else-->
+		<li><a data-page="{$page_no}" data-type="{$type}" href="#">{$page_no}</a></li>
+		<!--@end-->
+		<!--@end-->
+		<li><a data-page="{$page_navigation->last_page}" data-type="{$type}"  href="#"  class="nextEnd">»</a></li>
+	</ul>
+</div>
+
+<script>
+function editComment(){
+	console.log( this );
+	$("#history").modal() ;
+}
+function deleteComment(){
+	if( confirm("간단업무기록을 정말 삭제 하시겠습니까?")){
+		params.comment_srl = jQuery(this).data("comment_srl");
+		exec_json("pms.procPmsCommentDelete",params, function(data){
+			window.location.reload( true );
+		});
+	}
+}
+jQuery(document).ready( function($){
+	$(".comment-edit").on('click', editComment );
+	$(".comment-delete").on('click', deleteComment );
+});
+</script>

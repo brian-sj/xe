@@ -1,0 +1,454 @@
+﻿<load target="/common/css/prettyCheckable.css"/>
+<load target="/common/js/prettyCheckable.min.js"/>
+<load target="/common/js/plugins/dhtmlx/dhtmlx.js" />
+<load target="/common/js/plugins/dhtmlx/skins/terrace/dhtmlx.css" />
+<style>
+ .write_editor {width:80%;}
+ .tit{min-width:180px;}
+ .well {float:left ;} 
+ .w300{width:190px !important;}
+ .w50{width:145px !important;}
+ .w30{width :70px !important;}
+ .wp-md-sel { width : 180px !important; display:inline-block !important;}
+ .wp-sm-sel { width : 130px !important; display:inline-block !important;}
+ .space-30 {margin-right : 150px;}
+.checkbox label { padding-left : 0 !important ;}
+.form-control {margin: 0 -1px;} 
+.input-group {width:100%;}
+</style>
+<script>
+jQuery(function($) {
+	wmcCalendar = new dhtmlXCalendarObject(["attend_date"]);
+});
+
+
+</script>
+    
+<form action="./" method="post" name="frm1_board" onsubmit="return insert()" class="board_write">	
+	<input type="hidden" name="mid" value="{$mid}" />
+	<input type="hidden" name="act" value="procEapprvWrite" />
+	<input type="hidden" id="content" name="content" value="{$oDocument->getContentText()}" />
+	<input type="hidden" id="memo_xml" name="memo_xml" value="" />
+	<input type="hidden" name="document_srl" value="{$document_srl}" />
+	<input type="hidden" name="eapprv_srl" value="{$eapprv_srl}" />
+	
+	<div class="write_editor">
+		<div class="panel panel-success">
+		<div class="panel-heading"><h3>{$browser_title}</h3></div>
+		<div class="panel-body">
+		<ul class="list-group">
+			<li class="list-group-item list-group-item-info">		  
+		  		<div class="input-group" id="work-options">
+					<input type="radio"  name="attend_gb" data-label="지각" value="A" checked|cond="$memo_xml->attend_gb=='A'||!$memo_xml->attend_gb"  />
+					<input type="radio"  name="attend_gb" data-label="외출" value="B" checked|cond="$memo_xml->attend_gb=='B'" />
+					<input type="radio"  name="attend_gb" data-label="조퇴" value="C" checked|cond="$memo_xml->attend_gb=='C'" />
+					<input type="radio"  name="attend_gb" data-label="결근" value="D" checked|cond="$memo_xml->attend_gb=='D'" />
+					<input type="radio"  name="attend_gb" data-label="휴가" value="E" checked|cond="$memo_xml->attend_gb=='E'" />
+					<input type="radio"  name="attend_gb" data-label="출장" value="F" checked|cond="$memo_xml->attend_gb=='F'" />
+					<input type="radio"  name="attend_gb" data-label="기타" value="Z" checked|cond="$memo_xml->attend_gb=='Z'" />
+				
+				</div> 
+		  </li>
+		  
+		  <li class="list-group-item list-group-item-warning">결재라인  
+				<select name="exec_line" id="exec_line" class="wp-md-sel form-control space-30">
+					<option value="0">직접선택</option>
+					<option loop="$line_group_list=>$val" value="{$val->eapprv_line_pre_srl}" selected|cond="$val->eapprv_line_pre_srl==$data->exec_line">{$val->line_title}</option>
+				</select>
+				
+				<select name="line2_1" id="line2_1" class="wp-sm-sel form-control ">
+					<option value="0"> -- </option>
+					<option loop="$wmc_members=>$key,$val" selected|cond="$line_member_list['line_2'.__LINE1_CODE__]==$key" value="{$key}">{$val}</option>
+				</select>
+				<select name="line2_2" id="line2_2" class="wp-sm-sel form-control ">
+					<option value="0"> -- </option>
+					<option loop="$pm_members=>$key,$val" selected|cond="$line_member_list['line_2'.__LINE2_CODE__]==$key" value="{$key}">{$val}</option>
+				</select>
+				
+				<select name="line2_3" id="line2_3" class="wp-sm-sel form-control ">
+					<option value="0"> -- </option>
+					<option loop="$gm_members=>$key,$val" selected|cond="$line_member_list['line_2'.__LINE3_CODE__]==$key" value="{$key}">{$val}</option>
+				</select>
+		  </li> 
+
+		  <li class="list-group-item list-group-item-default">
+			<div class="row">
+			  <div class="col-lg-12">
+				<div class="input-group">
+				  <span class="input-group-addon w300">
+					{$lang->title}
+				  </span>
+				    <input cond="$oDocument->getTitleText()" type="text" name="title" class="form-control" title="{$lang->title}" value="{htmlspecialchars($oDocument->getTitleText())}" required />
+				    <input cond="!$oDocument->getTitleText()" type="text" name="title" class="form-control" title="{$lang->title}" required />
+				</div><!-- /input-group -->
+			  </div><!-- /.col-lg-6 -->
+			</div><!-- /.row -->
+		  </li>
+ 
+		  <li class="list-group-item list-group-item-default">
+			<div class="row">
+			  <div class="col-lg-8">
+				<div class="input-group">
+				  <span class="input-group-addon w300">
+					일자 / 시간 
+				  </span>				  
+					<input class="form-control w50" type="text" id="attend_date" name="attend_date" value="{$memo_xml->attend_date}" required / > 
+				    <select class="form-control w50" name="attend_start_time" id="attend_start_time">
+						<option value="" selected="selected"> </option>
+						<option value="08:00"> 08:00</option>
+						<option value="08:15"> 08:15</option>
+						<option value="08:30"> 08:30</option>
+						<option value="08:45"> 08:45</option>
+						<option value="09:00"> 09:00</option>
+						<option value="09:15"> 09:15</option>
+						<option value="09:30"> 09:30</option>
+						<option value="09:45"> 09:45</option>
+						<option value="10:00"> 10:00</option>
+						<option value="10:15"> 10:15</option>
+						<option value="10:30"> 10:30</option>
+						<option value="10:45"> 10:45</option>
+						<option value="11:00"> 11:00</option>
+						<option value="11:15"> 11:15</option>
+						<option value="11:30"> 11:30</option>
+						<option value="11:45"> 11:45</option>
+						<option value="12:00"> 12:00</option>
+						<option value="12:15"> 12:15</option>
+						<option value="12:30"> 12:30</option>
+						<option value="12:45"> 12:45</option>
+						<option value="13:00"> 13:00</option>
+						<option value="13:15"> 13:15</option>
+						<option value="13:30"> 13:30</option>
+						<option value="13:45"> 13:45</option>
+						<option value="14:00"> 14:00</option>
+						<option value="14:15"> 14:15</option>
+						<option value="14:30"> 14:30</option>
+						<option value="14:45"> 14:45</option>
+						<option value="15:00"> 15:00</option>
+						<option value="15:15"> 15:15</option>
+						<option value="15:30"> 15:30</option>
+						<option value="15:45"> 15:45</option>
+						<option value="16:00"> 16:00</option>
+						<option value="16:15"> 16:15</option>
+						<option value="16:30"> 16:30</option>
+						<option value="16:45"> 16:45</option>
+						<option value="17:00"> 17:00</option>
+						<option value="17:15"> 17:15</option>
+						<option value="17:30"> 17:30</option>
+						<option value="17:45"> 17:45</option>
+						<option value="18:00"> 18:00</option>
+						<option value="18:15"> 18:15</option>
+						<option value="18:30"> 18:30</option>
+						<option value="18:45"> 18:45</option>
+						<option value="19:00"> 19:00</option>
+						<option value="19:15"> 19:15</option>
+						<option value="19:30"> 19:30</option>
+						<option value="19:45"> 19:45</option>
+						<option value="20:00"> 20:00</option>
+					</select>
+				</div>
+			  </div>
+			</div>
+		  </li> 
+		   
+		<!--
+		  <li class="list-group-item list-group-item-default">
+			<div class="row">
+			  <div class="col-lg-8">
+				<div class="input-group">
+				  <span class="input-group-addon w300">
+					업무내용
+				  </span>
+				    <input type="text" name="work" id="work" value="{$memo_xml->work}" placeholder="업무내용" class="form-control" />
+
+				</div>
+			  </div>
+			</div>
+		  </li>
+
+		  <li class="list-group-item list-group-item-default">
+			<div class="row">
+			  <div class="col-lg-12">
+				<div class="input-group">
+				  <span class="input-group-addon w300">
+					요청사항
+				  </span>
+				    <input type="text" name="whattodo" id="whattodo" value="{$memo_xml->whattodo}" placeholder="요청사항" class="form-control" title="{$lang->memo2}"  required />
+
+				</div>
+			  </div>
+			</div>
+		  </li>
+		  -->
+		  
+		  <li class="list-group-item list-group-item-default">
+			<div class="row">
+			  <div class="col-lg-12">
+				<div class="input-group">
+				  <span class="input-group-addon w300">
+					기간
+				  </span>
+					<input type="text" name="period" id="period" value="{$memo_xml->period}" placeholder="요청기간(ex: 1년)" class="form-control" title="{$lang->memo2}" />
+				</div><!-- /input-group -->
+			  </div><!-- /.col-lg-6 -->
+			</div><!-- /.row -->
+		  </li> 
+		  		  
+		  <li class="list-group-item list-group-item-default"> 
+			
+			{$oDocument->getEditor()}
+			
+		  </li>
+		  
+
+
+		  <li class="list-group-item list-group-item-warning">작업처리확인  
+				<select name="work_line" id="work_line" class="wp-md-sel form-control space-30">
+						<option value="0">직접선택</option>
+						<option loop="$line_group_list=>$val" value="{$val->eapprv_line_pre_srl}" selected|cond="$val->eapprv_line_pre_srl==$data->exec_line">{$val->line_title}</option>
+				</select>
+				
+				<select name="line3_1" id="line3_1" class="wp-sm-sel form-control ">
+					<option value="0"> -- </option>
+					<option loop="$wmc_members=>$key,$val" selected|cond="$line_member_list['line_3'.__LINE1_CODE__]==$key" value="{$key}">{$val}</option>
+				</select>
+				<select name="line3_2" id="line3_2" class="wp-sm-sel form-control ">
+					<option value="0"> -- </option>
+					<option loop="$pm_members=>$key,$val" selected|cond="$line_member_list['line_3'.__LINE2_CODE__]==$key" value="{$key}">{$val}</option>
+				</select>
+		  </li>
+		  
+		  <li class="list-group-item list-group-item-info">
+			<div class="input-group">
+			  <span class="input-group-addon w300">공유	</span>
+				<select name="shared_line" class="form-control wp-md-sel" id="shared_line">
+						<option value="0">선택안함 </option>
+						<option loop="$shared_group_list=>$val" value="{$val->eapprv_share_pre_srl}" selected|cond="$val->eapprv_line_pre_srl==$data->exec_line">{$val->shared_title}</option>
+				</select>
+			</div><!-- /input-group -->
+
+				<div class="checkbox" id="shared_checkbox" >
+					<block loop="$wmc_members=>$key,$val">
+					<input type="checkbox" class="checkbox-shared-list"  name="eapprv_share[]" checked|cond="in_array($key ,$shared_list)"  value="{$key}" data-color="green" data-label="{$val}" >
+					</block>
+				</div>
+		  </li>
+		  
+		</ul>
+		</div>
+		<div class="panel-footer">
+			<button class="btn btn-success">저장</button>
+			<a href="{getUrl('mid', $mid, 'act','dispEapprvList','eapprv_srl','')}" class="btn">목록</a>
+		</div>
+	</div>
+
+	</div>
+</form>	
+
+<script>
+var SHARE_ACT = 'dispEapprvSharedByPreAPI';
+var MODULE    = 'eapprv';
+var LINE_ACT  = 'dispEapprvLineByPreAPI';
+
+var LINE_SRL_DB_EXEC = 100 ;
+var LINE_SRL_DEVDB_EXEC = 110;
+var LINE_SRL_APP_EXEC = 120 ;
+var LINE_SRL_NW_EXEC = 200  ;
+var LINE_SRL_SVR_EXEC = 300 ;
+var LINE_SRL_PC_EXEC = 400  ;
+var LINE_SRL_PUR_EXEC = 500 ;
+var LINE_SRL_SEC_EXEC = 600 ;
+var LINE_SRL_UP_EXEC =  800  ;
+var LINE_SRL_HEAD_EXEC =  1000  ;
+var LINE_SRL_CS_EXEC =  810  ;
+var LINE_SRL_WEB_EXEC =  820  ;
+var LINE_SRL_DS_EXEC =  700  ;
+
+jQuery(document).ready( function($){
+	$("#app_line").bind('change' , function(){ getLineMembers( $(this).val() , 'line1'    ) ;  } );
+	$("#exec_line").bind('change' , function(){ getLineMembers( $(this).val() , 'line2'    ) ;  } );
+	$("#work_line").bind('change' , function(){ getLineMembers( $(this).val() , 'line3'    ) ;  } );
+	$("#shared_line").bind('change' , function(){ getSharedMembers( $(this).val()    ) ;  } );
+	
+	
+	
+	////  나머지 DB 작업 요청 ==>  본인 담당과장 , 황혜경=>김창운 =>안희영 , 황혜경=>김창운
+	$("#work_gb_db1, #work_gb_db2, #work_gb_db3, #work_gb_db4").bind('change', function(){
+		if($(this).is(':checked') ){
+			getLineMembers( LINE_SRL_DB_EXEC , 'line2');
+			getLineMembers( LINE_SRL_DB_EXEC , 'line3');
+		}else{
+		
+		}
+	});
+	////  프로그램 권한 신청 클릭시 ==>  본인 담당과장 , 김인기=>김창운 =>안희영 , 김인기=>김창운
+	$("#work_gb_e").bind('change', function(){
+		if($(this).is(':checked') ){
+			getLineMembers( LINE_SRL_APP_EXEC , 'line2');
+			getLineMembers( LINE_SRL_APP_EXEC , 'line3');
+		}
+	});
+	////  개발 DB 작업 요청 ==>  본인 담당과장 , 황혜경=>김창운 =>안희영 , 황혜경=>김창운
+	$("#work_gb_db5").bind('change', function(){
+		if($(this).is(':checked') ){
+			getLineMembers( LINE_SRL_DEVDB_EXEC , 'line2');
+			getLineMembers( LINE_SRL_DEVDB_EXEC , 'line3');
+		}
+	});
+		////  네트웍크  , 해룡, 정재우
+	$("#work_gb_a1, #work_gb_a2, #work_gb_a3, #work_gb_a4").bind('change', function(){
+		if($(this).is(':checked') ){
+			getLineMembers( LINE_SRL_NW_EXEC , 'line2');
+			getLineMembers( LINE_SRL_NW_EXEC , 'line3');
+		}
+	});
+		////  서버   , 윤우영, 재경팍
+	$("#work_gb_c, #work_gb_c2, #work_gb_c3").bind('change', function(){
+		if($(this).is(':checked') ){
+			getLineMembers( LINE_SRL_SVR_EXEC , 'line2');
+			getLineMembers( LINE_SRL_SVR_EXEC , 'line3');
+		}
+	});
+		////  보안   , 이정은 , 나유미
+	$("#work_gb_b1, #work_gb_b2, #work_gb_b3").bind('change', function(){
+		if($(this).is(':checked') ){
+			getLineMembers( LINE_SRL_SEC_EXEC , 'line2');
+			getLineMembers( LINE_SRL_SEC_EXEC , 'line3');
+		}
+	});
+		////  PC  , 이정은 , 나유미
+	$("#work_gb_d, #work_gb_b3").bind('change', function(){
+		if($(this).is(':checked') ){
+			getLineMembers( LINE_SRL_PC_EXEC , 'line2');
+			getLineMembers( LINE_SRL_PC_EXEC , 'line3');
+		}
+	});
+		////  라이선스  , 신미화 , 송상섭
+	$("#work_gb_r").bind('change', function(){
+		if($(this).is(':checked') ){
+			getLineMembers( LINE_SRL_PUR_EXEC , 'line2');
+			getLineMembers( LINE_SRL_PUR_EXEC , 'line3');
+		}
+	});
+		////  업데이트안내, 김은정
+	$("#work_gb_u").bind('change', function(){
+		if($(this).is(':checked') ){
+			getLineMembers( LINE_SRL_UP_EXEC , 'line1');
+			getLineMembers( LINE_SRL_HEAD_EXEC , 'line2');
+			getLineMembers( LINE_SRL_UP_EXEC , 'line3');
+		}
+	});
+		////  CS, 권인천
+	$("#work_gb_cs").bind('change', function(){
+		if($(this).is(':checked') ){
+			getLineMembers( LINE_SRL_CS_EXEC , 'line2');
+			getLineMembers( LINE_SRL_CS_EXEC , 'line3');
+		}
+	});	
+		////  WEB, 김현아
+	$("#work_gb_web").bind('change', function(){
+		if($(this).is(':checked') ){
+			getLineMembers( LINE_SRL_WEB_EXEC , 'line2');
+			getLineMembers( LINE_SRL_WEB_EXEC , 'line3');
+		}
+	});	
+		////  DESIGN, 권혜영, 이상승
+	$("#work_gb_ds").bind('change', function(){
+		if($(this).is(':checked') ){
+			getLineMembers( LINE_SRL_DS_EXEC , 'line2');
+			getLineMembers( LINE_SRL_DS_EXEC , 'line3');
+		}
+	});		
+	
+	$("input:checkbox").each(function(){
+		$(this).prettyCheckable();
+	});  
+	
+	$("input:radio").each(function(){
+		$(this).prettyCheckable();
+	});  
+} );
+
+
+function insert() {
+	var editor_data = CKEDITOR.instances.editor1.getData();
+	try{
+		var xml = jQuery(jQuery.parseXML("<root />"));
+		
+		jQuery('root' , xml).append( jQuery('<attend_gb />').text(    jQuery("input:radio[name='attend_gb']:checked").val()      ));
+				
+		jQuery('root' , xml).append( jQuery('<reason />').text(    jQuery("#reason").val()      )  );
+		jQuery('root' , xml).append( jQuery('<period />').text(    jQuery("#period").val()      )  );
+		jQuery('root' , xml).append( jQuery('<origin />').text(    jQuery("#origin").val()      )  );
+		jQuery('root' , xml).append( jQuery('<access />').text(    jQuery("input:radio[name='access']:checked").val()      )  );
+		jQuery('root' , xml).append( jQuery('<db_gubun1 />').text(    jQuery("#db_gubun1:checked").val()      )  );
+		jQuery('root' , xml).append( jQuery('<db_gubun2 />').text(    jQuery("#db_gubun2:checked").val()      )  );
+		jQuery('root' , xml).append( jQuery('<db_gubun3 />').text(    jQuery("#db_gubun3:checked").val()      )  );
+		jQuery('root' , xml).append( jQuery('<db_gubun4 />').text(    jQuery("#db_gubun4:checked").val()      )  );
+		jQuery('root' , xml).append( jQuery('<db_gubun5 />').text(    jQuery("#db_gubun5:checked").val()      )  );
+		jQuery('root' , xml).append( jQuery('<db_gubun6 />').text(    jQuery("#db_gubun6:checked").val()      )  );
+		jQuery('root' , xml).append( jQuery('<db_gubun7 />').text(    jQuery("#db_gubun7:checked").val()      )  );
+		jQuery('root' , xml).append( jQuery('<db_gubun8 />').text(    jQuery("#db_gubun8:checked").val()      )  );
+		jQuery('root' , xml).append( jQuery('<db_gubun9 />').text(    jQuery("#db_gubun9:checked").val()      )  );
+		jQuery('root' , xml).append( jQuery('<db_gubun10 />').text(    jQuery("#db_gubun10:checked").val()      )  );
+		
+	
+
+		document.frm1_board.memo_xml.value = (new XMLSerializer()).serializeToString(xml.context);
+	
+	}catch(e){ document.write (e.message);}
+	
+	document.frm1_board.content.value = editor_data ;
+	
+	if( jQuery('#work-options  input:radio:checked').length  == 0 )
+	{
+		alert("문서 종류를 선택해주십시오");
+		return false;
+	}else {
+		return true ;
+	}
+}
+
+function completeDocumentInserted(){
+	alert('ddd');
+}
+
+function getSharedMembers( srl ){
+   // dispEapprvLineByPreAPI
+   // 
+   	var responses =['items'];
+	var form_object = {};
+	var params = {};
+	params.eapprv_share_pre_srl = srl ;
+	exec_xml(  MODULE , SHARE_ACT , params , function(ret_obj){
+	try{
+		//jQuery("checkbox .checkbox-shared-list").prettyCheckable('uncheck') ;
+		jQuery("#shared_checkbox input:checkbox").each(function(){
+			jQuery(this).prettyCheckable('uncheck');
+		}); 
+		jQuery(ret_obj['items'].item ).each(function( index , value ){
+			//jQuery(".checkbox-shared-list[value="+value+"]").attr('checked',true);     
+			jQuery(".checkbox-shared-list[value="+value+"]").prettyCheckable('check');
+		});
+	}catch(e){ console.log(e);}
+		
+	} ,  responses, params, form_object ); 
+}
+
+function getLineMembers( srl ,lineth ){
+	// dispEapprvLineByPreAPI
+	
+	var responses =['items'];
+	var form_object = {};
+	var params = {};
+	params.eapprv_line_pre_srl = srl ;
+	exec_xml(  MODULE , LINE_ACT , params , function(ret_obj){
+console.log(ret_obj);	
+	try{
+		jQuery("#"+lineth+"_1").val( ret_obj['items'].item[0] ).attr('selected','selected');  
+		jQuery("#"+lineth+"_2").val( ret_obj['items'].item[1] ).attr('selected','selected');  
+		jQuery("#"+lineth+"_3").val( ret_obj['items'].item[2] ).attr('selected','selected'); 
+	}catch(e){ console.log(e);}
+	} ,  responses, params, form_object ); 
+}
+
+</script>

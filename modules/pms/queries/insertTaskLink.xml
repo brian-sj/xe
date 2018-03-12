@@ -1,0 +1,12 @@
+<query id="insertTask" action="insert">
+    <tables>
+        <table name="pms_task_link" />
+    </tables>
+    <columns>
+		<column name="project_srl" var="project_srl" notnull="notnull"/>
+		<column name="source_task_srl" var="source"  />
+		<column name="target_task_srl" var="target" />
+		<column name="type" var="type" />
+		
+    </columns>
+</query>	

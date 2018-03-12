@@ -1,0 +1,14 @@
+<query id="insertEapprvProc" action="insert">
+	<tables>
+		<table name="eapprv_proc" />
+	</tables>
+	<columns>
+		<column name="eapprv_srl"   var="eapprv_srl" filter="number" notnull="notnull" />
+		<column name="member_srl"  var="member_srl" filter="number" notnull="notnull" />
+		
+		<column name="eapprv_user" var="eapprv_user"    		notnull="notnull" />
+		<column name="order"  		var="order" filter="number" 	notnull="notnull" />
+		<column name="stt" 				var="stt" default="0"  		notnull="notnull" />
+		<column name="regdate" default="curdate()" />
+	</columns>
+</query>

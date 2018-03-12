@@ -1,0 +1,35 @@
+<query id="getOnProcDocList" action="select">
+    <tables>
+        <table name="eapprv"  alias="e" />
+		<table name="documents" alias="d"  />
+		<table name="eapprv_proc" alias="p"  />
+		<table name="eapprv_share" alias="s"  />
+
+    </tables>
+    <columns>
+		<column name="d.title" />
+        <column name="e.*" />
+    </columns>
+    <conditions>
+	    <condition operation="equal" column="d.document_srl" var="e.document_srl" notnull="notnull" /> 
+		<condition operation="equal" column="e.eapprv_srl" var="p.eapprv_srl" notnull="notnull" pipe="and"/> 
+		<condition operation="equal" column="e.eapprv_srl" var="s.eapprv_srl" notnull="notnull" pipe="and"/> 
+		<condition operation="equal" column="e.eapprv_srl" var="eapprv_srl" filter="number" pipe="and" />
+		<condition operation="equal" column="e.proc_member_srl" var="proc_member_srl" filter="number" pipe="and"/>
+		
+		<group pipe="and">
+		        <condition operation="equal" column="e.member_srl" var="member_srl" filter="number" pipe="or"/>
+				<condition operation="equal" column="p.member_srl" var="member_srl" filter="number" pipe="or"/>
+				<condition operation="equal" column="s.member_srl" var="member_srl" filter="number" pipe="or"/>
+		</group>		
+		<condition operation="equal" column="e.stt"        var="stt"    default="P"    notnull="notnull"  pipe="and"/>
+    </conditions>
+</query>
+
+<!--     1. 결재중 , 2. 결재 완료  3, 반려   stt           -->
+
+<!--      1. 사용자가 생성한 모든 결재   목록을 가져 온다.               -->
+<!--      2. 사용자가 결재해야할 순서의  모든 결재  목록을 가져 온다.    -->
+<!--      2. 사용자가 결재해야할         모든 결재  목록을 가져 온다.    -->
+<!--      2. 사용자가 공유된             모든 결재  목록을 가져 온다.   이거는 다른 getOnProcDocListByShare.xml 이다.    -->
+

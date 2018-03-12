@@ -1,0 +1,21 @@
+<query id="insertWork" action="insert">
+    <tables>
+        <table name="pms_task" />
+    </tables>
+    <columns>
+		<column name="project_srl" var="project_srl" notnull="notnull"/>
+		<column name="task_srl" var="task_srl" notnull="notnull" />
+		<column name="parent_task_srl" var="parent_task_srl" />
+		<column name="member_srl" var="member_srl" />					
+		<column name="progress" var="progress" default="0" />				
+		
+		<column name="mh" var="progress" default="0" />				
+		<column name="planed_mh" var="planed_mh" default="0" /> 
+		
+		<column name="title" var="planed_mh" default="0" /> 
+
+		<column name="planed_start_date" var="planed_start_date" /> 
+		<column name="planed_end_date" var="planed_end_date" /> 
+		<column name="reg_date" default="curdate()" />
+    </columns>
+</query>	

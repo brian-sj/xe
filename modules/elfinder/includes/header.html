@@ -1,0 +1,53 @@
+<!--// CSS 로드(순서대로 로드되어야 정상동작함.) -->
+<load target="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css" media="screen" index="1" />
+<load target="css/elfinder.min.css" media="screen" index="2" />
+<load target="css/theme.css" media="screen" index="3" />
+
+<!--// Script 로드 -->
+<load target="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" />
+<load target="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" />
+<load target="js/elfinder.min.js" />
+
+<!--// 언어팩 로드 -->
+<load target="js/i18n/elfinder.ko.js" cond="$lang_type=='ko'" />
+<load target="js/i18n/elfinder.en.js" cond="$lang_type=='en'" />
+<load target="js/i18n/elfinder.jp.js" cond="$lang_type=='jp'" />
+<load target="js/i18n/elfinder.fr.js" cond="$lang_type=='fr'" />
+<load target="js/i18n/elfinder.de.js" cond="$lang_type=='de'" />
+<load target="js/i18n/elfinder.ru.js" cond="$lang_type=='ru'" />
+<load target="js/i18n/elfinder.es.js" cond="$lang_type=='es'" />
+<load target="js/i18n/elfinder.zh_CN.js" cond="$lang_type=='zh_CN'" />
+
+<!--// Initializer-->
+<load target="js/elfinder_init.js" />
+
+<!--// Client 환경설정 변수 -->
+<script type="text/javascript">
+// <![CDATA[
+	// Elfinder Client Config Variables
+	elfinderxe_config_vars = {
+		url			: "{getNotEncodedUrl('', 'mid', $module_info->mid, 'act', 'procElfinderxeFileManager')}",
+		lang		: "{$lang_pack}",
+		defaultView	: "{$module_info->default_view}",
+		width		: {$module_info->elfinderxe_width_auto=='N'?$module_info->elfinderxe_width:"'auto'"},
+		height		: {$module_info->elfinderxe_height},
+		dateFormat	: "{$module_info->date_format}",
+		ui			: {json_encode($module_info->elfinderxe_ui)},
+		commands	: {json_encode($allowed_cmd)},
+		uiOptions	: {
+			toolbar : [
+				['up'],
+				['cut', 'copy', 'paste', 'rename', 'rm'],
+				['upload', 'mkdir', 'mkfile'],
+				['info', 'quicklook', 'download', 'duplicate', 'edit', 'resize', 'extract', 'archive'],
+				['view', 'help'],
+				['search']
+			],
+
+			cwd : {
+				oldSchool : true
+			}
+		}
+	}
+// ]]>
+</script>

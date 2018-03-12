@@ -1,0 +1,12 @@
+<query id="insertComment" action="update">
+    <tables>
+        <table name="pms_files" />
+    </tables>
+    <columns>
+		<column name="comment" var="comment"  notnull="notnull"/>
+    </columns>
+		<conditions>
+			<condition operation="equal" column="pms_file_srl" var="pms_file_srl" />
+		</conditions>
+</query>	
+        

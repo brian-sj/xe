@@ -1,0 +1,74 @@
+		<div id="history_panel" class="panel panel-info">
+		  <!-- Default panel contents -->
+		  <div class="panel-heading"> <h5 class="panel-title"><a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne">작업 이력</a>
+			<input type="button" class="btn btn-primary" data-toggle="modal" data-target="#popup_html" value="쓰기"></h5></div>
+		  <div id="collapseOne" class="panel-collapse collapse in">
+		  <div class="panel-body">
+				  <!-- Table -->
+				  <table class="table">
+					<!--@foreach($comment as $no => $val)-->	
+					<tr height="30">
+						<td><span class="title-link" onclick="showContentPopup(this);">{$val->title}<div class="hidden-content">{$val->content}</div></span></td>
+						<td width="80">{$val->user_name}</td><td width="100">{zDate($val->reg_date, "Y-m-d")}</td>
+						<td width="40" onclick="deleteComment({$val->comment_srl});"><span class="del" data-comment_srl="{$val->comment_srl}" ><a href="#"><img src="images/bt_delete.gif" ></a></span></td>
+					</tr>
+					<!--@end-->
+				  </table>
+		  <div class="panel-footer">
+			<ul class="pagination">
+				<li><a href="{getUrl('page','','comment_srl','')}" class="prevEnd"><<</a></li>
+				<!--@while($page_no = $page_navigation->getNextPage())-->
+					<!--@if($page == $page_no)-->
+						<li class="active"><a href="{getUrl('page',$page_no,'comment_srl','')}">{$page_no}</a></li>
+					<!--@else-->
+						<li><a href="{getUrl('page',$page_no,'comment_srl','')}">{$page_no}</a></li>
+					<!--@end-->
+				<!--@end-->
+				<li><a href="{getUrl('page',$page_navigation->last_page,'comment_srl','')}" class="nextEnd">>></a></li>
+			</ul>
+		  </div>
+		  </div>
+		  </div>
+		</div>
+		
+		
+		
+<!-- Modal -->
+<div id="popup_html" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">메모 </h4>
+      </div>
+      <div class="modal-body">
+        <form name="frm" method="post">
+			<input type="hidden" name="act" value="procCommentSave" />
+			<input type="hidden" name="project_srl" value="{$project_srl}">
+			<!-- Table -->
+			<table class="table">
+				<tr>
+					<td>
+						<input type="text" placeholder="제목" class="form-control" id="title" name="title" /> 
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<textarea class="form-control" id="content" name="content" placeholder="내용" > </textarea>
+					</td>
+				</tr>
+			</table>
+			<div>
+				<button class="btn btn-primary">저장</button>
+			</div>
+		</form>	
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<query id="getMemberList" action="select">
+    <tables>
+        <table name="member" />
+    </tables>
+    <columns>
+        <column name="member_srl" />
+		<column name="user_id" />
+		<column name="nick_name" />
+		<column name="user_name" />
+    </columns>
+    <conditions>
+        <condition operation="in" column="member_srl" var="member_srl" />
+    </conditions>
+    <navigation>
+        <index var="sort_index" default="nick_name" order="asc" />
+    </navigation>
+</query>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="0.2">
+	<title xml:lang="ko">elFinder 파일 관리기</title>
+	<title xml:lang="en">elFinder File Manager</title>
+	<description xml:lang="ko">웹 기반으로 동작하는 elFinder 파일관리기를 생성/관리하는 모듈입니다.</description>
+	<description xml:lang="en">With this module, you can create or manage Web-based file manager, elFinder.</description>
+	<version>0.2</version>
+	<date>2014-1-24</date>
+	<category>utility</category>
+	<author email_address="temflic@gmail.com" link="http://tuwlab.com">
+		<name xml:lang="ko">이승준(TUW)</name>
+		<name xml:lang="en">SeungJun Lee</name>
+	</author>
+</module>

@@ -1,0 +1,142 @@
+﻿<style>
+#main_panel , #history_panel {width : 95%; margin : 10px auto ;}
+
+.panel-footer {
+	display: block;
+	text-align: center;
+}
+.panel-footer > li > a {
+	float: none;
+	margin-left: -5px;
+}
+
+#search_filter {display:none;}
+
+
+.fvOff, .fvOn {
+    background: transparent url("./modules/admin/tpl/img/iconFavorite.gif") no-repeat scroll 0 0;
+    border: 0 none;
+    display: inline-block;
+    height: 16px;
+    overflow: hidden;
+    text-indent: 16px;
+    width: 16px;
+}
+.fvOn {
+    background-position: 0 -16px;
+}
+
+</style>
+<!--#include("./header.html")-->
+
+<div id="main_panel" class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading"><h2>Project 목록<span style="display:inline-block;padding-top:13px;"><a href="{getUrl('act','dispPmsProjectWrite','project_srl','')}" class="btn btn-lg btn-warning"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 쓰기</a></span></h2></div>
+  <div class="panel-body">
+    <nav class="navbar navbar-inverse ">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-8">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="{getUrl('category','')}"> ALL </a>
+			</div>
+			
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"|cond="$category=='A'"><a href="{getUrl('category','A')}">접수</a></li>
+					<li class="active"|cond="$category=='B'"><a href="{getUrl('category','B')}">예정</a></li>
+					<li class="active"|cond="$category=='C'"><a href="{getUrl('category','C')}">대기</a></li>
+					<li class="active"|cond="$category=='D'"><a href="{getUrl('category','D')}">진행</a></li>
+					<li class="active"|cond="$category=='E'"><a href="{getUrl('category','E')}">완료</a></li>
+					<li class="active"|cond="$category=='F'"><a href="{getUrl('category','F')}">보류</a></li>
+					<li class="active"|cond="$category=='X'"><a href="{getUrl('category','X')}">폐기</a></li>
+					<li class="active"|cond="$category=='R'"><a href="{getUrl('category','R')}">일상</a></li>
+						
+				</ul>
+
+			</div>	
+		</div>
+	</nav>
+
+  </div>
+
+  
+<form method="get" name="searchfrm" id="searchfrm" no-error-return-url="true">
+  <button id="search_filter">검색  </button>
+  <!-- Table -->
+  <table class="table">
+    <tr><th width="40"><a href="{getUrl('sort_index','project_srl')}">No.</a></th>
+		<th width="100">구분</th>
+		<th width="80"><a href="{getUrl('sort_index','user_name')}">PM</a>
+		<input type="text" style="width:90px" placeholder="이름" name="user_name" value="{$user_name}" /></th>
+		
+		<th><a href="{getUrl('sort_index','title')}">협조전제목</a><br>
+		<input type="text"  placeholder="제목" name="title" value="{$title}" /></th>
+		<th>부제목</th>
+		<th width="80"><a href="{getUrl('sort_index','dev_dept')}">담당팀</a>
+		<select name="dev_dept" onchange="searchfrm.submit()">
+			<option value="" selected|cond="$dev_dept==''">전체</option>
+			<option value="321" selected|cond="$dev_dept=='321'">CS개발팀</option>
+			<option value="322" selected|cond="$dev_dept=='322'">WEB개발팀</option>
+			<option value="323" selected|cond="$dev_dept=='323'">DB운영팀</option>
+			<option value="724" selected|cond="$dev_dept=='724'">디자인팀</option>
+		</select>
+		</th>
+		<!--
+		<input type="text" style="width:100px" placeholder="담당과" name="dev_dept" value="{$dev_dept}" /></th>		
+		<th width="250">시작일/예정일/완료일</th> -->
+		<th width="80">최근수정</th>
+	</tr>
+
+	
+	<!--@foreach($list as $no => $val)-->
+	<tr>
+		<td>{$val->project_srl}</td>
+		<td>{$val->gu1}/{$val->gu2}</td>
+		<td>{$val->user_name}</td>
+		<!-- <td>{$val->mh}MH</td>  -->
+		<td><a href="{getSiteUrl('','act','dispPmsCalendarView','project_srl',$val->project_srl )}" >{cut_str($val->title, 50)}</a>&nbsp;&nbsp;<a href="{getSiteUrl('','act','dispPmsProjectWrite','project_srl',$val->project_srl )}" ><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>Edit</a></td>
+		<td>{$val->sub_title}</td>
+		<!--  <td>{$val->request_dept}</td>  -->
+		<td>{$val->dev_dept}</td>
+		<!-- <td>{zDate($val->start_date, "Y-m-d")}/{zDate($val->planed_end_date, "Y-m-d")}/{zDate($val->end_date, "Y-m-d")}</td> -->
+		<td>{zDate($val->reg_date, "Y-m-d")}</td>
+	</tr>
+	<!--@end-->
+  </table>
+</form>
+  
+  <!-- 페이지 네비게이션 -->
+	<div class="panel-footer">
+		<ul class="pagination">
+			<li><a href="{getUrl('page','','project_srl','')}" class="prevEnd">{$lang->first_page}</a></li>
+	
+			<!--@while($page_no = $page_navigation->getNextPage())-->
+				<!--@if($page == $page_no)-->
+					<li class="active"><a href="{getUrl('page',$page_no,'project_srl','')}">{$page_no}</a></li>
+				<!--@else-->
+					<li><a href="{getUrl('page',$page_no,'project_srl','')}">{$page_no}</a></li>
+				<!--@end-->
+			<!--@end-->
+			<li><a href="{getUrl('page',$page_navigation->last_page,'project_srl','')}" class="nextEnd">{$lang->last_page}</a></li>
+		</ul>	
+	</div>
+  </div>
+  
+  <script>
+  function  doToggleFavoriteProject( project_srl ){
+	// favorite 추가를 해 봅시다. 
+	// 이거 할라면 쿼리를 바꾸어 야함. 
+	exec_json("pms.procPmsFavoriteToggle", params, function(data){ 
+							jQuery("#progress").val( data.progress) ;
+							if(data.work_time=="") data.work_time = 0 ;
+							jQuery("#work_time").val(data.work_time);
+
+						});
+  }
+  </script>
+  

@@ -1,0 +1,86 @@
+<load target="css/brian.css" />
+
+
+<!--%import("filter/admin_insert.xml")-->
+
+<div>
+
+
+
+  <a href={getUrl('act' ,'dispBookcAdminImageInsert' )}> 이미지 링크 </a>
+
+
+</div>
+
+
+
+<form action="./" method="post"  enctype="multipart/form-data" name="formd">
+<input type='hidden' name='content' value="{$oDocument->content}"/>
+<input type="hidden" name="module_srl" value="{$module_srl}">
+<input type="hidden" name="act" value="procBookcAdminInsert">
+<input type='hidden' name='document_srl' value='{$oDocument->document_srl}' />
+
+	<fieldset class='input'>
+	<legend> 단계 1.  분류 선택 및 제목 선택 </legend>
+	<div class="write_header">
+		책 분류&nbsp; <select name="category_srl" cond="$module_info->use_category=='Y'">
+			<option value="">{$lang->category}</option>
+			<option loop="$category_list => $val" value="{$val->module_category_srl}" selected="selected"|cond="$val->grant&&$val->selected||$val->module_category_srl==$oDocument->category_srl">
+				{str_repeat("&nbsp;&nbsp;",$val->depth)} {$val->title} ({$val->document_count})
+			</option>
+		</select> 
+		&nbsp; {$lang->module_kind} <input type="text" name="key" value="{$module_info->mid}"  size="10" maxlength="20">
+		&nbsp; {$lang->user_yn} <input type="radio" name="user_yn" value="{$user_yn}"     checked|cond="$user_yn=='Y'">  {$lang->user_yn_n}<input type="radio" name="user_yn" value="{$user_yn}"     checked|cond="$user_yn=='N'">
+		<br>
+	</div>
+	</fieldset>
+	
+<!--	
+	<fieldset class='input'>
+	<legend> 단계 2.  표지사진 </legend>
+		이미지 파일 : <input type="file" name='upload'> <div id="imgCrop"> </div> 
+		
+	</fieldset>	
+-->
+	
+	
+	<fieldset class='input'>
+	<legend>단계 3.  내용 및 파일 첨부</legend>
+
+	제목 : <input cond="$module_info->browser_title"  type="text" name="title" class="iText title" title="{$lang->title}" required maxlength="100" value="{htmlspecialchars($module_info->browser_title)}" />
+		     <input cond="!$module_info->browser_title" type="text" name="title" class="iText title" title="{$lang->title}" required maxlength="100" />
+		
+		{$editor}
+	</fieldset>
+
+       <div onclick="onSubmit();"> <a href="#">저장 </a> </div>
+</form>
+<script>
+
+function onSubmit() {
+	if( document.formd.title =="" ) {
+		alert("제목을 입력 하세요");
+		return false ;
+	}
+	
+	alert('dddd' + document.formd.method );
+	
+	alert('adfad');
+	
+	document.formd.method = "post";
+	document.formd.submit();
+}
+
+
+function completeAdminInsertBook(ret_obj) {
+    var error = ret_obj['error'];
+    var message = ret_obj['message'];
+    var page = ret_obj['page'];
+    var module_srl = ret_obj['module_srl'];
+	alert(message);
+    var url = current_url.setQuery('act','dispBookcAdminList').setQuery('module_srl','');
+    if(page) url.setQuery('page',page);
+    location.href = url;
+}
+
+</script>

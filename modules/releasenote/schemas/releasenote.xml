@@ -1,0 +1,57 @@
+<table name="releasenote">
+    <column name="note_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+    <column name="category" type="varchar" size="3" />
+	<column name="document_srl" type="number" size="4" />
+	<column name="program_srl" type="number" size="4" />
+	<column name="title" type="varchar" size="100" />
+    <column name="content" type="varchar" size="4000" />
+	<column name="comment" type="varchar" size="8000" />
+	
+	<column name="request_dept" type="varchar" size="20" />
+	<column name="request_name" type="varchar" size="100" />
+    <column name="worker_srl" type="number" size="11" />
+	<column name="t_releaser_srl" type="number" size="11" />
+    <column name="tester_srl" type="number" size="11" />
+	<column name="manager_srl" type="number" size="11" />
+	<column name="header_srl" type="number" size="11" />
+	<column name="releaser_srl" type="number" size="11" />
+
+	<column name="worker_confirm" type="date" />
+	<column name="t_releaser_confirm" type="date" />
+	<column name="tester_confirm" type="date" />
+	<column name="manager_confirm" type="date"  />
+	<column name="header_confirm" type="date"  />
+	<column name="release_date" type="date"  />
+	
+	
+    <column name="start_date" type="date" />
+	<column name="end_date" type="date"  />
+	<column name="due_date" type="date"  />
+	<column name="regdate" type="date" default="curdate()" />
+	<column name="stt" type="char"  size="1" default="W" />
+	
+	<column name="lang" type="char"  size="3" default="kor" />
+	<column name="stt1" type="char"  size="2" default="" />
+	<column name="stt2" type="char"  size="2" default="" />
+	<column name="stt3" type="char"  size="2" default="" />
+	<column name="shared_members" type="varchar"  size="2000" default="" />
+	
+	
+</table>
+<!--
+category  w 웹 , c 프로그램
+program_srl  프로그램 혹은 사이트 이름. 
+
+request_name 요청자
+worker  담당자
+tester  테스터
+manager 담당과장 
+
+stt W 작업중 A 테스트대기 B 결재대기 C 배포대기 D 배포완료 X 미결재 배포 
+
+stt1 
+stt2 
+stt3 은 실제로 쓰이지 않음. 나중에 확장성을 대비해서 넣어 두었음.  2016-07-20 PMS 주간보고 적용 여부 저장  Y 이면 주간보고에 포함됨
+
+필터링이 필요없는 항목은 comment 항목에 xml 또는 json 타입으로 입력 .
+-->

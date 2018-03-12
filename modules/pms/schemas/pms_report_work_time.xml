@@ -1,0 +1,23 @@
+<table name="pms_report_work_time">
+	
+	<column name="project_srl" type="number" size="11" notnull="notnull"  primary_key="primary_key"/>
+	<column name="task_srl" type="number" size="11" notnull="notnull"  primary_key="primary_key"/>
+	<column name="report_work_srl" type="number" size="11" notnull="notnull" primary_key="primary_key"/>
+	<column name="work_date" type="date" notnull="notnull" primary_key="primary_key"/>
+	
+	
+	<column name="member_srl" type="number" size="11" notnull="notnull" default="0"/>
+	<column name="progress" type="number" size="4" notnull="notnull" default="0" /> 
+	<column name="mh" type="number" size="4" notnull="notnull" default="0" /> 
+	<column name="count" type="number" size="4" notnull="notnull" default="1" /> 
+    <column name="title" type="varchar" size="2000" notnull="notnull"    /> 
+	<column name="type" type="varchar" size="1" default="N"	/>  
+	<column name="regdate" type="date" notnull="notnull" />
+</table>
+<!--
+    주별, 일별 업무 시간을 기록합니다. 
+	mh 에다가 씁니다. 
+	work_date 일한 날입니다. 
+	type : A: 개발, B:회의 C: 지원업무 D:일상업무
+	count : 횟수 
+-->

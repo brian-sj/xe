@@ -1,0 +1,3 @@
+<!--@foreach($main_code_list as $key=> $val)-->
+	<li class="active"|cond="$gu1==$val->code_int_val"><a href="{getUrl('gu1', $val->code_int_val )}">{$val->memo}</a></li>
+<!--@end-->			

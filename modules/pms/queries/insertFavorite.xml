@@ -1,0 +1,11 @@
+<query id="insertFavorite" action="insert">
+    <tables>
+        <table name="pms_project_favorite" />
+    </tables>
+    <columns>
+		<column name="project_srl" var="project_srl" notnull="notnull"/>
+		<column name="member_srl" var="member_srl" notnull="notnull" />				
+		<column name="category" var="category" default="A" />		
+		<column name="task_srl" var="task_srl" />		
+    </columns>
+</query>	

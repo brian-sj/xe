@@ -1,0 +1,37 @@
+<query id="insertProject" action="insert">
+    <tables>
+        <table name="pms_project" />
+    </tables>
+    <columns>
+		<column name="project_srl" var="project_srl" />
+		<column name="document_srl" var="document_srl" />
+		<column name="member_srl" var="member_srl" />					
+		<column name="category" var="category"  notnull="notnull"/>				
+		<column name="gu1" var="gu1"  notnull="notnull"/>				
+		<column name="gu2" var="gu2"  notnull="notnull"/>	
+		<column name="gu3" var="gu3"  default="" />				
+		<column name="gu4" var="gu4"  default=""/>			
+		<column name="title" var="title"  notnull="notnull"/>	
+		<column name="sub_title" var="sub_title"/>	
+		<column name="content" var="content"/>	
+		
+		<column name="request_dept" var="request_dept"  notnull="notnull"/>				
+		<column name="request_person" var="request_person" />				
+		<column name="memo" var="memo" />				
+		<column name="request_date" var="request_date" />				
+		<column name="dev_dept" var="dev_dept"  default="0"/>				
+				
+		<column name="mh" var="mh" default="0" /> 
+		<column name="planed_mh" var="planed_mh" default="0" /> 
+		<column name="progress" var="progress" default="0" /> 
+		<column name="project_stt" var="project_stt" default="N" /> 
+		<column name="shared_members" var="shared_members" />			
+		
+		<column name="start_date" var="start_date" /> 
+		<column name="end_date" var="end_date" /> 
+		<column name="planed_start_date" var="planed_start_date" /> 
+		<column name="planed_end_date" var="planed_end_date" /> 		
+		
+		<column name="reg_date" default="curdate()" />
+    </columns>
+</query>	

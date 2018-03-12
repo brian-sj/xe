@@ -1,0 +1,24 @@
+<query id="getEapprvLines" action="select">
+    <tables>
+        <table name="eapprv_line" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="eapprv_srl" var="eapprv_srl" filter="number"  />
+		<condition operation="equal" column="line_stt"   var="line_stt" pipe="and" />
+        <condition operation="equal" column="member_srl" var="member_srl" filter="number" pipe="and"/>
+    </conditions>
+	
+	
+	<navigation>
+		<index var="aPEODDEWDGFGEFGF" default="line_stt" order="asc" />
+		<index var="aPEODDEWDGFGEFGF" default="position" order="asc" />
+    </navigation>
+</query>
+<!-- 
+	1. 권한이 있는지 체크할때 쓰인다.  내용보기 누르면 이사람이 이 권한이 있는지
+	
+
+-->

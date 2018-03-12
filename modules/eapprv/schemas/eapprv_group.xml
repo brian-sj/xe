@@ -1,0 +1,7 @@
+<table name="eapprv_group">
+    <column name="eapprv_group_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+    <column name="member_srl" type="number" size="11" default="0" notnull="notnull" index="idx_member_srl" />
+	<column name="group_title" type="varchar" size="200" notnull="notnull" />
+    <column name="group_content" type="varchar" size="2000" notnull="notnull" />
+	<column name="regdate" type="date" index="idx_regdate" />    
+</table>

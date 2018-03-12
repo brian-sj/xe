@@ -1,0 +1,12 @@
+<query id="insertEapprvLine" action="insert">
+	<tables>
+		<table name="eapprv_line" />
+	</tables>
+	<columns>
+		<column name="eapprv_line_srl" var="eapprv_line_srl" filter="number" notnull="notnull" />
+		<column name="member_srl" var="member_srl" filter="number" notnull="notnull" />
+		<column name="line_title" var="line_title" notnull="notnull" />
+		<column name="line_content" var="line_content"  notnull="notnull" />
+		<column name="regdate" default="curdate()" />
+	</columns>
+</query>

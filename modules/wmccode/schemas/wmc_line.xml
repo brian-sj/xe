@@ -1,0 +1,11 @@
+<table name="wmc_line">
+    <column name="line_srl" type="number" size="11" primary_key="primary_key"/>
+	<column name="category" type="char"  size="2" default="AA" primary_key="primary_key" />
+	<column name="member_srl" type="number" size="11" />
+	<column name="stt" type="char"  size="1" default="" />
+	<column name="regdate" type="date" />
+</table>
+<!--
+line_srl은 문서 번호 이다. 
+line_srl 은 
+-->

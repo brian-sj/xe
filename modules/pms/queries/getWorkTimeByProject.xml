@@ -1,0 +1,11 @@
+<query id="getWorkTimeByProject" action="select">
+    <tables>
+        <table name="pms_report_work_time" alias="p"/>
+    </tables>
+    <columns>
+        <column name="sum(mh)" alias="mh"/>
+    </columns>
+    <conditions>
+		<condition operation="equal" column="p.project_srl" var="project_srl" notnull="notnull" /> 
+    </conditions>
+</query>

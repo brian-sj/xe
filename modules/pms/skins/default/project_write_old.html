@@ -1,0 +1,203 @@
+﻿<style>
+#main_panel , #history_panel {width : 80%; margin : 20px 20px; float :left ;}
+.dropdown-menu {overflow:auto; height:300px;}
+.float-div { width : 400px  ; float:left ; position : absolute; z-index:1000 ; display:none; } 
+.float-checkbox {display:inline-block ; width : 75px;}
+</style>
+<!--#include("./header.html")-->
+<load target="/common/js/plugins/dhtmlx/dhtmlx.js" />
+<load target="/common/js/plugins/dhtmlx/skins/terrace/dhtmlx.css" />
+
+<load target="/common/css/bootstrap.latest.css" />
+<load target="/common/js/bootstrap.latest.js" />
+<load target="js/bootstrap-multiselect.js" />
+<load target="js/bootstrap-multiselect.css" />
+
+<script>
+jQuery(function($) {
+	wmcCalendar = new dhtmlXCalendarObject(["start_date", "planed_end_date", "end_date", "request_date"]);
+
+});
+
+jQuery(function($) {
+	$('#developer').multiselect();
+});
+
+jQuery(document).ready(function($){
+	jQuery(".sub-worker").click(function(){jQuery(".float-div").toggle("slow"); });
+	$("#gu1").bind('change' , function(){
+		
+		params = {};
+		params.code_gu = '{__CODE_PMS__}';
+		params.code_gu2 = '{__CODE_PMS_SUB__}';
+		params.code_var_val =  $(this).find("option:selected").data('code') ;
+		exec_json("pms.dispPmsBySubCodeAPI",params, function(data){ 
+								$("#gu2").html("");
+								
+								$(data.code).each(function(i){ 
+									$("#gu2").append( "<option value='"+$(this).attr('code_int_val')+"'>"+ $(this).attr('memo')    ); 
+								});
+							});
+	});
+});
+
+
+
+</script>
+
+<div id="main_panel" class="panel panel-primary">
+  <!-- Default panel contents -->
+	<div class="panel-heading"><h1>Project 목록</h1></div>
+	<div class="panel-body">			
+<form name="frm" method="post">
+	<input type="hidden" name="act" value="procProjectSave" />
+	<input type="hidden" name="project_srl" value="{$data->project_srl}">
+	<!-- Table -->
+	
+	<div>
+		<div class="form-group col-lg-8">
+		<label for=""> 진행 구분 </label><br>
+			<input type="radio" name="category" value="A" checked|cond="$data->category=='A'" />&nbsp;접수&nbsp;
+			<input type="radio" name="category" value="B" checked|cond="$data->category=='B'" />&nbsp;예정&nbsp;
+			<input type="radio" name="category" value="D" checked|cond="$data->category=='D'" />&nbsp;진행&nbsp;
+			<input type="radio" name="category" value="E" checked|cond="$data->category=='E'" />&nbsp;완료&nbsp;
+			&nbsp;&nbsp;&nbsp;
+			<input type="radio" name="category" value="F" checked|cond="$data->category=='F'" />&nbsp;보류&nbsp;
+			<input type="radio" name="category" value="X" checked|cond="$data->category=='X'" />&nbsp;폐기&nbsp;
+			<input type="radio" name="category" value="R" checked|cond="$data->category=='R'" />&nbsp;일상
+	  </div>
+	  <div class="form-group col-lg-4">
+		<label for="mh">규모(Hour*man) </label>
+		<input class="form-control" type="text" id="mh" name="mh" value="{$data->mh}" placeholder="mh" />
+	  </div>
+	  
+	  
+	  
+	  <div class="form-group col-lg-3">
+		<label for="gu1">대구분 : </label>
+		<select  class="form-control" id="gu1" name="gu1" >
+			<option value="" data-code="X" selected|cond="$data->gu1==''">선택</option>
+			<!--@foreach($main_code_list as $key=> $val)-->
+					<option value="{$val->code_int_val}" selected|cond="$val->code_int_val==$data->gu1" data-code="{$val->code_var_val}" >{$val->memo}</option>
+			<!--@end-->			
+
+		</select>
+	  </div>
+	  <div class="form-group col-lg-3">
+		<label for="gu2">소구분 : </label>
+		<select  class="form-control" id="gu2" name="gu2" >
+				<option value="XX" selected|cond="$data->gu2==''">선택</option>
+				<!--@foreach($sub_code_list as $key=> $val)-->
+					<option value="{$val->code_int_val}" selected|cond="$val->code_int_val==$data->gu2" >{$val->memo}</option>
+				<!--@end-->					
+		</select>
+	  </div>
+	  
+	  <div class="form-group col-lg-3">
+		<label for="member_srl">담당 조직 : </label>
+			<select class="form-control" id="dev_dept" name="dev_dept" >
+					<option value="" selected|cond="">선택</option>
+				<!--@foreach($dev_depts as $key=> $val)-->
+					<option value="{$key}" selected|cond="$key==$data->member_srl" >{$val}</option>
+				<!--@end-->	
+			</select>
+	  </div>
+	  
+	  
+	  <div class="form-group col-lg-3">
+		<label for="member_srl">PM : </label>
+			<select class="form-control" id="member_srl" name="member_srl" >
+					<option value="" selected|cond="">선택</option>
+				<!--@foreach($wmc_members as $key=> $val)-->
+					<option value="{$key}" selected|cond="$key==$data->member_srl" >{$val}</option>
+				<!--@end-->	
+			</select>
+	  </div>
+
+	  
+
+
+
+	  <div class="form-group col-lg-3">
+		<label for="progress"> 진행률: </label>
+			<input  class="form-control" type="text" id="progress" name="progress" value="{$data->progress}" / >
+	  </div>
+
+	  <div class="form-group col-lg-3">
+		<label for="request_dept"> 요청 부서 </label>
+			<select class="form-control" name="request_dept" id="request_dept" name="request_dept">
+				<option vlaue="" selected|cond="$data->request_dept==''">선택</option>
+				<!--@foreach($request_dept as $key=> $val)-->
+					<option value="{$key}" selected|cond="$key==$data->request_dept" >{$val}</option>
+				<!--@end-->
+				<!--<option vlaue="GP" selected|cond="$data->request_dept=='GP'">GP</option>
+				<option vlaue="시무실" selected|cond="$data->request_dept=='시무실'">시무실</option>
+				<option vlaue="인사실" selected|cond="$data->request_dept=='인사실'">인사실</option>
+				<option vlaue="재무실" selected|cond="$data->request_dept=='재무실'">재무실</option>
+				<option vlaue="선교정보실" selected|cond="$data->request_dept=='선교정보실'">선교정보실</option>
+				<option vlaue="해외선교국" selected|cond="$data->request_dept=='해외선교국'">해외선교국</option>
+				<option vlaue="전도국" selected|cond="$data->request_dept=='전도국'">전도국</option>
+				<option vlaue="총무국" selected|cond="$data->request_dept=='총무국'">총무국</option>
+				<option vlaue="전산실" selected|cond="$data->request_dept=='전산실'">전산실</option>
+				<option vlaue="출판국" selected|cond="$data->request_dept=='출판국'">출판국</option>
+				<option vlaue="영상선교국" selected|cond="$data->request_dept=='영상선교국'">영상선교국</option>
+				<option vlaue="새노래선교국" selected|cond="$data->request_dept=='새노래선교국'">새노래선교국</option>-->
+			</select>
+	  </div>
+
+
+	  <div class="form-group col-lg-3">
+		<label for="member_srl"> 요청자  </label>
+			<input class="form-control" type="text" id="request_person" name="request_person" value="{$data->request_person}" />
+	  </div>
+
+
+
+
+
+	  <div class="form-group col-lg-3">
+		<label for="request_date"> 요청일  : </label>
+			<input class="form-control" type="text" id="request_date" name="request_date" value="{zDate($data->request_date, 'Y-m-d')}" / >
+
+	  </div>
+
+
+	  <div class="form-group col-lg-3">
+		<label for="start_date">시작일  </label>
+			<input class="form-control" type="text" id="start_date" name="start_date" value="{zDate($data->start_date, 'Y-m-d')}" / >
+	  </div>
+	  <div class="form-group col-lg-3">
+		<label for="start_date">시작일(계획)  </label>
+			<input class="form-control" type="text" id="start_date" name="planed_start_date" value="{zDate($data->planed_start_date, 'Y-m-d')}" / >
+	  </div>
+	  
+
+	  <div class="form-group col-lg-3">
+		<label for="end_date"> 종료일 : </label>
+		<input class="form-control" type="text" id="end_date" name="end_date" value="{zDate($data->end_date, 'Y-m-d')}" / > 
+	  </div>
+	  <div class="form-group col-lg-3">
+		<label for="end_date"> 종료일(예정) : </label>
+		<input class="form-control" type="text" id="end_date" name="end_date" value="{zDate($data->end_date, 'Y-m-d')}" / > 
+	  </div>
+	  
+	  <div class="form-group col-lg-12">
+		<label for="title"> 제목 (부서협조전) : </label>
+		<input type="text" class="form-control" id="title" name="title" value="{$data->title}" />
+	  </div>
+	
+	  <div class="form-group col-lg-12">
+		<label for="content"> 내용 </label>
+		<textarea class="form-control" id="content" name="content" value="">{$data->content}</textarea>
+	  </div>
+	</div>
+
+	</div>
+	<div class="panel-footer">
+		<button class="btn btn-primary">저장</button>
+		<a href="{getUrl('act','dispPmsProjectListView')}" class="btn">목록</a>
+	</div>
+</form>	
+</div>
+
+

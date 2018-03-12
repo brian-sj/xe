@@ -1,0 +1,4 @@
+<!--//리얼에서는 순서가 바껴서 array_reverse 사용함 -->
+<!--@foreach(array_reverse($main_code_list) as $key=>$val)-->
+	<li class="active"|cond="$gu1==$val->code_int_val"><a href="{getUrl('gu1', $val->code_int_val )}">{$val->memo}</a></li>
+<!--@end-->			

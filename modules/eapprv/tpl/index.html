@@ -1,0 +1,125 @@
+﻿
+
+<table id="boardList" class="x_table x_table-striped x_table-hover">
+	<caption>
+		<strong>Total: {number_format($total_count)}, Page: {number_format($page)}/{number_format($total_page)}</strong>
+		<div class="x_btn-gruop x_pull-right">
+			<!-- <a class="x_btn modalAnchor _manage_selected" href="#manageSelectedModule">{$lang->cmd_manage_selected_board}</a> -->
+		</div>
+	</caption>
+	<thead>
+		<tr>
+			<th scope="col" class="nowr">{$lang->no}</th>
+			<th scope="col" class="nowr">{$lang->title}</th>
+			<th scope="col" class="nowr">{$lang->mid}</th>
+			<th scope="col" class="nowr"><a href="{getUrl('site_srl' ,'' )}">Site</a></th>
+			<th scope="col" class="nowr">{$lang->title_img}</th>
+			<th scope="col" class="title">{$lang->browser_title}</th>
+			<th scope="col" class="nowr">{$lang->regdate}</th>
+<!--			<th scope="col" class="nowr">{$lang->cmd_setup}</th> 
+			<th scope="col" class="nowr">{$lang->cmd_copy}</th> -->
+			<th scope="col" class="nowr">{$lang->cmd_delete}</th>
+		</tr>
+	</thead>
+		<tbody>
+		<tr loop="$list => $no,$val">
+			<td class="nowr">{$no}</td>
+			<td class="nowr">
+				<block cond="!$val->module_category_srl">
+					<block cond="$val->site_srl">{$lang->virtual_site}</block>
+					<block cond="!$val->site_srl">{$lang->not_exists}</block>
+				</block>
+				<block cond="$val->module_category_srl">{$module_category[$val->module_category_srl]->title}</block>
+			</td>
+			<td class="nowr">{$val->mid}</td>
+			<td class="nowr"><a href="{getUrl('site_srl' ,$val->site_srl  )}">{$val->site_srl}</a></td>
+			<td class="nowr"><img height="33" width="33" src="{$val->title_img}"></td>
+			<td class="title"><a href="{getUrl( 'act', 'dispBookcAdminInfo' , 'module_srl', $val->module_srl , 'document_srl',''  )}">{$val->browser_title}</a></td>
+			<td class="nowr">{zdate($val->regdate,"Y-m-d")}</td>
+<!--			<td class="nowr"><a href="{getUrl('act','dispBoardAdminBoardInfo','module_srl',$val->module_srl)}" title="{$lang->cmd_setup}">{$lang->cmd_setup}</a></td>  
+			<td class="nowr"><a href="{getUrl('','module','module','act','dispModuleAdminCopyModule','module_srl',$val->module_srl)}" onclick="popopen(this.href);return false;" title="{$lang->cmd_copy}">{$lang->cmd_copy}</a></td> -->
+			<td class="nowr"><a href="{getUrl('act','dispBookcAdminDeleteModule','module_srl', $val->module_srl)}" title="{$lang->cmd_delete}">{$lang->cmd_delete}</a></td>
+
+		</tr>
+		<tr cond="!$list">
+			<td>{$lang->no_board_instance}</td>
+		</tr>
+	</tbody>   
+</table>	
+<!-- 모듈 생성 버튼 -->
+<div class="clear">
+    <div class="fr">
+
+		<div class="x_clearfix btnArea">
+			<a href="{getUrl('act','dispBookcAdminInsertStep2' ,  'module_srl' , $module_srl , 'user_yn' , 'Y' )}"><button type="button" class="x_btn x_btn-primary">추가입력</button></a>
+	    </div>
+		
+	</div>
+</div>
+
+<form>
+<input type="hidden" name="error_return_url" value="">
+<input type="hidden" name="module" value="admin">
+<input type="hidden" name="site_srl" value="{$site_srl}">
+
+	<span class="x_input-append">
+		제목 검색 : <input type="text" name="search_keyword" value="{htmlspecialchars($search_keyword)}" class="inputTypeText" />       <input type="submit" class="x_btn x_btn-inverse" value="{$lang->cmd_search}" />
+	</span>	
+</form>	
+
+
+<form cond="$page_navigation" action="./" class="x_pagination x_pagination-centered" no-error-return-url="true">
+	<input type="hidden" name="module" value="{$module}" />
+	<input type="hidden" name="act" value="{$act}" />
+	<input cond="$order_target" type="hidden" name="order_target" value="{$order_target}" />
+	<input cond="$order_type" type="hidden" name="order_type" value="{$order_type}" />
+	<input cond="$category_srl" type="hidden" name="category_srl" value="{$category_srl}" />
+	<input cond="$childrenList" type="hidden" name="childrenList" value="{$childrenList}" />
+	<input type="hidden" name="target_module_srl" value="{$target_module_srl}">
+	<input type="hidden" name="scrap" value="{$scrap}">
+	<input cond="$search_keyword" type="hidden" name="search_keyword" value="{$search_keyword}" />
+	<ul>
+		<li class="x_disabled"|cond="!$page || $page == 1"><a href="{getUrl('page', '')}">&laquo; {$lang->first_page}</a></li>
+		<block cond="$page_navigation->first_page != 1 && $page_navigation->first_page + $page_navigation->page_count > $page_navigation->last_page - 1 && $page_navigation->page_count != $page_navigation->total_page">
+			{@$isGoTo = true}
+			<li>
+				<a href="#goTo" data-toggle title="{$lang->cmd_go_to_page}">&hellip;</a>
+				<span cond="$isGoTo" id="goTo" class="x_input-append">
+					<input type="number" min="1" max="{$page_navigation->last_page}" required name="page" title="{$lang->cmd_go_to_page}" />
+					<button type="submit" class="x_add-on">Go</button>
+				</span>
+			</li>
+		</block>
+		<!--@while($page_no = $page_navigation->getNextPage())-->
+			{@$last_page = $page_no}
+			<li class="x_active"|cond="$page_no == $page"><a  href="{getUrl('page', $page_no)}">{$page_no}</a></li>
+		<!--@end-->
+
+		<block cond="$last_page != $page_navigation->last_page && $last_page + 1 != $page_navigation->last_page">
+			{@$isGoTo = true}
+			<li>
+				<a href="#goTo" data-toggle title="{$lang->cmd_go_to_page}">&hellip;</a>
+				<span cond="$isGoTo" id="goTo" class="x_input-append">
+					<input type="number" min="1" max="{$page_navigation->last_page}" required name="page" title="{$lang->cmd_go_to_page}" />
+					<button type="submit" class="x_add-on">Go</button>
+				</span>
+			</li>
+			
+		</block>
+
+		<li class="x_disabled"|cond="$page == $page_navigation->last_page"><a href="{getUrl('page', $page_navigation->last_page)}" title="{$page_navigation->last_page}">{$lang->last_page} &raquo;</a></li>
+	</ul>
+</form>
+
+
+
+<script>
+	function deleteBookc(){
+	
+	
+	
+	}
+
+</script>
+
+

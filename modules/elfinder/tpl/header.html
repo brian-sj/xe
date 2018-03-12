@@ -1,0 +1,25 @@
+<load target="js/elfinderxe_admin.js" />
+<load target="css/common.css" />
+
+<h1 class="h1">{$lang->elfinderxe_management}</h1>
+
+<block cond="$module_info">
+	<block cond="$module_info->mid">
+		<h2 class="h2">
+			{$module_info->mid}<block cond="$module_info->is_default=='Y'">({$lang->is_default})</block>
+			|
+			<a href="{getSiteUrl($module_info->domain,'','mid',$module_info->mid)}" target="_blank">{$lang->view}</a>
+		</h2>
+	</block>
+
+	<div class="cnb">
+		<ul>
+			<li cond="$module=='admin'" class="active"|cond="$act=='dispElfinderxeAdminContent'"><a href="{getUrl('act','dispElfinderxeAdminContent','module_srl','', 'selected_var_idx', '', 'type', '')}">{$lang->cmd_elfinderxe_list}</a></li>
+			<li cond="$module!='admin'"><a href="{getUrl('act','', 'selected_var_idx', '', 'type', '')}">{$lang->cmd_back}</a></li>
+			<li class="active"|cond="$act=='dispElfinderxeAdminFileManagerInfo'||$act=='dispElfinderxeAdminInsertFileManager'"><a href="{getUrl('act','dispElfinderxeAdminFileManagerInfo', 'selected_var_idx', '', 'type', '')}"><!--@if($module_srl)-->{$lang->cmd_view_info}<!--@else-->{$lang->cmd_create_elfinderxe}<!--@end--></a></li>
+			<block cond="$module_srl">
+				<li class="active"|cond="$act=='dispElfinderxeAdminGrantInfo'"><a href="{getUrl('act','dispElfinderxeAdminGrantInfo', 'selected_var_idx', '', 'type', '')}">{$lang->cmd_manage_grant}</a></li>
+			</block>
+		</ul>
+	</div>
+</block>

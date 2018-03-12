@@ -1,0 +1,11 @@
+<query id="getShareUser" action="select">
+    <tables>
+        <table name="wmc_share" />
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+        <condition operation="in" column="target_srl" var="target_srl" />
+    </conditions>
+</query>

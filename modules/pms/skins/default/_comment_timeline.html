@@ -1,0 +1,86 @@
+
+<style>
+.header-tit{padding:40px 0 50px 0;}
+.header-tit h3{font-size:20px; margin:0;}
+.header-tit .btn {margin-right:24px}
+.timeline{clear:both;}
+</style>
+<div class="header-tit">
+		
+		<!--@if($type == __PMS_COMMENT_TYPE_DAILY_REPORT__ )-->
+		<h3 class="pull-left">작업이력{$type}</h3>
+		<button type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#history" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 이력추가</button>
+		<!--@else-->
+		<h3 class="pull-left">작업로그{$type}</h3>
+		<!--@end-->
+		
+</div>
+				<ul class="timeline">
+{@
+$timelabel="";
+}
+		<!--@foreach($comment as $no => $val)-->
+			<!--@if($timelabel  != zDate($val->reg_date, "Y-m-d") )-->
+			{@$timelabel =zDate($val->reg_date, "Y-m-d");}
+					<li class="time-label">
+						<span class="bg-red">
+							{$timelabel?$timelabel:zDate($val->reg_date, "Y-m-d")}
+						</span>
+					</li>
+			<!--@end-->
+					<li>
+						<!-- timeline icon -->
+						<i class="fa fa-envelope bg-blue"></i>
+						<div class="timeline-item">
+							<span class="time"><i class="fa fa-clock-o"></i> {zDate($val->reg_date, "h:i:s")}</span>
+
+							<h3 class="timeline-header"><a href="#">{$val->user_name}...</a>{$val->title}</h3>
+
+							<div class="timeline-body">
+								{$val->content}
+							</div>
+							<!--@if( ($logged_info->member_srl == $val->member_srl && $type == __PMS_COMMENT_TYPE_DAILY_REPORT__  )|| $is_admin=='Y' )-->
+							<div class="timeline-footer">
+								<a class="btn btn-primary btn-xs comment-edit" data-comment_srl="{$val->comment_srl}" ><i class="fa fa-fw fa-edit"></i></a>
+								<a class="btn btn-primary btn-xs comment-delete" data-comment_srl="{$val->comment_srl}" ><i class="fa fa-fw fa-remove"></i></a>
+							</div>
+							<!--@end-->
+						</div>
+					</li>
+		<!--@end-->
+					<!-- END timeline item -->
+				</ul>
+			<ul class="pagination">
+				<li><a href="#" data-page="1"  data-type="{$type}" class="prevEnd"><<</a></li>
+				<!--@while($page_no = $page_navigation->getNextPage())-->
+					<!--@if($page == $page_no)-->
+						<li class="active"><a href="#" data-page="{$page_no}" data-type="{$type}" class="active">{$page_no}</a></li>
+					<!--@else-->
+						<li><a data-page="{$page_no}" data-type="{$type}" href="#">{$page_no}</a></li>
+					<!--@end-->
+				<!--@end-->
+				<li><a data-page="{$page_navigation->last_page}" data-type="{$type}"  href="#"  class="nextEnd">>></a></li>
+			</ul>
+
+<script>
+function saveComment(){
+	if(  jQuery("#comment-title").val() ==""  || jQuery("#comment-content").val() ==""  ){
+		alert("제목과 내용을 입력 하세요. ");
+		return false ;
+	}
+	return true ;
+}
+function editComment(){
+	console.log( this );
+	$("#history").modal() ;
+}
+function deleteComment(){
+	if( confirm("정말 삭제 하시겠습니까?")){
+		alert("아직 못지움니다. ");
+	}
+}
+jQuery(document).ready( function($){
+	$(".comment-edit").on('click', editComment );
+	$(".comment-delete").on('click', deleteComment );
+});
+</script>

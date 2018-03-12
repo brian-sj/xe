@@ -1,0 +1,60 @@
+﻿
+<load target="/common/js/jquery.validate.min.js" />
+<include target="_header.html" />
+
+
+
+
+add Club,.. 
+<script>
+jQuery(document).ready(function(){
+	jQuery("#myfrm").validate();
+});
+
+</script>
+
+<form id='myfrm' method='post' action="/index.php">
+<input type="hidden" name="fsvr_srl" value="{$view->fsvr_srl}">
+<input type="hidden" name="act" value="procWmcdiskAdminFsvrAdd" >
+					<table border='0' cellspacing='0' cellpadding='0'>
+						<thead><tr><td colspan='2' height='1' bgcolor='#ff8120'></td></tr></thead>
+						
+						<input type=hidden name='uori' value="ins" />
+						
+						<tr>
+						<td width='350' class='title_bg alcen' height='28'>아 이 피</td>
+						<td width='500'>&nbsp;&nbsp;<input type='text' id='ip' name='ip' size='20' class='required' maxlength='16'  value="{$view->ip}"/></td>
+						</tr>
+						<tr><td colspan='2' height='1' bgcolor='#ffd9be'></td></tr>
+						
+						<tr>
+						<td class='title_bg alcen' height='28'>서 버 명</td>
+						<td >&nbsp;&nbsp;<input type='text' id='svr_name' name='svr_name' value="{$view->svr_name}" size='20' maxlength='10' /></td>
+						</tr>
+						<tr><td colspan='2' height='1' bgcolor='#ffd9be'></td></tr>
+						
+						<tr>
+						<td class='title_bg alcen' height='28'>설 명</td>
+						<td >&nbsp;&nbsp;<input type='text' name='svr_desc' value="{$view->svr_desc}" size='20' maxlength='20'  /></td>
+						</tr>
+						<tr><td colspan='2' height='1' bgcolor='#ffd9be'></td></tr>
+						
+						<tr>
+						<td class='title_bg alcen' height='28'>접근비번</td>
+						<td >&nbsp;&nbsp;<input type='text' name='acc_pw' value="{$view->acc_pw}" size='20' maxlength='20' /></td>
+						</tr>
+						<tr><td colspan='2' height='1' bgcolor='#ffd9be'></td></tr>
+
+						<tr>
+						<td class='title_bg alcen' height='28'>마운트비번</td>
+						<td >&nbsp;&nbsp;<input type='password' name='mnt_pw' value="{$view->mnt_pw}" size='20' maxlength='20'/></td>
+						</tr>
+						<tr><td colspan='2' height='1' bgcolor='#ffd9be'></td></tr>
+
+						
+						<tr>
+						<td colspan='2' align='center'><input type="submit" value="{$lang->save}" /></td>
+						</tr>
+						<tr><td colspan='2' height='1' bgcolor='#ff8120'></td></tr>
+					</table>
+</form>

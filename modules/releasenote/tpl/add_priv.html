@@ -1,0 +1,174 @@
+﻿<include target="_header.html" />
+
+<script>
+
+jQuery(document).ready(function(){  console.log('2');  });
+</script>
+
+<script type="text/javascript">
+
+var club_srl = "{$args->club_srl}";
+var responses =['result', 'user_id'];
+var form_object = new FormData();
+
+ window.onload =function(){
+	
+		jQuery(".notprived").on('click' , ".add-user" , function(){
+		
+		params = {};
+		params.user_id = jQuery(this).data("user-id") ;
+		params.club_srl = club_srl ;
+		params.rw = jQuery(this).data("rw") ;
+console.log( params);		
+		responses = ['result' , 'user_id' , 'memo'] ;
+		if( params.user_id == 'undefined') {alert("오류!. 관리자에게 문의 하세요.(8219: 강명희)"); return false ;}
+		exec_xml('wmcdisk' , 'procWmcdiskAdminPrivAdd', params , callback_function , responses  , params , form_object);
+		//window.location.replace(window.location.href) ; 
+	});
+	
+ }
+
+function callback_function( ret_obj, responses, params, form_object){
+console.log( responses );console.log(ret_obj);
+	if( ret_obj.result=="0"){
+		window.location.replace(window.location.href) ; 
+	}else{
+		alert("추가 하지 못했습니다. 이미 권한이 있는경우 삭제후 다시 추가하세요.");
+	}
+}
+function callback_function2(ret_obj , responses , params , form_object){
+
+console.log(ret_obj);
+	if( ret_obj.result =="0"){
+		alert(" 성공 했습니다. ");
+	}else{
+		alert(" 권한 삭제에 문제가 있습니다. 관리자에게 문의 하세요((8219:강명희) ");
+	}
+	window.location.reload(true);
+}
+/**  권한 삭제  **/
+function delUserPriv(){
+		params = {};
+		params.club_srl = club_srl ;
+		params.user_id = jQuery("#prived").val() ;
+
+		
+		if( params.user_id == undefined ||params.user_id.length ==0  ) {
+			alert("사용자를 선택해 주세요.");
+			return 0 ;
+		}
+		exec_xml('wmcdisk' , 'procWmcdiskAdminPrivDel', params , callback_function2 , responses  , params , form_object);
+		
+}
+
+/**  권한 추가 **/
+
+</script>
+
+
+<style>
+ div.div {  float : left ; width : 45%}
+ /* div.notprived {float :left ;  display:inline-block; width : 130px ; border : 1px  solid; margin : 2px 2px 2px 2px ; } */
+
+ div.notprived div{float:left ; display:inline-block; width : 100%;}
+ div.notprived div dd{float:left ; display:inline-block; width : 100%;}
+ .inputText{width:90px !important;vertical-align:middle}
+ .x_btn x_btn-primary{vertical-align:middle !important}
+ 
+</style>
+
+<body leftmargin='0' topmargin='0' bgcolor='#FFFCF7'>
+
+<h1>[{$args->club_name}] 권한 설정</h1>
+<hr>
+<div class="div" width="45%">
+   ※) 권한 삭제시 사용자를 선택(중복 가능) 하고 "삭제" 버튼을 누르세요. 
+
+
+	<select multiple name="prived" id="prived" style='height: 380px; width :340px;'>
+		<option loop="$list => $no,$val" value="{$val->user_id}">{$val->nick_name} {$val->user_id}({$val->homepage}/{$val->blog})[{$val->rw}]</option>
+	</select>
+
+	<button class="x_btn x_btn-inverse delete-user" style="height:380px;" onclick="delUserPriv();">{$lang->cmd_delete}</button>
+
+</div>
+
+<div class="div" width="45%">
+	<form method="post" class="x_input-append">
+	<input type="hidden" name="club_srl" value="{$args->club_srl}">
+	<input type="hidden" name="club_name" value="{$args->club_name}">
+	<input type="text" id="homepage" name="homepage" size="3" class="inputText"  placeholder="부서" value="{$args->homepage}">  <input type="text" id="blog" name="blog" size="3" class="inputText" placeholder="과" value="{$args->blog}">  <input type="text" id="nick_name" name="nick_name" size="3" class="inputText" placeholder="이름" value="{$args->nick_name}"> <button class="x_btn x_btn-inverse">{$lang->cmd_search}</button>
+	</form>
+
+<table class="table table-hover notprived" width="110%">
+<thead><tr>
+
+	<th>부서/과</th>
+		<th>이름</th>
+	<th>아이디</th>
+	<th>권한추가</th>
+	</tr>
+</thead>
+<tbody>
+	<tr loop="$user_list => $no,$val">
+
+		
+		<td>{$val->homepage}/{$val->blog}</td>
+		<td>{$val->nick_name}</td>
+		<td>{$val->user_id}</td>
+		
+		<td><button class="x_btn add-user" value="" data-user-id="{$val->user_id}" data-rw="w">쓰기</button><button class="x_btn add-user" value="" data-rw="r" data-user-id="{$val->user_id}">읽기</button></td>
+
+	</tr>
+</tbody>
+</table>
+
+<form action="./" class="x_pagination x_pull-left" style="margin:0" no-error-return-url="true">
+	<input type="hidden" name="module" value="{$module}" />
+	<input type="hidden" name="act" value="{$act}" />
+	<input cond="$homepage" type="hidden" name="homepage" value="{$args->homepage}" />
+	<input cond="$blog" type="hidden" name="blog" value="{$args->blog}" />
+	<input cond="$nick_name" type="hidden" name="nick_name" value="{$args->nick_name}" />
+	<input type="hidden" name="club_srl" value="{$args->club_srl}">
+	<input type="hidden" name="club_name" value="{$args->club_name}">
+	<ul>
+		<li class="x_disabled"|cond="!$page || $page == 1"><a href="{getUrl('page', '')}">&laquo; {$lang->first_page}</a></li>
+		<block cond="$page_navigation->first_page != 1 && $page_navigation->first_page + $page_navigation->page_count > $page_navigation->last_page - 1 && $page_navigation->page_count != $page_navigation->total_page">
+		{@$isGoTo = true}
+		<li>
+			<a href="#goTo" data-toggle title="{$lang->cmd_go_to_page}">&hellip;</a>
+			<span cond="$isGoTo" id="goTo" class="x_input-append">
+				<input type="number" min="1" max="{$page_navigation->last_page}" required name="page" title="{$lang->cmd_go_to_page}" />
+				<button type="submit" class="x_add-on">Go</button>
+			</span>
+		</li>
+		</block>
+
+		<!--@while($page_no = $page_navigation->getNextPage())-->
+		{@$last_page = $page_no}
+		<li class="x_active"|cond="$page_no == $page"><a  href="{getUrl('page', $page_no)}">{$page_no}</a></li>
+		<!--@end-->
+
+		<block cond="$last_page != $page_navigation->last_page && $last_page + 1 != $page_navigation->last_page">
+		{@$isGoTo = true}
+		<li>
+			<a href="#goTo" data-toggle title="{$lang->cmd_go_to_page}">&hellip;</a>
+			<span cond="$isGoTo" id="goTo" class="x_input-append">
+				<input type="number" min="1" max="{$page_navigation->last_page}" required name="page" title="{$lang->cmd_go_to_page}" />
+				<button type="submit" class="x_add-on">Go</button>
+			</span>
+		</li>
+		</block>
+		<li class="x_disabled"|cond="$page == $page_navigation->last_page"><a href="{getUrl('page', $page_navigation->last_page)}" title="{$page_navigation->last_page}">{$lang->last_page} &raquo;</a></li>
+	</ul>
+</form>
+
+	
+	
+</div>
+
+<hr />
+
+<a href="{getSiteUrl('','act','dispWmcdiskAdminClubAdd')}"></a>
+
+

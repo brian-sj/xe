@@ -1,0 +1,16 @@
+<query id="getReleasenote" action="select">
+    <tables>
+        <table name="releasenote" alias="r" />
+        <table name="wmc_code" alias="c" />
+		<table name="documents" alias="d" />
+
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="r.program_srl" default="c.code_int_val" />
+		<condition operation="equal" column="r.document_srl" default="d.document_srl" pipe="and"/>
+        <condition operation="equal" column="note_srl" var="note_srl" notnull="notnull" pipe="and" />
+    </conditions>
+</query>

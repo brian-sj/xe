@@ -1,0 +1,11 @@
+<query id="deleteShareUser" action="delete">
+    <tables>
+        <table name="wmc_share" />
+    </tables>
+    <conditions>
+        <condition operation="equal" column="target_srl" var="target_srl" filter="number" notnull="notnull" />
+        <condition operation="equal" column="member_srl" var="member_srl" filter="number" pipe="and"/>
+        <condition operation="equal" column="target_sub_srl" var="target_sub_srl" filter="number" pipe="and"/>
+        <condition operation="equal" column="stt" var="stt" pipe="and"/>
+    </conditions>
+</query>

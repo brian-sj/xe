@@ -1,0 +1,11 @@
+<query id="updateProjectConfirm" action="update">
+    <tables>
+        <table name="pms_project" />
+    </tables>
+    <columns>
+		<column name="category" var="category" notnull="notnull"/>
+    </columns>
+	<conditions> 
+        <condition operation="equal" column="project_srl" var="project_srl"   notnull="notnull" />   
+    </conditions>
+</query>	

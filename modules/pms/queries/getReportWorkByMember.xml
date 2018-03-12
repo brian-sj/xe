@@ -1,0 +1,30 @@
+<query id="getReportWorkByMember" action="select">
+    <tables>
+        <table name="pms_project" alias="p"/>
+		<table name="pms_task" alias="t"/>
+		<table name="pms_report_work_time" alias="w"/>
+		<table name="member" alias="m"/>
+    </tables>
+    <columns>
+        <column name="p.title" alias="project_name"/>
+        <column name="p.project_srl" alias="project_srl"/>
+        <column name="p.category" alias="category"/>
+		<column name="t.title" alias="task_name"/>
+		<column name="w.report_work_srl" alias="report_work_srl"/>
+		<column name="w.task_srl" alias="task_srl"/>
+		<column name="w.work_date" alias="work_date"  />
+		<column name="dayofweek(work_date)" alias="dayofweek"  />
+		<column name="w.mh" alias="mh" />
+		<column name="m.nick_name" alias="nick_name" />
+    </columns>
+    <conditions>
+		<condition operation="equal" column="p.project_srl" var="w.project_srl" notnull="notnull" /> 
+		<condition operation="equal" column="t.task_srl" var="w.task_srl" notnull="notnull" pipe="and"/> 
+		<condition operation="equal" column="m.member_srl" var="w.member_srl" notnull="notnull" pipe="and"/> 
+		
+		<condition operation="in" column="w.member_srl" var="member_srls"  pipe="and" /> 
+		<condition operation="more" column="w.work_date" var="start_date"  pipe="and" /> 
+		<condition operation="less" column="w.work_date" var="end_date" pipe="and" /> 
+		
+    </conditions>
+</query>

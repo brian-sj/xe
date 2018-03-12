@@ -1,0 +1,13 @@
+<query id="getReportWorkTimeWeeklyByMemberSrl" action="select">
+    <tables>
+        <table name="pms_report_work_time" alias="w" />
+    </tables>
+    <columns>
+        <column name="sum(w.mh)" alias="sum_mh" />
+    </columns>
+	<conditions>
+		<condition operation="equal" column="member_srl" var="member_srl" notnull="notnull" pipe="and" />   
+		<condition operation="more" column="work_date" var="start_date" notnull="notnull" pipe="and" />   
+		<condition operation="below" column="work_date" var="end_date" notnull="notnull" pipe="and" />   
+	</conditions>	
+</query>

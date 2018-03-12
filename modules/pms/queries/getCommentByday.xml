@@ -1,0 +1,27 @@
+<query id="getCommentByday" action="select">
+    <tables>
+        <table name="pms_comment" alias="c"/>
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+	<conditions>
+		<condition operation="equal" column="type" var="type" default="B" />
+		<condition operation="equal" column="project_srl" var="project_srl" pipe="and"/>
+		<condition operation="equal" column="task_srl" var="task_srl" pipe="and"/>
+		<condition operation="equal" column="report_work_srl" var="report_work_srl" pipe="and"/>
+		
+		<condition operation="equal" column="member_srl" var="member_srl" pipe="and"/>
+		<condition operation="like_prefix" column="reg_date" var="reg_date" pipe="and"/>
+	</conditions>
+	<navigation>
+        <index var="sort_index" default="comment_srl" order="desc" />
+        <list_count var="list_count" default="5" />
+        <page_count var="page_count" default="10" />
+        <page var="page" default="1" />
+    </navigation>
+</query>
+<!-- 
+type :B 
+regdate 오늘인거 하면 하루 간단 일지를 꺼낼 수 있다. 
+-->

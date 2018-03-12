@@ -1,0 +1,8 @@
+<query id="getMantisClosedThisweek" action="select">
+    <tables>
+        <table name="view_mantis_closed_thisweek"/>
+    </tables>
+    <columns>
+        <column name="*" />
+    </columns>
+</query>

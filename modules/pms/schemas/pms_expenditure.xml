@@ -1,0 +1,37 @@
+<table name="pms_expenditure">
+
+
+	<column name="project_srl" type="number" size="11" notnull="notnull"  primary_key="primary_key"/>
+	<column name="budget_srl" type="number" size="11" notnull="notnull" primary_key="primary_key"/>
+	<column name="expenditure_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+
+	<column name="own_srl" type="number" size="11" notnull="notnull"  default="0" />
+	<column name="amount" type="number" size="11" notnull="notnull" default="0" /> 
+	<column name="type" type="number" size="2" notnull="notnull" default="0" /> 
+
+	
+	<column name="amount_cur" type="number" size="11" default="0" /> 
+	<column name="currency" type="varchar" size="3" default="82" /> 
+	
+    <column name="title" type="varchar" size="200" notnull="notnull"    />
+	<column name="memo" type="varchar" size="400"  />
+	<column name="stt" type="char" size="1" default="N"	/> 
+
+	<column name="real_date" type="date" />	
+	<column name="writer_srl" type="number" size="11" notnull="notnull" default="0"/>
+	<column name="regdate" type="date" notnull="notnull" default="curdate()" />
+</table>
+<!--
+own_srl -> 당회 일경우 당회 코드  , 총회일경우 0
+type -> 당회:0x00 총회:0x01 (0번째 자리)   인건비: 0x10 직접비 : 0x00  (1번째 자리)
+		기타 불린 구분 이외 구분은 budget_type 테이블을 통해서 추가 한다. 
+
+
+amount => 한국 돈만 입력한다.
+
+amount_cur => 현지돈으로 입력   -> 혹시나 해서 넣는다.
+currency   => 현지 통화  		-> 혹시나 해서 넣는다.
+
+stt :-> N default :  X cancel 
+
+-->

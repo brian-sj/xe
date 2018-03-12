@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+    <grants>
+        <grant name="list" default="guest">
+            <title xml:lang="ko">목록</title>
+        </grant>
+        <grant name="view" default="guest">
+            <title xml:lang="ko">열람</title>
+        </grant>
+        <grant name="write" default="guest">
+            <title xml:lang="ko">입력</title>
+        </grant>
+        <grant name="delete" default="guest">
+            <title xml:lang="ko">삭제</title>
+        </grant>
+	</grants>
+    <permissions>
+        <permission action="dispWmccodeAdminList" target="manager" />
+    </permissions>
+
+	<actions>
+		<action name="dispWmccodeAdminList" type="view" standalone="true" admin_index="true" />
+		<action name="dispWmccodeIndex" type="view" standalone="true" index="true" />
+		<action name="dispWmccodeBySubCodeAPI" type="view" standalone="true" />
+		<action name="procWmccodeSendMsg" type="controller" standalone="true" />
+		<action name="procWmccodeShareSave" type="controller" standalone="true" />
+		<action name="procWmccodeShareDelete" type="controller" standalone="true" />
+
+    </actions>
+</module>

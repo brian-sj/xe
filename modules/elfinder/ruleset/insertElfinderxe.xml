@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ruleset version="1.5.0">
+	<customrules>
+		<!--// 루트 디렉토리 경로 -->
+		<rule name="rule_path" type="regex" test="/^[a-z0-9-_\/]+$/i" />
+		<!--// 확장자 필터 -->
+		<rule name="rule_extension_mode" type="enum" test="disable,allow,deny" delim="," />
+		<rule name="rule_extension_list" type="regex" test="/^([0-9a-z-_]+\|?)+$/i" />
+
+		<!--// 썸네일 표시 방식 -->
+		<rule name="rule_tmb_crop" type="enum" test="CROP,SCALE" delim="," />
+		<!--// 파일 목록 표시 형식 -->
+		<rule name="rule_default_view" type="enum" test="icons,list" delim="," />
+	</customrules>
+	<fields>
+		<!--// mid -->
+		<field name="elfinderxe_name" required="true" rule="alpha_number"	length="1:40" />
+		<!--// 브라우저 제목 -->
+		<field name="browser_title" required="true" length="1:250" />
+		<!--// 루트 디렉토리 경로 -->
+		<field name="root_path" required="true" rule="rule_path" />
+		<!--// 루트 디렉토리 URL -->
+		<field name="root_url" required="true" rule="url" />
+		<!--// 루트 디렉토리 이름 -->
+		<field name="root_alias" required="true" />
+
+		<!--// 확장자 필터 -->
+		<field name="extension_mode" required="true" rule="rule_extension_mode" />
+		<field name="extension_list" rule="rule_extension_list" />
+
+		<!--// 썸네일 크기 -->
+		<field name="tmb_size" required="true" rule="number" />
+		<!--// 썸네일 표시 방식 -->
+		<field name="tmb_crop" required="true" rule="rule_tmb_crop" />
+		<!--// 파일 목록 표시 형식 -->
+		<field name="default_view" requird="true" rule="rule_default_view" />
+		<!--// 파일 브라우저 가로 크기 -->
+		<field name="elfinderxe_width" required="true" rule="number">
+			<if test="$elfinderxe_width_auto=='Y'" attr="required" value="false" />
+		</field>
+		<!--// 파일 브라우저 세로 크기 -->
+		<field name="elfinderxe_height" required="true" rule="number" />
+		<!--// 날짜 표시 형식 -->
+		<field name="date_format" required="true" />
+	</fields>
+</ruleset>

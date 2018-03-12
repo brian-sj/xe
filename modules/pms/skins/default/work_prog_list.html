@@ -1,0 +1,121 @@
+﻿<style>
+#main_panel {width : 95%; margin : 20px 20px; float :left ;}
+.pop{ font-size:11px;}
+table .title {width:300px;}
+</style>
+<script>
+var dt = "{$dt}";
+function goWeek(week){
+ alert(week );
+}
+</script>
+<load target="js/report.js"/>
+
+<!--#include("./header.html")-->
+<!-- Table -->
+<form action="/">
+<select  class="form-control" onchange="goWeek(this.value)">
+	<option value="2016-06-06">6월2주</option>
+	<option value="2016-06-13">6월3주</option>
+	<option value="2016-06-20">6월4주</option>
+	<option value="2016-06-27">7월1주</option>
+	<option value="2016-07-04">7월2주</option>
+	<option value="2016-07-11">7월3주</option>
+</select>
+</form>
+<div class="col-lg-7">
+		<div id="history_panel" class="box box-warning">
+		  <div class="box-header with-border"><h3 class="box-title">1. 전산기획 진행업무</h3>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		  
+		  </div>
+		  <table class="table">
+			<thead><tr><th class="title">업무내용</th><th>주담당자</th><th>시작일</th><th>종료일</th><th>전주</th><th>금주</th><th>누적</th><th>진행(전주)</th></tr></thead>
+			<tbody id="report_table_tbody_A">
+			</tbody>
+		  </table> 
+		</div>
+
+		<div id="history_panel" class="box box-success">
+		  <div class="box-header with-border"><h3 class="box-title">2. 개발과 진행 업무</h3></div>
+		  <table class="table" >
+			<thead><tr><th class="title">업무내용</th><th>주담당자</th><th>시작일</th><th>종료일</th><th>전주</th><th>금주</th><th>누적</th><th>진행(전주)</th></tr></thead>
+			<tbody id="report_table_tbody_D">
+			</tbody>
+		  </table> 
+		</div>
+
+		<div id="history_panel" class="box box-success">
+		  <div class="box-header with-border"><h3 class="box-title">3. 운영과 진행 업무</h3></div>
+		  <table class="table" >
+			<thead><tr><th class="title">업무내용</th><th>주담당자</th><th>시작일</th><th>종료일</th><th>전주</th><th>금주</th><th>누적</th><th>진행(전주)</th></tr></thead>
+			<tbody id="report_table_tbody_M">
+			</tbody>
+		  </table> 
+		</div>
+		
+		<div id="history_panel" class="box box-success">
+		  <div class="box-header with-border"><h3 class="box-title">7. 전산문의센터 운영현황</h3></div>
+		  [장애 처리 건수 ]
+		  <table class="table">
+			<tr><th>구분</th><th>프로그램/웹/모바일</th><th>컴퓨터/프린터일반</th><th>보안프로그램/기기</th><th>네트워크</th><th>서버</th><th>미분류</th><th>합계</th></tr>
+			<tbody id="report_table_tbody_help_cnt">
+			<tr class="tr2"><th>총회</th>   <th><span class="td100903">0</span></th><th><span class="td100900">0</span></th><th><span class="td100902">0</span></th><th><span class="td100901">0</span></th><th><span class="td100941">0</span></th><th><span class="td0">0</span></th><th><span class="tdtotal">0</span></th></tr>
+			<tr class="tr1"><th>국내당회</th><th><span class="td100903">0</span></th><th><span class="td100900">0</span></th><th><span class="td100902">0</span></th><th><span class="td100901">0</span></th><th><span class="td100941">0</span></th><th><span class="td0">0</span></th><th><span class="tdtotal">0</span></th></tr>
+			<tr class="tr3"><th>해외당회</th><th><span class="td100903">0</span></th><th><span class="td100900">0</span></th><th><span class="td100902">0</span></th><th><span class="td100901">0</span></th><th><span class="td100941">0</span></th><th><span class="td0">0</span></th><th><span class="tdtotal">0</span></th></tr>
+			<tr class="tr0"><th>합계</th>   <th><span class="td100903">0</span></th><th><span class="td100900">0</span></th><th><span class="td100902">0</span></th><th><span class="td100901">0</span></th><th><span class="td100941">0</span></th><th><span class="td0">0</span></th><th><span class="tdtotal">0</span></th></tr>
+			</tbody>
+		  </table> 
+		  [장애 처리 시간 ]
+		  <table class="table">
+			<tr><th>구분</th><th>프로그램/웹/모바일</th><th>컴퓨터/프린터일반</th><th>보안프로그램/기기</th><th>네트워크</th><th>서버</th><th>합계</th></tr>
+			<tbody id="report_table_tbody_help">
+			<tr class="tr2"><th>총회</th>   <th><span class="td100903">0</span></th><th><span class="td100900">0</span></th><th><span class="td100902">0</span></th><th><span class="td100901">0</span></th><th><span class="td100941">0</span></th><th><span class="tdtotal">0</span></th></tr>
+			<tr class="tr1"><th>국내당회</th><th><span class="td100903">0</span></th><th><span class="td100900">0</span></th><th><span class="td100902">0</span></th><th><span class="td100901">0</span></th><th><span class="td100941">0</span></th><th><span class="tdtotal">0</span></th></tr>
+			<tr class="tr3"><th>해외당회</th><th><span class="td100903">0</span></th><th><span class="td100900">0</span></th><th><span class="td100902">0</span></th><th><span class="td100901">0</span></th><th><span class="td100941">0</span></th><th><span class="tdtotal">0</span></th></tr>
+			<tr class="tr0"><th>합계</th>   <th><span class="td100903">0</span></th><th><span class="td100900">0</span></th><th><span class="td100902">0</span></th><th><span class="td100901">0</span></th><th><span class="td100941">0</span></th><th><span class="tdtotal">0</span></th></tr>
+			</tbody>
+		  </table> 
+		</div>		
+</div>
+<div class="col-lg-5">
+		<div id="history_panel" class="box box-success">
+		  <div class="box-header with-border"><h3 class="box-title">4. 맨티스 통계 </h3></div>
+		  <table class="table">
+			<tr><th>구분 </th><th>전주미처리</th> <th>금주 신규</th> <th>금주 처리</th> <th>현재 미처리</th> </tr>
+			<!--@foreach($m_list as $no => $data)-->
+			<tr><td>{$data->mantis_project_name}</td><td>{$data->carry_over}</td> <td>{$data->added}</td> <td>{$data->resolved}</td>  <td>{$data->remained}</td></tr>
+			<!--@end-->
+		  </table> 
+		</div>
+		
+		
+		<div id="history_panel" class="box box-success">
+		  <div class="box-header with-border"><h3 class="box-title">5. 프로그램 배포 현황 </h3></div>
+		  <table class="table">
+			<tr><th>제목 </th><th>배포구분</th><th>배포일</th> <th>요청부서</th> <th>작업자</th> <th>배포자</th> </tr>
+			<!--@foreach($releasenote_list as $no => $data)-->
+			<tr><td>{$data->title}</td><td>{$data->stt1}</td> <td>{zdate($data->releaser_confirm , 'Y-m-d')}</td> <td>{$data->request_name}</td><td>{$wmc_members[$data->worker_srl]}</td>  <td>{$wmc_members[$data->releaser_srl]}</td></tr>
+			<!--@end-->
+		  </table> 
+		</div>
+
+		<div id="history_panel" class="box box-success">
+		  <div class="box-header with-border"><h3 class="box-title">6. 라이선스 배포 현황</h3></div>
+		  <table class="table">
+			<tr><th>프로그램명 </th><th>배포구분</th><th>배포일</th> <th>부서</th> <th>사용자</th></tr>
+			<!--@foreach($lmp_list as $no => $data)-->
+			<tr><td>{$data->title}</td><td>{$data->stt1}</td> <td>{zdate($data->releaser_confirm , 'Y-m-d')}</td> <td>{$data->request_name}</td><td>{$wmc_members[$data->worker_srl]}</td></tr>
+			<!--@end-->
+		  </table> 
+		</div>
+
+		
+		
+</div>
+<script>
+
+</script>
+

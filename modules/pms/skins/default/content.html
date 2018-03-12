@@ -1,0 +1,51 @@
+<style>
+#main_panel , #history_panel {margin : 10px }
+.progress {margin-bottom : 0 !important ;}
+.hidden-content {display:none;}
+.title-link {cursor:pointer;}
+.pagination {vertical-align: middle;}
+select[multiple] {height:200px !important; margin-left:20px;}
+.btn_add {text-align:right;}
+#radiobox label{font-size:10px;}
+</style>
+<!--#include("./header.html")-->
+
+
+<script>
+var mid ="{$mid}"
+	, opts =[]
+	, task ={}
+	, params ={}
+	, _obj ={};
+	task.project_srl ="{$project_srl}";
+	params.project_srl ="{$project_srl}";
+	params.prefix ="[NON]";
+
+</script>	
+<script>
+// radering javascript 
+	<block loop="$wmc_members=>$key,$val">
+	_obj = {}; _obj.key ={$key} ;_obj.label ="{$val}" ;opts.push(_obj);
+	</block>
+</script>	
+<script>
+jQuery(document).ready(function($){
+	$("#radiobox input[type=radio]").bind('click',function(){
+		params.prefix = $(this).val(); 
+	});
+
+});	
+	
+function onChange(a){
+	//params.project_srl = params.project_srl ;
+	if( jQuery("#favorite").attr("checked") =='checked'){
+		params.add ="Y"; // 즐겨 찾기에 추가 
+	}else{
+		params.add ="N"; // 즐겨 찾기에서 제외
+	}
+	exec_xml ( 'pms','procPmsFavoriteToggle' , params , callback_function_favorite , responses , form_object );
+}
+</script>
+<!--#include("./_content_c.html")-->
+
+

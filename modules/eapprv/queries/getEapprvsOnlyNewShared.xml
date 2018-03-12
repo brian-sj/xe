@@ -1,0 +1,30 @@
+<query id="getEapprvsOnlyNewShared" action="select">
+    <tables>
+		<table name="eapprv"  alias="e"/>
+		<table name="documents"  alias="d"/>
+        <table name="eapprv_share" alias="s"/>
+		<table name="modules" alias="m"/>
+		
+    </tables>
+    <columns>
+        <column name="e.*" />
+		<column name="d.title" />
+		<column name="d.comment_count" />
+		<column name="m.mid" />
+		
+    </columns>
+    <conditions>
+		<condition operation="equal" column="e.eapprv_srl" default="s.eapprv_srl" filter="number"  pipe="and"/>
+		<condition operation="equal" column="e.document_srl" default="d.document_srl" filter="number"  pipe="and"/>
+		<condition operation="equal" column="m.module_srl" default="e.module_srl" filter="number"  pipe="and"/>
+		<condition operation="equal" column="s.member_srl" var="member_srl" filter="number" notnull="notnull" pipe="and"/>
+		<condition operation="equal" column="e.module_srl" var="module_srl" filter="number" pipe="and"/>
+		<condition operation="notequal" column="e.stt_int" default="0" pipe="and"/>
+		<condition operation="null" column="s.stt" pipe="and"/>
+    </conditions>
+		
+	<navigation>
+
+    </navigation>
+
+</query>

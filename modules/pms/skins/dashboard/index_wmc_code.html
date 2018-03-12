@@ -1,0 +1,83 @@
+<!--#include("./header.html")-->
+<div class="wrap">
+  <div class="row index-row">
+    <div class="col-xs-12 page-title">
+      <div class="col-xs-7 pull-left"><h3>업무분류</h3></div>
+      <div class="col-xs-5 select-week pull-right">
+        <a href="{getUrl('act','dispPmsWmccodeWrite','code_int_val','')}"><button type="button" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 분류 추가</button></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xs-12">
+  <div id="main_panel" class="box box-default">
+		<!-- Default panel contents -->
+		<div class="panel-body">
+			<ol class="breadcrumb">
+			  <li><a href="#">PMS</a></li>
+			  <li class="active"|cond="$code_gu2==__CODE_PMS_MAIN__"><a href="{getUrl('code_gu2',__CODE_PMS_MAIN__)}">대분류</a></li>
+			  <li class="active"|cond="$code_gu2==__CODE_PMS_SUB__"><a href="{getUrl('code_gu2',__CODE_PMS_SUB__)}">중분류</a></li>
+			</ol>
+			
+			<table class="table">
+				<tr>
+					<th width="80">No.</th>
+					<th width="120">업무구분</th>
+					<th width="50">순서</th>
+					<th width="120">비고</th>
+				</tr>
+				<!--@foreach($code_list as $no => $val) -->
+				<tr id="tr_{$val->code_int_val}"> 
+					<td>{$no}</td>
+					<td>
+						<input type="text" name="memo" id="memo" value="{$val->memo}" > 
+						<a href="#"><span class="glyphicon glyphicon-share"></span>
+					</td>
+					<td>
+						<input type="text" name="sort_seq" id="sort_seq" value="{$val->sort_seq}" >
+					</td>
+					<td>
+						<a href="#" onclick="saveCode({$val->code_int_val})"> <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> 저장</a>&nbsp;&nbsp;
+						<a href="#" onclick="deleteCode({$val->code_int_val})"> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> 삭제</a>
+					</td>
+				</tr>
+				<!--@end-->
+			</table>
+		</div>
+	</div>
+	</div>
+</div>	
+
+ 
+<script>
+var params = {} ;
+
+function saveCode(code_int_val){
+	params.memo = jQuery("#tr_"+code_int_val).find("#memo").val();
+	params.sort_seq = jQuery("#tr_"+code_int_val).find("#sort_seq").val();
+	params.code_int_val = code_int_val;
+	
+	exec_json("pms.procPmsWmccodeSave",params, function(data){ 
+				alert("저장했습니다.");
+				location.reload();
+				
+				},function(error){ console.log(error);}
+			);
+}
+
+function deleteCode(code_int_val){
+	params.code_int_val = code_int_val;
+	params.del_yn = 'Y';
+	if(confirm("삭제하시겠습니까?")){
+		exec_json("pms.procPmsWmccodeSave",params, function(data){ 
+				location.reload();
+				
+				<!-- jQuery("#tr"+code_int_val).remove(); -->
+				
+				},function(error){ console.log(error);}
+			);
+		
+   }
+}
+
+</script>

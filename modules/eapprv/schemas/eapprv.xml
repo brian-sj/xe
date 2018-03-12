@@ -1,0 +1,20 @@
+<table name="eapprv">
+    
+    
+	<column name="member_srl"    type="number" size="11" default="0" notnull="notnull" primary_key="primary_key"  />
+	<column name="document_srl" type="number" size="11" default="0" notnull="notnull" primary_key="primary_key"  />
+	<column name="module_srl"  type="varchar" size="20" notnull="notnull" primary_key="primary_key" />  
+	<column name="eapprv_srl" type="number" size="11" notnull="notnull" primary_key="primary_key" />
+
+	<column name="stt_int" type="number" size="4" notnull="notnull" />
+	
+	<column name="memo_xml"    type="varchar" size="8000" notnull="notnull" />
+	<column name="memo_comment"    type="varchar" size="1000" notnull="notnull" />
+	<column name="stt1" type="char" size="1" notnull="notnull" /> 
+	<column name="stt2" type="char" size="1" notnull="notnull" /> 
+	<column name="stt3" type="char" size="1" notnull="notnull" /> 
+
+	
+	<column name="regdate" type="date" default="currdate()"/>    
+</table>
+<!--  module 에다가는    document=> 도큐먼트  , module => 모듈  둘중 하나늘 넣는다.   나중에 찾을 라고.      -->
